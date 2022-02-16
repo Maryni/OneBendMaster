@@ -14,6 +14,7 @@ public abstract class BaseMatchThree : MonoBehaviour
     #region Inspector variables
     
     [SerializeField] private ElementType elementType;
+    [SerializeField] private Sprite sprite;
 
     #endregion Inspector variables
     
@@ -27,16 +28,16 @@ public abstract class BaseMatchThree : MonoBehaviour
 
     private void Awake()
     {
-        SetMatchThree(elementType);
+        SetMatchThree(elementType, sprite);
     }
 
     #endregion Unity functions
     
     #region public functions
 
-    protected virtual void SetMatchThree(ElementType elementType)
+    protected virtual void SetMatchThree(ElementType elementType, Sprite sprite)
     {
-        matchThree = new MatchThree(elementType);
+        matchThree = new MatchThree(elementType, sprite);
     }
 
     #endregion public functions 
@@ -47,17 +48,20 @@ public struct MatchThree
     #region private variables
     
     private ElementType elementType;
+    private Sprite sprite;
 
     #endregion private variables
     
     #region properties
     
     public ElementType ElementType => elementType;
+    private Sprite Sprite => sprite;
 
     #endregion properties
 
-    public MatchThree (ElementType elementType)
+    public MatchThree (ElementType elementType, Sprite sprite)
     {
+        this.sprite = sprite;
         this.elementType = elementType;
     }
     
