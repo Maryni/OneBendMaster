@@ -9,18 +9,24 @@ public abstract class BaseEnemy : MonoBehaviour
 
     private Enemy enemy;
     protected UnityAction actionOnShooted;
-
+    protected float currentHP;
+    
     #endregion private variables
 
     #region Inspector variables
     
     [SerializeField] private ElementType elementType;
+    [Header("Stats, mod 1 = 1%"),SerializeField] private float baseHp;
+    [SerializeField] private float modHp;
+    [SerializeField] private float baseDamage;
+    [SerializeField] private float modDamage;
 
     #endregion Inspector variables
     
     #region properties
 
     public Enemy EnemyBase => enemy;
+    public float CurrentHP => currentHP;
 
     #endregion properties
 
@@ -28,16 +34,16 @@ public abstract class BaseEnemy : MonoBehaviour
 
     private void Awake()
     {
-        SetEnemy(elementType);
+        CalculateStatsWithMods();
     }
 
     #endregion Unity functions
     
     #region public functions
 
-    protected virtual void SetEnemy(ElementType elementType)
+    protected virtual void SetEnemy(ElementType elementType, float maxHp, float damage)
     {
-        enemy = new Enemy(elementType);
+        enemy = new Enemy(elementType, maxHp, damage);
     }
 
     protected virtual void Shooted()
@@ -53,7 +59,18 @@ public abstract class BaseEnemy : MonoBehaviour
         }
     }
 
-    #endregion public functions 
+    #endregion public functions
+
+    #region private functions
+
+    private void CalculateStatsWithMods()
+    {
+        var maxHPCalculated = baseHp + (baseHp * modHp);
+        var damageCalculated = baseDamage + (baseDamage * modDamage);
+        SetEnemy(elementType,maxHPCalculated,damageCalculated);
+    }
+
+    #endregion private functions
 }
 
 public struct Enemy
@@ -61,18 +78,24 @@ public struct Enemy
     #region private variables
     
     private ElementType elementType;
+    private float maxHp;
+    private float damage;
 
     #endregion private variables
     
     #region properties
     
     public ElementType ElementType => elementType;
-
+    public float MaxHp => maxHp;
+    public float Damage => damage;
+    
     #endregion properties
 
-    public Enemy (ElementType elementType)
+    public Enemy (ElementType elementType, float maxHp, float damage)
     {
         this.elementType = elementType;
+        this.maxHp = maxHp;
+        this.damage = damage;
     }
     
 }
