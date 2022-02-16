@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIActions : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class UIActions : MonoBehaviour
     [SerializeField] private GameObject chooseLevelGameObject;
     [SerializeField] private GameObject upgradesGameObject;
     [SerializeField] private GameObject settingsGameObject;
+    [SerializeField] private GameObject exitGameObject;
+    [SerializeField] private GameObject mainPanelGameObject;
 
     #endregion Inspector variables
     
@@ -47,6 +50,13 @@ public class UIActions : MonoBehaviour
         chooseLevelGameObject.SetActive(false);
         upgradesGameObject.SetActive(false);
         settingsGameObject.SetActive(false);
+        exitGameObject.SetActive(false);
+    }
+
+    public void HideAllAndHideMainPanel()
+    {
+        HideAll();
+        mainPanelGameObject.SetActive(false);
     }
 
     public void ShowObject(GameObject gameObject)
@@ -57,6 +67,11 @@ public class UIActions : MonoBehaviour
     public void ExitApplication()
     {
         Application.Quit();
+    }
+
+    public void ContinueLevel()
+    {
+        SceneManager.LoadSceneAsync(1);
     }
     
     #endregion public functions

@@ -982,7 +982,19 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1276259258}
         m_TargetAssemblyTypeName: UIActions, Assembly-CSharp
-        m_MethodName: OpenContinue
+        m_MethodName: ContinueLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1276259258}
+        m_TargetAssemblyTypeName: UIActions, Assembly-CSharp
+        m_MethodName: HideAllAndHideMainPanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1318,8 +1330,8 @@ MonoBehaviour:
   transformEnemyParent: {fileID: 514987950}
   transformSpriteParent: {fileID: 1109990774}
   countBulletsExampleToInit: 3
-  countEnemyExampleToInit: 3
-  countSpriteExampleToInit: 3
+  countEnemyExampleToInit: 5
+  countSpriteExampleToInit: 5
 --- !u!114 &1191301161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1442,6 +1454,8 @@ MonoBehaviour:
   chooseLevelGameObject: {fileID: 1741086670}
   upgradesGameObject: {fileID: 98370998}
   settingsGameObject: {fileID: 1514550007}
+  exitGameObject: {fileID: 483177073}
+  mainPanelGameObject: {fileID: 1276259254}
 --- !u!1 &1337489395
 GameObject:
   m_ObjectHideFlags: 0
