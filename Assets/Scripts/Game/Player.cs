@@ -71,7 +71,7 @@ public class Player : MonoBehaviour
         currentHp = maxHp;
     }
 
-    public void GetDamage(int value)
+    public void TakeDamage(int value)
     {
         currentHp -= value;
     }
