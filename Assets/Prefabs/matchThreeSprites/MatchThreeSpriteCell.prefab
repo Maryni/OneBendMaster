@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8998710637870463476}
   - component: {fileID: 836069845779124716}
   - component: {fileID: 2862662172100966030}
+  - component: {fileID: 4478927048948435077}
   m_Layer: 5
   m_Name: MatchThreeSpriteElement
   m_TagString: Untagged
@@ -93,6 +94,18 @@ MonoBehaviour:
   image: {fileID: 836069845779124716}
   x: 0
   y: 0
+--- !u!114 &4478927048948435077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4855024794321446451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36ead292a3dec5040b548aa8b43c485b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6170144373563204751
 GameObject:
   m_ObjectHideFlags: 0

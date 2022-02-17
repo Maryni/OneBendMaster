@@ -74,12 +74,12 @@ public class ObjectPool : MonoBehaviour
         }
         if (objectType == ObjectType.MatchThreeSprite)
         {
-            var findedObject = exampleSpriteList.Where(x => x.GetComponentInChildren<BaseMatchThree>().MatchThreeBase.ElementType == elementType)
+            var findedObject = exampleSpriteList.Where(x => x.GetComponentInChildren<BaseMatchThree>().ElementType == elementType)
                 .FirstOrDefault(x => !x.activeSelf);
             if (findedObject == null)
             {
                 var exampleObject =
-                    exampleSpriteList.FirstOrDefault(x => x.GetComponentInChildren<BaseMatchThree>().MatchThreeBase.ElementType == elementType);
+                    exampleSpriteList.FirstOrDefault(x => x.GetComponentInChildren<BaseMatchThree>().ElementType == elementType);
                 var newObject = Instantiate(exampleObject, transformSpriteParent);
                 exampleSpriteList.Add(newObject);
                 return newObject;

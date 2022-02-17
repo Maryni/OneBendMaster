@@ -27,10 +27,16 @@ public class UIController : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         var tempCount = controller.ColumnCount * controller.LineCount;
+        GameObject[] tempArray = new GameObject[tempCount];
         for (int i = 0; i < tempCount; i++)
         {
-            controller.SetObjectToPanel(objectPool.GetObjectByType(ObjectType.MatchThreeSprite, ElementType.NoElement));
+            tempArray[i] = objectPool.GetObjectByType(ObjectType.MatchThreeSprite, ElementType.NoElement);
+            tempArray[i].SetActive(true);
+            var dragDrop = tempArray[i].GetComponentInChildren<DragDrop>();
+            dragDrop.SetActionOnEndDrag(controller.CheckDragDropComponent);
+            dragDrop.SetActionOnBeginDrag(controller.ClearCountMatched);
         }
+        controller.SetObjectToPanel(tempArray);
         controller.HidePanel();
     }
 

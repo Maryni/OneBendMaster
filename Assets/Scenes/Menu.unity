@@ -1545,6 +1545,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1408358309}
+  - {fileID: 1969186786}
   m_Father: {fileID: 504849356}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1604,13 +1605,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gamePanelGameObject: {fileID: 1408358308}
-  listObjectsInCell: []
+  panelForHideObjects: {fileID: 1969186785}
   spriteFire: {fileID: 21300000, guid: b3c258e17815f7d4db56427b2a4b8dae, type: 3}
   spriteWater: {fileID: 21300000, guid: a471b24c5f4ecc64b840c065248562b5, type: 3}
   spriteEnergy: {fileID: 21300000, guid: b87a20447bab3164888d7481928ca82a, type: 3}
   spriteNature: {fileID: 21300000, guid: f13d44101b0de79488f390d273e9edc2, type: 3}
   spriteMagic: {fileID: 21300000, guid: 7a533be521a3add4fb453277c695497b, type: 3}
   spriteClear: {fileID: 21300000, guid: 97068e8ba25368a40a8bd289c1d09fd3, type: 3}
+  countLeftObjectsMatched: 0
+  countRightObjectsMatched: 0
+  countUpperObjectsMatched: 0
+  countDownObjectsMatched: 0
 --- !u!1 &1276259254
 GameObject:
   m_ObjectHideFlags: 0
@@ -1826,7 +1831,7 @@ GameObject:
   - component: {fileID: 1408358309}
   - component: {fileID: 1408358310}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: ActivePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1873,7 +1878,7 @@ MonoBehaviour:
   m_StartAxis: 0
   m_CellSize: {x: 180, y: 166}
   m_Spacing: {x: 0, y: 0}
-  m_Constraint: 0
+  m_Constraint: 1
   m_ConstraintCount: 6
 --- !u!1 &1514550007
 GameObject:
@@ -2357,6 +2362,41 @@ MonoBehaviour:
   colorNatureElemental: {fileID: 21300000, guid: f13d44101b0de79488f390d273e9edc2, type: 3}
   colorMagicElemental: {fileID: 21300000, guid: 7a533be521a3add4fb453277c695497b, type: 3}
   colorDefaultElemental: {fileID: 21300000, guid: 97068e8ba25368a40a8bd289c1d09fd3, type: 3}
+--- !u!1 &1969186785
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1969186786}
+  m_Layer: 5
+  m_Name: DeactivePanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1969186786
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969186785}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1249288851}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1976538203
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,6 +23,7 @@ public abstract class BaseMatchThree : MonoBehaviour
     #region properties
 
     public MatchThree MatchThreeBase => matchThree;
+    public ElementType ElementType => elementType;
 
     #endregion properties
 
@@ -30,7 +31,7 @@ public abstract class BaseMatchThree : MonoBehaviour
 
     private void Awake()
     {
-        SetMatchThree(elementType, sprite);
+        SetMatchThree(sprite);
     }
 
     #endregion Unity functions
@@ -49,9 +50,9 @@ public abstract class BaseMatchThree : MonoBehaviour
         image.sprite = sprite;
     }
     
-    protected virtual void SetMatchThree(ElementType elementType, Sprite sprite)
+    protected virtual void SetMatchThree(Sprite sprite)
     {
-        matchThree = new MatchThree(elementType, sprite);
+        matchThree = new MatchThree( sprite);
     }
 
     #endregion public functions 
@@ -61,14 +62,12 @@ public struct MatchThree
 {
     #region private variables
     
-    private ElementType elementType;
     private Sprite sprite;
 
     #endregion private variables
     
     #region properties
     
-    public ElementType ElementType => elementType;
     private Sprite Sprite => sprite;
 
     #endregion properties
@@ -77,15 +76,14 @@ public struct MatchThree
 
     public void SetElementType(ElementType elementType)
     {
-        this.elementType = elementType;
+       // this.elementType = elementType;
     }
 
     #endregion public functions
     
-    public MatchThree (ElementType elementType, Sprite sprite)
+    public MatchThree (Sprite sprite)
     {
         this.sprite = sprite;
-        this.elementType = elementType;
     }
     
 }
