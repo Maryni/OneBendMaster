@@ -185,11 +185,9 @@ public class MatchThreeController : MonoBehaviour
             if (arrayObjectsInCell[xFirst, yFirst].ElementType == arrayObjectsInCell[xFirst,yFirst - i].ElementType)
             {
                countLeftObjectsMatched++;
-               Debug.Log($"[Left] tempObj1 ElementType = {arrayObjectsInCell[xFirst,yFirst].ElementType} | tempObj2 ElementType = {arrayObjectsInCell[xFirst, yFirst - i].ElementType}");
             }
             else
             {
-               Debug.Log($"[Left] tempObj1 ElementType = {arrayObjectsInCell[xFirst,yFirst].ElementType} | tempObj2 ElementType = {arrayObjectsInCell[xFirst, yFirst - i].ElementType}");
                return;
             }
          }
@@ -206,11 +204,9 @@ public class MatchThreeController : MonoBehaviour
             if (arrayObjectsInCell[xFirst, yFirst].ElementType == arrayObjectsInCell[xFirst, yFirst + i].ElementType)
             {
                countRightObjectsMatched++;
-               Debug.Log($"[Right] tempObj1 ElementType = {arrayObjectsInCell[xFirst,yFirst].ElementType} | tempObj2 ElementType = {arrayObjectsInCell[xFirst, yFirst + i].ElementType}");
             }
             else
-            {
-               Debug.Log($"[Right] tempObj1 ElementType = {arrayObjectsInCell[xFirst,yFirst].ElementType} | tempObj2 ElementType = {arrayObjectsInCell[xFirst, yFirst + i].ElementType}");
+            { 
                return;
             }
          }
@@ -227,11 +223,9 @@ public class MatchThreeController : MonoBehaviour
             if (arrayObjectsInCell[xFirst, yFirst].ElementType == arrayObjectsInCell[xFirst - i,yFirst].ElementType)
             {
                countUpperObjectsMatched++;
-               Debug.Log($"[Upper] tempObj1 ElementType = {arrayObjectsInCell[xFirst,yFirst].ElementType} | tempObj2 ElementType = {arrayObjectsInCell[xFirst - i, yFirst].ElementType}");
             }
             else
             {
-               Debug.Log($"[Upper] tempObj1 ElementType = {arrayObjectsInCell[xFirst,yFirst].ElementType} | tempObj2 ElementType = {arrayObjectsInCell[xFirst - i, yFirst].ElementType}");
                return;
             }
          }
@@ -248,11 +242,9 @@ public class MatchThreeController : MonoBehaviour
             if (arrayObjectsInCell[xFirst, yFirst].ElementType == arrayObjectsInCell[xFirst + i, yFirst].ElementType)
             {
                countDownObjectsMatched++;
-               Debug.Log($"[Down] tempObj1 ElementType = {arrayObjectsInCell[xFirst, yFirst].ElementType} | tempObj2 ElementType = {arrayObjectsInCell[xFirst + i, yFirst].ElementType}");
             }
             else
             {
-               Debug.Log($"[Down] tempObj1 ElementType = {arrayObjectsInCell[xFirst, yFirst].ElementType}");
                return;
             }
          }
