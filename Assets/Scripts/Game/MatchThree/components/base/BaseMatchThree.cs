@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public abstract class BaseMatchThree : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public abstract class BaseMatchThree : MonoBehaviour
     
     [SerializeField] private ElementType elementType;
     [SerializeField] private Sprite sprite;
+    [SerializeField] private Image image;
 
     #endregion Inspector variables
     
@@ -35,6 +37,18 @@ public abstract class BaseMatchThree : MonoBehaviour
     
     #region public functions
 
+    public void SetElementType(ElementType elementType)
+    {
+        this.elementType = elementType;
+        MatchThreeBase.SetElementType(elementType);
+    }
+
+    public void SetSprite(Sprite sprite)
+    {
+        this.sprite = sprite;
+        image.sprite = sprite;
+    }
+    
     protected virtual void SetMatchThree(ElementType elementType, Sprite sprite)
     {
         matchThree = new MatchThree(elementType, sprite);
@@ -59,6 +73,15 @@ public struct MatchThree
 
     #endregion properties
 
+    #region public functions
+
+    public void SetElementType(ElementType elementType)
+    {
+        this.elementType = elementType;
+    }
+
+    #endregion public functions
+    
     public MatchThree (ElementType elementType, Sprite sprite)
     {
         this.sprite = sprite;
