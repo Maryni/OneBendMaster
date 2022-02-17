@@ -22,7 +22,7 @@ public class UIController : MonoBehaviour
     #endregion Unity functions
 
     #region private functions
-
+    //поменять элемент с тем с кем меняемся, и картинку
     private IEnumerator SetObjectsFromPoolToMatchThreePanel()
     {
         yield return new WaitForEndOfFrame();
@@ -33,8 +33,12 @@ public class UIController : MonoBehaviour
             tempArray[i] = objectPool.GetObjectByType(ObjectType.MatchThreeSprite, ElementType.NoElement);
             tempArray[i].SetActive(true);
             var dragDrop = tempArray[i].GetComponentInChildren<DragDrop>();
-            dragDrop.SetActionOnEndDrag(controller.CheckDragDropComponent);
+            var image = dragDrop.gameObject.GetComponent<MatchThreeFlexibleElement>().Image;
+            dragDrop.SetActionOnBeginDrag(() =>image.raycastTarget = false);
             dragDrop.SetActionOnBeginDrag(controller.ClearCountMatched);
+            dragDrop.SetActionOnBeginDragWithParams(controller.SetValuesFromBeginDragPoint);
+            dragDrop.SetActionOnEndDrag(controller.CheckDragDropComponent);
+            dragDrop.SetActionOnEndDragWithoutParams(()=>image.raycastTarget = true);
         }
         controller.SetObjectToPanel(tempArray);
         controller.HidePanel();

@@ -72,6 +72,7 @@ public class MatchThreeController : MonoBehaviour
       xFirst = x;
       yFirst = y;
 
+      ChangeElementsInArray();
       CheckCombinations();
    }
 
@@ -82,7 +83,26 @@ public class MatchThreeController : MonoBehaviour
       countLeftObjectsMatched = 0;
       countDownObjectsMatched = 0;
    }
-   
+
+   public void SetValuesFromBeginDragPoint(int x, int y)
+   {
+      xSecond = x;
+      ySecond = y;
+   }
+
+   /// <summary>
+   /// From beginDrag to EndDrag (from xSecond to xFirst, and then xFirst to xSecond)
+   /// </summary>
+   public void ChangeElementsInArray()
+   {
+      ElementType tempType = arrayObjectsInCell[xSecond, ySecond].ElementType;
+      Sprite tempSprite = arrayObjectsInCell[xSecond,ySecond].Sprite;
+      arrayObjectsInCell[xSecond,ySecond].SetElementType(arrayObjectsInCell[xFirst,yFirst].ElementType);
+      arrayObjectsInCell[xFirst,yFirst].SetElementType(tempType);
+      arrayObjectsInCell[xSecond,ySecond].SetSprite(arrayObjectsInCell[xFirst,yFirst].Sprite);
+      arrayObjectsInCell[xFirst,yFirst].SetSprite(tempSprite);
+   }
+
    #endregion public functions
 
    #region private functions
@@ -153,91 +173,90 @@ public class MatchThreeController : MonoBehaviour
       
       IsHaveCombination();
    }
+   //Helper
    // var countTryInDirectionPositive = (columnCount - 1) - yFirst;
    // var countTryInDirectionNegative = yFirst;
    private void CheckLeft()
    {
-      if (countDownObjectsMatched == 0 && countUpperObjectsMatched == 0)
+      if (countDownObjectsMatched < 2 && countUpperObjectsMatched < 2)
       {
          for (int i = 1; i <= yFirst; i++)
          {
-            if (arrayObjectsInCell[xFirst, yFirst].ElementType == arrayObjectsInCell[xFirst,yFirst + i].ElementType)
+            if (arrayObjectsInCell[xFirst, yFirst].ElementType == arrayObjectsInCell[xFirst,yFirst - i].ElementType)
             {
                countLeftObjectsMatched++;
+               Debug.Log($"[Left] tempObj1 ElementType = {arrayObjectsInCell[xFirst,yFirst].ElementType} | tempObj2 ElementType = {arrayObjectsInCell[xFirst, yFirst - i].ElementType}");
+            }
+            else
+            {
+               Debug.Log($"[Left] tempObj1 ElementType = {arrayObjectsInCell[xFirst,yFirst].ElementType} | tempObj2 ElementType = {arrayObjectsInCell[xFirst, yFirst - i].ElementType}");
+               return;
             }
          }
       }
-      Debug.Log($"[Left] tempObj1 ElementType = {arrayObjectsInCell[xFirst,yFirst].ElementType}");
    }
    
    private void CheckRight()
    {
-      var tempObject1 = arrayObjectsInCell[xFirst, yFirst];
-      var tempObject2 = arrayObjectsInCell[xFirst, yFirst++];
-      if (yFirst > 0 && yFirst < columnCount - 2 && countDownObjectsMatched == 0 && countUpperObjectsMatched == 0)
+      var countTryInDirectionPositive = (columnCount - 1) - yFirst;
+      if (countDownObjectsMatched < 2 && countUpperObjectsMatched < 2)
       {
-         while (tempObject1.ElementType ==
-                tempObject2.ElementType && yFirst < columnCount - 1)
+         for (int i = 1; i <= countTryInDirectionPositive; i++)
          {
-            countRightObjectsMatched++;
+            if (arrayObjectsInCell[xFirst, yFirst].ElementType == arrayObjectsInCell[xFirst, yFirst + i].ElementType)
+            {
+               countRightObjectsMatched++;
+               Debug.Log($"[Right] tempObj1 ElementType = {arrayObjectsInCell[xFirst,yFirst].ElementType} | tempObj2 ElementType = {arrayObjectsInCell[xFirst, yFirst + i].ElementType}");
+            }
+            else
+            {
+               Debug.Log($"[Right] tempObj1 ElementType = {arrayObjectsInCell[xFirst,yFirst].ElementType} | tempObj2 ElementType = {arrayObjectsInCell[xFirst, yFirst + i].ElementType}");
+               return;
+            }
          }
       }
-
-      if (yFirst == 0)
-      {
-         while (tempObject1.ElementType ==
-                tempObject2.ElementType && yFirst < columnCount - 1)
-         {
-            countRightObjectsMatched++;
-         }
-      }
-      Debug.Log($"[Left] tempObj1 ElementType = {arrayObjectsInCell[xFirst,yFirst].ElementType}");
    }
    
    private void CheckUpper()
    {
-      var tempObject1 = arrayObjectsInCell[xFirst, yFirst];
-      var tempObject2 = arrayObjectsInCell[xFirst--, yFirst];
-      if (xFirst > 0 && xFirst < lineCount - 2 && countRightObjectsMatched == 0 && countLeftObjectsMatched == 0)
+      if (countRightObjectsMatched < 2 && countLeftObjectsMatched < 2)
       {
-         while (tempObject1.ElementType ==
-                tempObject2.ElementType && xFirst > 0)
+         
+         for (int i = 1; i <= yFirst; i++)
          {
-            countUpperObjectsMatched++;
+            if (arrayObjectsInCell[xFirst, yFirst].ElementType == arrayObjectsInCell[xFirst - i,yFirst].ElementType)
+            {
+               countUpperObjectsMatched++;
+               Debug.Log($"[Upper] tempObj1 ElementType = {arrayObjectsInCell[xFirst,yFirst].ElementType} | tempObj2 ElementType = {arrayObjectsInCell[xFirst - i, yFirst].ElementType}");
+            }
+            else
+            {
+               Debug.Log($"[Upper] tempObj1 ElementType = {arrayObjectsInCell[xFirst,yFirst].ElementType} | tempObj2 ElementType = {arrayObjectsInCell[xFirst - i, yFirst].ElementType}");
+               return;
+            }
          }
       }
-      if (xFirst == lineCount - 1)
-      {
-         while (tempObject1.ElementType ==
-                tempObject2.ElementType && xFirst > 0)
-         {
-            countUpperObjectsMatched++;
-         }
-      }
-      Debug.Log($"[Left] tempObj1 ElementType = {arrayObjectsInCell[xFirst,yFirst].ElementType}");
    }
    
    private void CheckDown()
    {
-      var tempObject1 = arrayObjectsInCell[xFirst, yFirst];
-      var tempObject2 = arrayObjectsInCell[xFirst++, yFirst];
-      if (xFirst > 0 && xFirst < lineCount - 2 && countRightObjectsMatched == 0 && countLeftObjectsMatched == 0)
+      if (countRightObjectsMatched < 2 && countLeftObjectsMatched < 2)
       {
-         while (tempObject1.ElementType ==
-                tempObject2.ElementType && xFirst < lineCount - 1)
+         var countTryInDirectionPositive = (columnCount - 1) - xFirst;
+         for (int i = 1; i <= countTryInDirectionPositive; i++)
          {
-            countDownObjectsMatched++;
+            if (arrayObjectsInCell[xFirst, yFirst].ElementType == arrayObjectsInCell[xFirst + i, yFirst].ElementType)
+            {
+               countDownObjectsMatched++;
+               Debug.Log($"[Down] tempObj1 ElementType = {arrayObjectsInCell[xFirst, yFirst].ElementType} | tempObj2 ElementType = {arrayObjectsInCell[xFirst + i, yFirst].ElementType}");
+            }
+            else
+            {
+               Debug.Log($"[Down] tempObj1 ElementType = {arrayObjectsInCell[xFirst, yFirst].ElementType}");
+               return;
+            }
          }
       }
-      if (xFirst == 0)
-      {
-         while (tempObject1.ElementType ==
-                tempObject2.ElementType && xFirst < lineCount - 1)
-         {
-            countDownObjectsMatched++;
-         }
-      }
-      Debug.Log($"[Left] tempObj1 ElementType = {arrayObjectsInCell[xFirst,yFirst].ElementType}");
    }
 
    private bool IsHaveCombination()

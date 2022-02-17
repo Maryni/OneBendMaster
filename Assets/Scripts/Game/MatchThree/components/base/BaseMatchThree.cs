@@ -24,7 +24,9 @@ public abstract class BaseMatchThree : MonoBehaviour
 
     public MatchThree MatchThreeBase => matchThree;
     public ElementType ElementType => elementType;
-
+    public Sprite Sprite => sprite;
+    public Image Image => image;
+    
     #endregion properties
 
     #region Unity functions
@@ -41,7 +43,6 @@ public abstract class BaseMatchThree : MonoBehaviour
     public void SetElementType(ElementType elementType)
     {
         this.elementType = elementType;
-        MatchThreeBase.SetElementType(elementType);
     }
 
     public void SetSprite(Sprite sprite)
@@ -72,15 +73,6 @@ public struct MatchThree
 
     #endregion properties
 
-    #region public functions
-
-    public void SetElementType(ElementType elementType)
-    {
-       // this.elementType = elementType;
-    }
-
-    #endregion public functions
-    
     public MatchThree (Sprite sprite)
     {
         this.sprite = sprite;
