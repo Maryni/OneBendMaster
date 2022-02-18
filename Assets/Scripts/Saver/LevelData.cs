@@ -7,8 +7,38 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Level Data",menuName = "LevelData/Create New Level Data",order = 52)]
 public class LevelData : ScriptableObject
 {
-   [SerializeField] private int indexLevel;
-   [Header("1 element = 1 wave"),SerializeField] public List<Data> listCountEnemiesPerWave = new List<Data>();
+    #region Inspector variables
+
+    [SerializeField] private int indexLevel;
+    [Header("1 element = 1 wave"),SerializeField] public List<Data> listDatas = new List<Data>();
+    [SerializeField] private bool isLevelComplete;
+
+    #endregion Inspector variables
+
+    #region properties
+
+    public bool IsLevelComplete => isLevelComplete;
+
+    #endregion properties
+    
+    #region public functions
+
+    public void SetLevelComplete()
+    {
+        isLevelComplete = true;
+    }
+
+    public Data GetDataWaveByIndex(int index)
+    {
+        if (index >= 0 && index < listDatas.Count)
+        {
+            return listDatas[index];
+        }
+        Debug.LogError("index not in index range (>= 0 && < count)");
+        return null;
+    }
+
+    #endregion public functions
 }
 
 [Serializable]
@@ -22,7 +52,12 @@ public class Data
    [SerializeField] private List<float> baseModHpEnemies;
    [SerializeField] private List<float> baseDamageEnemies;
    [SerializeField] private List<float> baseModDamageEnemies;
-   [SerializeField] private bool isLevelComplete;
+   [Space] [Header("Boss settings"), SerializeField] private bool isWaveHaveBoss;
+   [SerializeField] private ElementType bossElementType;
+   [SerializeField] private float baseHpBoss;
+   [SerializeField] private float baseModHpBoss;
+   [SerializeField] private float baseDamageBoss;
+   [SerializeField] private float baseModDamageBoss;
 
    #endregion Inspector variables
 
@@ -32,7 +67,7 @@ public class Data
    public int[] CountEnemies => countEnemies;
    public ElementType LastElementType => elementType[elementType.Length - 1];
    public int LastCountEnemies => countEnemies[countEnemies.Length - 1];
-   public bool IsLevelComplete => isLevelComplete;
+   public bool IsWaveHaveBoss => isWaveHaveBoss;
 
    #endregion properties
 
@@ -55,11 +90,6 @@ public class Data
            return true;
        }
        return baseHpEnemies[index] == 0;
-   }
-
-   public void SetLevelComplete()
-   {
-       isLevelComplete = true;
    }
 
    #endregion public functions
