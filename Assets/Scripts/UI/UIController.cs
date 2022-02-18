@@ -34,11 +34,12 @@ public class UIController : MonoBehaviour
             tempArray[i].SetActive(true);
             var dragDrop = tempArray[i].GetComponentInChildren<DragDrop>();
             var image = dragDrop.gameObject.GetComponent<MatchThreeFlexibleElement>().Image;
+            
             dragDrop.SetActionOnBeginDrag(() =>image.raycastTarget = false);
-            dragDrop.SetActionOnBeginDrag(controller.ClearCountMatched);
-            dragDrop.SetActionOnBeginDragWithParams(controller.SetValuesFromBeginDragPoint);
-            dragDrop.SetActionOnEndDrag(controller.CheckDragDropComponent);
+            dragDrop.SetActionOnDragWithParams(controller.SetValuesFromBeginDragPoint);
+            dragDrop.SetActionOnEndDrag(controller.SetFirstsXY);
             dragDrop.SetActionOnEndDragWithoutParams(()=>image.raycastTarget = true);
+            dragDrop.SetActionCheckConnection(()=>controller.CheckSlideConnectionBetweenOnBeginDragAndOnEndDrag());
         }
         controller.SetObjectToPanel(tempArray);
         controller.HidePanel();

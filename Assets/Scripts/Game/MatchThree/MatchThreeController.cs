@@ -17,11 +17,8 @@ public class MatchThreeController : MonoBehaviour
    [SerializeField] private Sprite spriteNature;
    [SerializeField] private Sprite spriteMagic;
    [SerializeField] private Sprite spriteClear;
-   
-   [Header("Count Matched Objects per direction"),SerializeField] private int countLeftObjectsMatched;
-   [SerializeField] private int countRightObjectsMatched;
-   [SerializeField] private int countUpperObjectsMatched;
-   [SerializeField] private int countDownObjectsMatched;
+
+   [SerializeField] private int countConnectedCells;
 
    #endregion Inspector variables
 
@@ -67,25 +64,25 @@ public class MatchThreeController : MonoBehaviour
       this.gameObject.SetActive(false);
    }
 
-   public void CheckDragDropComponent(int x, int y)
+   /// <summary>
+   /// point what we will check with first point
+   /// </summary>
+   /// <param name="x"></param>
+   /// <param name="y"></param>
+   public void SetFirstsXY(int x, int y)
    {
       xFirst = x;
       yFirst = y;
-
-      ChangeElementsInArray();
-      CheckCombinations();
    }
 
-   public void ClearCountMatched()
-   {
-      countUpperObjectsMatched = 0;
-      countRightObjectsMatched = 0;
-      countLeftObjectsMatched = 0;
-      countDownObjectsMatched = 0;
-   }
-
+   /// <summary>
+   /// point from we checking
+   /// </summary>
+   /// <param name="x"></param>
+   /// <param name="y"></param>
    public void SetValuesFromBeginDragPoint(int x, int y)
    {
+      //x,ySecond = point OnDrag
       xSecond = x;
       ySecond = y;
    }
@@ -102,11 +99,94 @@ public class MatchThreeController : MonoBehaviour
       arrayObjectsInCell[xSecond,ySecond].SetSprite(arrayObjectsInCell[xFirst,yFirst].Sprite);
       arrayObjectsInCell[xFirst,yFirst].SetSprite(tempSprite);
    }
+   
+   public void CheckSlideConnectionBetweenOnBeginDragAndOnEndDrag()
+   {
+      Debug.Log($"xFirst = {xFirst} | yFirst = {yFirst} | xSecond = {xSecond} | ySecond = {ySecond}");
+      if (arrayObjectsInCell[xSecond, ySecond].ElementType == arrayObjectsInCell[xFirst, yFirst].ElementType)
+      {
+         if (CheckConnectionBetweenPoints(xSecond, ySecond, xFirst, yFirst))
+         {
+            countConnectedCells++;
+            xSecond = xFirst;
+            ySecond = yFirst;
+            Debug.Log($"connection YES | countConnectedCells = [{countConnectedCells}] ");
+         }
+         else
+         {
+            Debug.Log($"connection NO | countConnectedCells = [{countConnectedCells}] ");
+         }
+      }
+      else
+      {
+         Debug.Log("ElementType not the same");
+      }
+   }
 
    #endregion public functions
 
    #region private functions
 
+   private bool CheckConnectionBetweenPoints(int x1, int y1, int x2, int y2)
+   {
+      bool connected = false;
+      if (x1 + 1 == x2)
+      {
+         if (y1 + 1 == y2)
+         {
+            return true;
+         }
+         else if (y1 - 1 == y2)
+         {
+            return true;
+         }
+         else if (y1 == y2)
+         {
+            return true;
+         }
+         else
+         {
+            return false;
+         }
+      }
+
+      if (x1 == x2)
+      {
+         if (y1 + 1 == y2)
+         {
+            return true;
+         }
+         else if (y1 - 1 == y2)
+         {
+            return true;
+         }
+         else
+         {
+            return false;
+         }
+      }
+      if (x1 - 1 == x2)
+      {
+         if (y1 + 1 == y2)
+         {
+            return true;
+         }
+         else if (y1 - 1 == y2)
+         {
+            return true;
+         }
+         else if (y1 == y2)
+         {
+            return true;
+         }
+         else
+         {
+            return false;
+         }
+      }
+      return false;
+   }
+   
    private void CheckPanelAndAddAllToList()
    {
       MatchThreeFlexibleElement[,] tempObjects = new MatchThreeFlexibleElement[lineCount,columnCount];
@@ -136,9 +216,7 @@ public class MatchThreeController : MonoBehaviour
          for (int j = 0; j < columnCount; j++)
          {
             var tempRandomElementType = (ElementType) Random.Range(1,System.Enum.GetValues(typeof(ElementType)).Length);
-            //Debug.Log($"current elementType ={arrayObjectsInCell[i,j].ElementType} | before");
             arrayObjectsInCell[i,j].SetElementType(tempRandomElementType);
-            
             switch (tempRandomElementType)
             {
                case ElementType.Fire: arrayObjectsInCell[i,j].SetSprite(spriteFire); break;
@@ -146,14 +224,11 @@ public class MatchThreeController : MonoBehaviour
                case ElementType.Nature: arrayObjectsInCell[i,j].SetSprite(spriteNature); break;
                case ElementType.Energy: arrayObjectsInCell[i,j].SetSprite(spriteEnergy); break;
                case ElementType.Magic: arrayObjectsInCell[i,j].SetSprite(spriteMagic); break;
-               default: arrayObjectsInCell[i,j].SetSprite(spriteClear);
-                  break;
+               default: arrayObjectsInCell[i,j].SetSprite(spriteClear); break;
             }
-            //Debug.Log($"current elementType ={arrayObjectsInCell[i,j].ElementType} | after");
          }
       }
-      //Debug.Log($"current elementType ={arrayObjectsInCell[1,1].ElementType} | after 2");
-      
+
    }
 
    private void CheckIndexesAndSetRandomElement()
@@ -165,102 +240,6 @@ public class MatchThreeController : MonoBehaviour
    private void CheckCombinations()
    {
       Debug.Log($"xFirst = {xFirst}, yFirst ={yFirst} | xSecond = {xSecond}, ySecond = {ySecond}");
-
-      CheckUpper();
-      CheckDown();
-      CheckLeft();
-      CheckRight();
-      
-      IsHaveCombination();
-   }
-   //Helper
-   // var countTryInDirectionPositive = (columnCount - 1) - yFirst;
-   // var countTryInDirectionNegative = yFirst;
-   private void CheckLeft()
-   {
-      if (countDownObjectsMatched < 2 && countUpperObjectsMatched < 2)
-      {
-         for (int i = 1; i <= yFirst; i++)
-         {
-            if (arrayObjectsInCell[xFirst, yFirst].ElementType == arrayObjectsInCell[xFirst,yFirst - i].ElementType)
-            {
-               countLeftObjectsMatched++;
-            }
-            else
-            {
-               return;
-            }
-         }
-      }
-   }
-   
-   private void CheckRight()
-   {
-      var countTryInDirectionPositive = (columnCount - 1) - yFirst;
-      if (countDownObjectsMatched < 2 && countUpperObjectsMatched < 2)
-      {
-         for (int i = 1; i <= countTryInDirectionPositive; i++)
-         {
-            if (arrayObjectsInCell[xFirst, yFirst].ElementType == arrayObjectsInCell[xFirst, yFirst + i].ElementType)
-            {
-               countRightObjectsMatched++;
-            }
-            else
-            { 
-               return;
-            }
-         }
-      }
-   }
-   
-   private void CheckUpper()
-   {
-      if (countRightObjectsMatched < 2 && countLeftObjectsMatched < 2)
-      {
-         
-         for (int i = 1; i <= yFirst; i++)
-         {
-            if (arrayObjectsInCell[xFirst, yFirst].ElementType == arrayObjectsInCell[xFirst - i,yFirst].ElementType)
-            {
-               countUpperObjectsMatched++;
-            }
-            else
-            {
-               return;
-            }
-         }
-      }
-   }
-   
-   private void CheckDown()
-   {
-      if (countRightObjectsMatched < 2 && countLeftObjectsMatched < 2)
-      {
-         var countTryInDirectionPositive = (columnCount - 1) - xFirst;
-         for (int i = 1; i <= countTryInDirectionPositive; i++)
-         {
-            if (arrayObjectsInCell[xFirst, yFirst].ElementType == arrayObjectsInCell[xFirst + i, yFirst].ElementType)
-            {
-               countDownObjectsMatched++;
-            }
-            else
-            {
-               return;
-            }
-         }
-      }
-   }
-
-   private bool IsHaveCombination()
-   {
-      if ((countDownObjectsMatched + countLeftObjectsMatched + countRightObjectsMatched + countUpperObjectsMatched) >=
-          2)
-      {
-         Debug.Log($"combinations confirm");
-         return true;
-      }
-      Debug.Log($"no combinations");
-      return false;
    }
 
    #endregion private functions

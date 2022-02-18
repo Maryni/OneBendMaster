@@ -13,24 +13,29 @@ MonoBehaviour:
   m_Name: 1
   m_EditorClassIdentifier: 
   indexLevel: 1
-  listCountEnemiesPerWave:
+  listDatas:
+  - elementType: 0100000002000000030000000400000005000000
+    countEnemies: 0200000001000000000000000000000000000000
+    baseHpEnemies: []
+    baseModHpEnemies: []
+    baseDamageEnemies: []
+    baseModDamageEnemies: []
+    isWaveHaveBoss: 0
+    bossElementType: 0
+    baseHpBoss: 0
+    baseModHpBoss: 0
+    baseDamageBoss: 0
+    baseModDamageBoss: 0
   - elementType: 
     countEnemies: 
-    baseHpEnemies: 0
-    baseModHpEnemies: 0
-  - elementType: 
-    countEnemies: 
-    baseHpEnemies: 0
-    baseModHpEnemies: 0
-  - elementType: 
-    countEnemies: 
-    baseHpEnemies: 0
-    baseModHpEnemies: 0
-  - elementType: 
-    countEnemies: 
-    baseHpEnemies: 0
-    baseModHpEnemies: 0
-  - elementType: 
-    countEnemies: 
-    baseHpEnemies: 0
-    baseModHpEnemies: 0
+    baseHpEnemies: []
+    baseModHpEnemies: []
+    baseDamageEnemies: []
+    baseModDamageEnemies: []
+    isWaveHaveBoss: 0
+    bossElementType: 0
+    baseHpBoss: 0
+    baseModHpBoss: 0
+    baseDamageBoss: 0
+    baseModDamageBoss: 0
+  isLevelComplete: 0

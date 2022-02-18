@@ -6,4 +6,5 @@ using UnityEngine;
 public class DefaultLevelData : ScriptableObject
 {
     [SerializeField] private List<Data> data;
+    //definately I wanna write something more
 }
