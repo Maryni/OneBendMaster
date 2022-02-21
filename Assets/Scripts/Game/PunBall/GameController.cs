@@ -6,13 +6,21 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     #region Inspector variables
-
-    [SerializeField] private Player player;
-    [SerializeField] private BulletsController bulletsController;
+    
+    [SerializeField] private Data waveData;
     [SerializeField] private float defaultBulletDamage = 5f; //set this variables to ScriptableObject in future
     
     #endregion Inspector variables
 
+    #region private variables
+
+    private Player player;
+    private SaveLoadController saveLoadController;
+    private BulletsController bulletsController;
+    private PunBallPoolCells punBallPoolCells;
+
+    #endregion private variables
+    
     #region Unity functions
 
     private void Start()
@@ -35,6 +43,16 @@ public class GameController : MonoBehaviour
         if (bulletsController == null)
         {
             bulletsController = FindObjectOfType<BulletsController>();
+        }
+
+        if (punBallPoolCells == null)
+        {
+            punBallPoolCells = FindObjectOfType<PunBallPoolCells>();
+        }
+
+        if (saveLoadController == null)
+        {
+            saveLoadController = FindObjectOfType<SaveLoadController>();
         }
     }
 

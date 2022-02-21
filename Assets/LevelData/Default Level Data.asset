@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Default Level Data
   m_EditorClassIdentifier: 
   data:
-  - elementType: 0100000002000000030000000400000005000000
+    elementType: 0100000002000000030000000400000005000000
     countEnemies: 
     baseHpEnemies:
     - 100
@@ -39,3 +39,9 @@ MonoBehaviour:
     - 0
     - 0
     - 0
+    isWaveHaveBoss: 0
+    bossElementType: 0
+    baseHpBoss: 0
+    baseModHpBoss: 0
+    baseDamageBoss: 0
+    baseModDamageBoss: 0

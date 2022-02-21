@@ -60,12 +60,12 @@ public class ObjectPool : MonoBehaviour
         }
         if (objectType == ObjectType.Enemy)
         {
-            var findedObject = exampleEnemyList.Where(x => x.GetComponent<BaseEnemy>().EnemyBase.ElementType == elementType)
+            var findedObject = exampleEnemyList.Where(x => x.GetComponent<BaseEnemy>().ElementType == elementType)
                 .FirstOrDefault(x => !x.activeSelf);
             if (findedObject == null)
             {
                 var exampleObject =
-                    exampleEnemyList.FirstOrDefault(x => x.GetComponent<BaseEnemy>().EnemyBase.ElementType == elementType);
+                    exampleEnemyList.FirstOrDefault(x => x.GetComponent<BaseEnemy>().ElementType == elementType);
                 var newObject = Instantiate(exampleObject, transformEnemyParent);
                 exampleEnemyList.Add(newObject);
                 return newObject;

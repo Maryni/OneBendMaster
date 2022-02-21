@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class WaterEnemy : BaseEnemy
 {
-   
+    private void Start()
+    {
+        Init(ElementType.Water);
+    }
 }

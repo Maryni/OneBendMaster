@@ -10,7 +10,7 @@ public class LevelData : ScriptableObject
     #region Inspector variables
 
     [SerializeField] private int indexLevel;
-    [Header("1 element = 1 wave"),SerializeField] public List<Data> listDatas = new List<Data>();
+    [Header("0 element = first wave"),SerializeField] private List<Data> listDatas = new List<Data>();
     [SerializeField] private bool isLevelComplete;
 
     #endregion Inspector variables
@@ -18,6 +18,7 @@ public class LevelData : ScriptableObject
     #region properties
 
     public bool IsLevelComplete => isLevelComplete;
+    public int IndexLevel => indexLevel;
 
     #endregion properties
     
@@ -46,9 +47,12 @@ public class Data
 {
    #region Inspector variables
 
-   [Header("5 in [0] countEnemies = 5 enemies of elemType [0]"),Header("Each elementType index = countEnemies index"),SerializeField] private ElementType[] elementType;
+   [Header("5 in [0] countEnemies = 5 enemies of elemType [0]")]
+   [Header("Each elementType index = countEnemies index")]
+   [SerializeField] private ElementType[] elementType;
    [SerializeField] private int[] countEnemies;
-   [Header("0 = default, if more - enemyHP = baseHp + (baseHp * baseModHp)"),SerializeField] private List<float> baseHpEnemies;
+   [Header("0 = default, if more - enemyHP = baseHp + (baseHp * baseModHp)")]
+   [SerializeField] private List<float> baseHpEnemies;
    [SerializeField] private List<float> baseModHpEnemies;
    [SerializeField] private List<float> baseDamageEnemies;
    [SerializeField] private List<float> baseModDamageEnemies;

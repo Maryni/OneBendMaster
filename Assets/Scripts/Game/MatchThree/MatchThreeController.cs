@@ -29,7 +29,7 @@ public class MatchThreeController : MonoBehaviour
    private MatchThreeFlexibleElement[,] arrayObjectsInCell;
    private int xFirst = -1, xSecond = -1;
    private int yFirst = -1, ySecond = -1;
-   
+
    #endregion private variables
 
    #region properties
@@ -123,13 +123,17 @@ public class MatchThreeController : MonoBehaviour
       }
    }
 
+   public void ClearCountConnected()
+   {
+      countConnectedCells = 0;
+   }
+
    #endregion public functions
 
    #region private functions
 
    private bool CheckConnectionBetweenPoints(int x1, int y1, int x2, int y2)
    {
-      bool connected = false;
       if (x1 + 1 == x2)
       {
          if (y1 + 1 == y2)
@@ -165,6 +169,7 @@ public class MatchThreeController : MonoBehaviour
             return false;
          }
       }
+      
       if (x1 - 1 == x2)
       {
          if (y1 + 1 == y2)

@@ -6,16 +6,17 @@ using UnityEngine.Events;
 public abstract class BaseEnemy : MonoBehaviour
 {
     #region private variables
-
-    private Enemy enemy;
+    
     protected UnityAction actionOnShooted;
-    protected float currentHP;
+    protected float currentHp;
+    protected float currentDamage;
+    protected float maxHp;
     
     #endregion private variables
 
     #region Inspector variables
     
-    [SerializeField] private ElementType elementType;
+    [SerializeField] protected ElementType elementType;
     [Header("Stats, mod 1 = 1%"),SerializeField] private float baseHp;
     [SerializeField] private float modHp;
     [SerializeField] private float baseDamage;
@@ -24,10 +25,10 @@ public abstract class BaseEnemy : MonoBehaviour
     #endregion Inspector variables
     
     #region properties
-
-    public Enemy EnemyBase => enemy;
-    public float CurrentHP => currentHP;
-
+    public float CurrentHP => currentHp;
+    public float CurrentDamage => currentDamage;
+    public ElementType ElementType => elementType;
+    
     #endregion properties
 
     #region Unity functions
@@ -40,11 +41,6 @@ public abstract class BaseEnemy : MonoBehaviour
     #endregion Unity functions
     
     #region public functions
-
-    protected virtual void SetEnemy(ElementType elementType, float maxHp, float damage)
-    {
-        enemy = new Enemy(elementType, maxHp, damage);
-    }
 
     protected virtual void Shooted()
     {
@@ -63,39 +59,24 @@ public abstract class BaseEnemy : MonoBehaviour
 
     #region private functions
 
-    private void CalculateStatsWithMods()
+    public void SetStats(float baseHp, float modHp, float baseDamage, float modDamage)
     {
-        var maxHPCalculated = baseHp + (baseHp * modHp);
-        var damageCalculated = baseDamage + (baseDamage * modDamage);
-        SetEnemy(elementType,maxHPCalculated,damageCalculated);
+        this.baseHp = baseHp;
+        this.modHp = modHp;
+        this.baseDamage = baseDamage;
+        this.modDamage = modDamage;
+    }
+    
+    protected void CalculateStatsWithMods()
+    {
+        maxHp = baseHp + (baseHp * modHp);
+        currentDamage = baseDamage + (baseDamage * modDamage);
     }
 
-    #endregion private functions
-}
-
-public struct Enemy
-{
-    #region private variables
-    
-    private ElementType elementType;
-    private float maxHp;
-    private float damage;
-
-    #endregion private variables
-    
-    #region properties
-    
-    public ElementType ElementType => elementType;
-    public float MaxHp => maxHp;
-    public float Damage => damage;
-    
-    #endregion properties
-
-    public Enemy (ElementType elementType, float maxHp, float damage)
+    protected void Init(ElementType elementType)
     {
         this.elementType = elementType;
-        this.maxHp = maxHp;
-        this.damage = damage;
     }
     
+    #endregion private functions
 }
