@@ -77,14 +77,30 @@ public class Data
 
    #region public functions
 
-   public int GetCountEnemiesByIndex(int index)
+   public int GetCountEnemiesByIndex(ElementType elementType)
    {
-       return countEnemies[index];
+       return countEnemies[(int)elementType - 1];
    }
+   
 
-   public ElementType GetElementTypeByIndex(int index)
+   public List<float> GetListBaseHpEnemies()
    {
-       return elementType[index];
+       return baseHpEnemies;
+   }
+   
+   public List<float> GetListModHpEnemies()
+   {
+       return baseModHpEnemies;
+   }
+   
+   public List<float> GetListBaseDamageEnemies()
+   {
+       return baseDamageEnemies;
+   }
+   
+   public List<float> GetListModDamageEnemies()
+   {
+       return baseModDamageEnemies;
    }
 
    public bool IsHpAreZeroByIndex(int index)

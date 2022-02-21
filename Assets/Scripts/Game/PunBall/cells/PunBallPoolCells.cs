@@ -40,6 +40,21 @@ public class PunBallPoolCells : MonoBehaviour
 
     #endregion Unity functions
 
+    #region public functions
+
+    public List<PunBallCellsIndex> GetCellsList()
+    {
+        List<PunBallCellsIndex> temp = new List<PunBallCellsIndex>();
+        for (int i = 0; i < countColumn; i++)
+        {
+            temp.Add(cellsList[i].GetComponent<PunBallCellsIndex>());
+        }
+
+        return temp;
+    }
+
+    #endregion public functions
+    
     #region private functions
 
     private void SetCellsToList()
@@ -84,7 +99,7 @@ public class PunBallPoolCells : MonoBehaviour
         for (int i = 0; i < cellsList.Count; i++)
         {
             var tempObject = cellsList[i];
-            var positionPerCell = ((float)1 / countColumn) + (offsetXCell/countColumn);
+            var positionPerCell = ((float)1 / (countColumn + (offsetXCell/countColumn)));
             tempObject.transform.localScale = new Vector3(
                 xCellScale, 
                 cellExample.transform.localScale.y,

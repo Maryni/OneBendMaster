@@ -360,11 +360,11 @@ MonoBehaviour:
   cellsList: []
   countColumn: 6
   countLine: 8
-  offsetX: 0.2
-  offsetZ: 0.2
+  offsetX: 1
+  offsetZ: 0
   offsetXCell: 0.08
-  offsetZCell: -0.2
-  leftUpperAngle: -0.45
+  offsetZCell: 1
+  leftUpperAngle: -0.42
 --- !u!1 &919838139
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,6 +694,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1537087251}
   - component: {fileID: 1537087250}
+  - component: {fileID: 1537087252}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -713,8 +714,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef8dfedbcbe5384f92569eb2370e379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  bulletsController: {fileID: 0}
+  waveData:
+    elementType: 
+    countEnemies: 
+    baseHpEnemies: []
+    baseModHpEnemies: []
+    baseDamageEnemies: []
+    baseModDamageEnemies: []
+    isWaveHaveBoss: 0
+    bossElementType: 0
+    baseHpBoss: 0
+    baseModHpBoss: 0
+    baseDamageBoss: 0
+    baseModDamageBoss: 0
+  waveIndex: 0
   defaultBulletDamage: 5
 --- !u!4 &1537087251
 Transform:
@@ -730,6 +743,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1537087252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1537087249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 002834df01811664281fb3dad17f799c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1652332291
 GameObject:
   m_ObjectHideFlags: 0

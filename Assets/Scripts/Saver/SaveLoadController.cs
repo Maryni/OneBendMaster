@@ -14,6 +14,12 @@ public class SaveLoadController : MonoBehaviour
 
     #endregion Inspector variables
 
+    #region properties
+
+    public int LastCompleteLevel => lastCompleteLevel;
+
+    #endregion properties
+    
     #region Unity functions
 
     private void Start()
@@ -32,7 +38,7 @@ public class SaveLoadController : MonoBehaviour
 
     public Data GetWaveData(int indexWave, int indexLevel)
     {
-        return levelDatas[indexLevel].GetDataWaveByIndex(indexWave);
+        return levelDatas[indexLevel - 1].GetDataWaveByIndex(indexWave);
     }
 
     public Data GetDefaultData()
@@ -46,7 +52,10 @@ public class SaveLoadController : MonoBehaviour
 
     private void SetLastCompleteLevel()
     {
-       lastCompleteLevel = levelDatas.FirstOrDefault(x => !x.IsLevelComplete)!.IndexLevel;
+        if (lastCompleteLevel == 0)
+        {
+            lastCompleteLevel = levelDatas.FirstOrDefault(x => !x.IsLevelComplete)!.IndexLevel; 
+        }
     }
 
     #endregion private functions

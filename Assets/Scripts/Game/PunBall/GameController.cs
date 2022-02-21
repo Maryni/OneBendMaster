@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour
     #region Inspector variables
     
     [SerializeField] private Data waveData;
+    [SerializeField] private int waveIndex = 0;
     [SerializeField] private float defaultBulletDamage = 5f; //set this variables to ScriptableObject in future
     
     #endregion Inspector variables
@@ -15,11 +16,21 @@ public class GameController : MonoBehaviour
     #region private variables
 
     private Player player;
-    private SaveLoadController saveLoadController;
     private BulletsController bulletsController;
+    private SaveLoadController saveLoadController;
+    private ObjectPool objectPool;
     private PunBallPoolCells punBallPoolCells;
 
     #endregion private variables
+
+    #region properties
+
+    public SaveLoadController SaveLoadController => saveLoadController;
+    public PunBallPoolCells PunBallPoolCells => punBallPoolCells;
+    public ObjectPool ObjectPool => objectPool;
+    public Data WaveData => waveData;
+
+    #endregion properties
     
     #region Unity functions
 
@@ -27,6 +38,7 @@ public class GameController : MonoBehaviour
     {
         SetVariables();
         SetEnoughtBulletsSprite();
+        SetWaveData();
     }
 
     #endregion Unity functions
@@ -54,6 +66,11 @@ public class GameController : MonoBehaviour
         {
             saveLoadController = FindObjectOfType<SaveLoadController>();
         }
+
+        if (objectPool == null)
+        {
+            objectPool = FindObjectOfType<ObjectPool>();
+        }
     }
 
     private void SetEnoughtBulletsSprite()
@@ -67,6 +84,11 @@ public class GameController : MonoBehaviour
                 bulletsController.SetBulletTextForLastBullet(defaultBulletDamage.ToString());
             }
         }
+    }
+
+    private void SetWaveData()
+    {
+        waveData = saveLoadController.GetWaveData(waveIndex,saveLoadController.LastCompleteLevel);
     }
 
     #endregion private functions
