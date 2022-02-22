@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class SpawnController : MonoBehaviour
@@ -11,8 +12,17 @@ public class SpawnController : MonoBehaviour
 
     private GameController gameController;
     private List<PunBallCellsIndex> listCells;
+    private List<GameObject> listAllSpawned;
+    private List<GameObject> listLastWaveSpawned;
+    private UnityAction actionAfterSpawn;
 
     #endregion private variables
+
+    #region properties
+
+    public List<GameObject> LastWaveSpawnedList => listLastWaveSpawned;
+
+    #endregion properties
 
     #region Unity functions
 
@@ -28,6 +38,7 @@ public class SpawnController : MonoBehaviour
 
     public void Spawn()
     {
+        Debug.Log($"[Spawn] WaveIndex = {gameController.WaveIndex}");
         int countEnemiesByFire = gameController.WaveData.GetCountEnemiesByIndex(ElementType.Fire);
         int countEnemiesByWater = gameController.WaveData.GetCountEnemiesByIndex(ElementType.Water);
         int countEnemiesByEnergy = gameController.WaveData.GetCountEnemiesByIndex(ElementType.Energy);
@@ -39,7 +50,15 @@ public class SpawnController : MonoBehaviour
         SpawnByTypeAndCount(ElementType.Energy,countEnemiesByEnergy);
         SpawnByTypeAndCount(ElementType.Nature,countEnemiesByNature);
         SpawnByTypeAndCount(ElementType.Magic,countEnemiesByMagic);
-        
+        actionAfterSpawn?.Invoke();
+    }
+
+    public void SetActionAfterSpawn(params UnityAction[] actions)
+    {
+        for (int i = 0; i < actions.Length; i++)
+        {
+            actionAfterSpawn += actions[i];
+        }
     }
 
     #endregion public functions
@@ -52,7 +71,7 @@ public class SpawnController : MonoBehaviour
         {
             gameController = GetComponent<GameController>();
         }
-
+        gameController.SetSpawnController(this);
         listCells = gameController.PunBallPoolCells.GetCellsList();
     }
 
@@ -60,6 +79,11 @@ public class SpawnController : MonoBehaviour
     {
         if (count > 0)
         {
+            if (listLastWaveSpawned.Count > 0)
+            {
+                SetObjectFromFirstListToSecond(listLastWaveSpawned,listAllSpawned,true);
+            }
+            
             List<GameObject> tempList = new List<GameObject>();
             for (int i = 0; i < count; i++)
             {
@@ -81,6 +105,7 @@ public class SpawnController : MonoBehaviour
                 }
                 tempList[i].transform.SetParent(tempObject.gameObject.transform);
                 tempList[i].transform.localPosition = new Vector3(0,1.5f,0f);
+                listLastWaveSpawned.Add(tempList[i]);
             }
         }
         else
@@ -94,5 +119,17 @@ public class SpawnController : MonoBehaviour
         return Random.Range(0,listCells.Count-1);
     }
 
+    private void SetObjectFromFirstListToSecond(List<GameObject> a, List<GameObject> b, bool clearFirstList = false)
+    {
+        for (int i = 0; i < a.Count; i++)
+        {
+            b.Add(a[i]);
+        }
+        if (clearFirstList)
+        {
+            a.Clear();
+        }
+    }
+    
     #endregion private functions
 }

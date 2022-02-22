@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   indexLevel: 1
   listDatas:
-  - elementType: 0100000002000000030000000400000005000000
+  - elementTypes: 0100000002000000030000000400000005000000
     countEnemies: 0200000001000000000000000000000000000000
     baseHpEnemies: []
     baseModHpEnemies: []
@@ -26,8 +26,20 @@ MonoBehaviour:
     baseModHpBoss: 0
     baseDamageBoss: 0
     baseModDamageBoss: 0
-  - elementType: 
-    countEnemies: 
+  - elementTypes: 0100000002000000030000000400000005000000
+    countEnemies: 0000000000000000020000000100000000000000
+    baseHpEnemies: []
+    baseModHpEnemies: []
+    baseDamageEnemies: []
+    baseModDamageEnemies: []
+    isWaveHaveBoss: 0
+    bossElementType: 0
+    baseHpBoss: 0
+    baseModHpBoss: 0
+    baseDamageBoss: 0
+    baseModDamageBoss: 0
+  - elementTypes: 0100000002000000030000000400000005000000
+    countEnemies: 0000000000000000000000000200000001000000
     baseHpEnemies: []
     baseModHpEnemies: []
     baseDamageEnemies: []

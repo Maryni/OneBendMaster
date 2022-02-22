@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class StatsController : MonoBehaviour
@@ -9,6 +10,8 @@ public class StatsController : MonoBehaviour
 
    private SaveLoadController saveLoadController;
    private ObjectPool objectPool;
+   private List<GameObject> lastWaveSpawned;
+   private GameController gameController;
 
    #endregion private variables
 
@@ -17,11 +20,25 @@ public class StatsController : MonoBehaviour
    private void Start()
    {
       SetVariables();
-      GetAndSetStats();
+      GetAndSetStatsFromDefaultData();
    }
 
    #endregion Unity functions
 
+   #region public functions
+
+   public void SetLastWaveSpawnedList(List<GameObject> gameObjectsList)
+   {
+      lastWaveSpawned = gameObjectsList;
+   }
+
+   public void SetStatsToSpawnedEnemy()
+   {
+      GetAndSetStatsFromWaveData();
+   }
+
+   #endregion public functions
+   
    #region private functions
 
    private void SetVariables()
@@ -35,9 +52,29 @@ public class StatsController : MonoBehaviour
       {
          saveLoadController = GetComponent<SaveLoadController>();
       }
+
+      if (gameController == null)
+      {
+         gameController = FindObjectOfType<GameController>();
+      }
    }
 
-   private void GetAndSetStats()
+   private void GetAndSetStatsFromWaveData()
+   {
+      var tempFire = gameController.WaveData.GetListStats(ElementType.Fire);
+      var tempWater = gameController.WaveData.GetListStats(ElementType.Water);
+      var tempEnergy = gameController.WaveData.GetListStats(ElementType.Energy);
+      var tempNature = gameController.WaveData.GetListStats(ElementType.Nature);
+      var tempMagic = gameController.WaveData.GetListStats(ElementType.Magic);
+      
+      SetStatsToSpawnedEnemy(tempFire,ElementType.Fire);
+      SetStatsToSpawnedEnemy(tempWater,ElementType.Water);
+      SetStatsToSpawnedEnemy(tempEnergy,ElementType.Energy);
+      SetStatsToSpawnedEnemy(tempNature,ElementType.Nature);
+      SetStatsToSpawnedEnemy(tempMagic,ElementType.Magic);
+   }
+   
+   private void GetAndSetStatsFromDefaultData()
    {
       var tempFire = saveLoadController.GetDefaultData().GetListStats(ElementType.Fire);
       var tempWater = saveLoadController.GetDefaultData().GetListStats(ElementType.Water);
@@ -46,18 +83,19 @@ public class StatsController : MonoBehaviour
       var tempMagic = saveLoadController.GetDefaultData().GetListStats(ElementType.Magic);
 
 
-      SetStats(tempFire,ElementType.Fire);
-      SetStats(tempWater,ElementType.Water);
-      SetStats(tempEnergy,ElementType.Energy);
-      SetStats(tempNature,ElementType.Nature);
-      SetStats(tempMagic,ElementType.Magic);
+      SetStatsToPrefabs(tempFire,ElementType.Fire);
+      SetStatsToPrefabs(tempWater,ElementType.Water);
+      SetStatsToPrefabs(tempEnergy,ElementType.Energy);
+      SetStatsToPrefabs(tempNature,ElementType.Nature);
+      SetStatsToPrefabs(tempMagic,ElementType.Magic);
       
       objectPool.ChangeStatsLoadState();
    }
 
-   private void SetStats(List<float> defaulListStats, ElementType elementType)
+   private void SetStatsToPrefabs(List<float> defaulListStats, ElementType elementType)
    {
       GameObject exampleEnemy = new GameObject();
+      exampleEnemy.name = "0";
       if (elementType == ElementType.Fire)
       {
         exampleEnemy = objectPool.PrefabsEnemyList[0];
@@ -88,6 +126,33 @@ public class StatsController : MonoBehaviour
          defaulListStats[1],
          defaulListStats[2],
          defaulListStats[3]);
+      exampleEnemy.SetActive(false);
+   }
+
+   private void SetStatsToSpawnedEnemy(List<float> defaultListStats, ElementType elementType)
+   {
+      List<BaseEnemy> tempList = new List<BaseEnemy>();
+      for (int i = 0; i < lastWaveSpawned.Count; i++)
+      {
+         if (lastWaveSpawned[i].GetComponent<BaseEnemy>().ElementType == elementType)
+         {
+            if (!tempList.Contains(lastWaveSpawned[i].GetComponent<BaseEnemy>()))
+            {
+               tempList.Add(lastWaveSpawned[i].GetComponent<BaseEnemy>());
+            }
+         }
+      }
+
+      for (int i = 0; i < tempList.Count; i++)
+      {
+         tempList[i].SetStats(
+            defaultListStats[0],
+            defaultListStats[1],
+            defaultListStats[2],
+            defaultListStats[3]
+            );
+      }
+      
    }
 
    #endregion private functions

@@ -9,6 +9,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private ObjectPool objectPool;
     [SerializeField] private MatchThreeController controller;
+    [SerializeField] private BulletsController bulletsController;
 
     #endregion Inspector variables
 
@@ -40,7 +41,8 @@ public class UIController : MonoBehaviour
             dragDrop.SetActionOnEndDrag(controller.SetFirstsXY);
             dragDrop.SetActionOnEndDragWithoutParams(
                 () => image.raycastTarget = true,
-                () => controller.ClearCountConnected());
+                () => controller.ClearCountConnected(),
+                () => bulletsController.SetBulletColorForFirstBulletWithoutColor(controller.ElementTypeLastConnections));
             dragDrop.SetActionCheckConnection(()=> controller.CheckSlideConnectionBetweenOnBeginDragAndOnEndDrag());
         }
         controller.SetObjectToPanel(tempArray);

@@ -20,6 +20,8 @@ public class GameController : MonoBehaviour
     private SaveLoadController saveLoadController;
     private ObjectPool objectPool;
     private PunBallPoolCells punBallPoolCells;
+    private SpawnController spawnController;
+    private StatsController statsController;
 
     #endregion private variables
 
@@ -28,6 +30,7 @@ public class GameController : MonoBehaviour
     public SaveLoadController SaveLoadController => saveLoadController;
     public PunBallPoolCells PunBallPoolCells => punBallPoolCells;
     public ObjectPool ObjectPool => objectPool;
+    public int WaveIndex => waveIndex;
     public Data WaveData => waveData;
 
     #endregion properties
@@ -43,6 +46,15 @@ public class GameController : MonoBehaviour
 
     #endregion Unity functions
 
+    #region public functions
+
+    public void SetSpawnController(SpawnController spawnController)
+    {
+        this.spawnController = spawnController;
+    }
+
+    #endregion public functions
+    
     #region private functions
 
     private void SetVariables()
@@ -71,10 +83,16 @@ public class GameController : MonoBehaviour
         {
             objectPool = FindObjectOfType<ObjectPool>();
         }
+
+        if (statsController == null)
+        {
+           statsController = saveLoadController.GetComponent<StatsController>();
+        }
     }
 
     private void SetEnoughtBulletsSprite()
     {
+        bulletsController.SetMaxBulletCount(player.MaxBulletsCount);
         if (bulletsController.CountCurrentBullet < player.MaxBulletsCount)
         {
             var differentCount = player.MaxBulletsCount - bulletsController.CountCurrentBullet;
@@ -84,11 +102,31 @@ public class GameController : MonoBehaviour
                 bulletsController.SetBulletTextForLastBullet(defaultBulletDamage.ToString());
             }
         }
+        bulletsController.SetAvalibleCountBullets();
     }
 
     private void SetWaveData()
     {
         waveData = saveLoadController.GetWaveData(waveIndex,saveLoadController.LastCompleteLevel);
+    }
+
+    /// <summary>
+    /// call only after Game scene was loaded
+    /// </summary>
+    private void SetActions()
+    {
+        spawnController.SetActionAfterSpawn(
+            ()=> statsController.SetLastWaveSpawnedList(spawnController.LastWaveSpawnedList)
+            );
+        player.SetActionsOnShoot(CompleteWave);
+    }
+
+    private void CompleteWave()
+    {
+        waveIndex++;
+        SetWaveData();
+        spawnController.Spawn();
+        statsController.SetStatsToSpawnedEnemy();
     }
 
     #endregion private functions

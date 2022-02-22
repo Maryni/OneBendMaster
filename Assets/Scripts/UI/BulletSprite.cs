@@ -8,10 +8,22 @@ public class BulletSprite : MonoBehaviour
 {
     #region Inspector variables
 
+    [SerializeField] private ElementType elementType;
+
+    #endregion Inspector variables
+    
+    #region private variables
+
     private Image image;
     private Text textOnBullet;
 
-    #endregion Inspector variables
+    #endregion private variables
+
+    #region properties
+
+    public ElementType ElementType => elementType;
+
+    #endregion properties
 
     #region Unity functions
 
@@ -27,6 +39,11 @@ public class BulletSprite : MonoBehaviour
     public void SetImageSprite(Sprite sprite)
     {
         image.sprite = sprite;
+    }
+
+    public void SetElementType(ElementType elementType)
+    {
+        this.elementType = elementType;
     }
 
     public void SetText(string value)

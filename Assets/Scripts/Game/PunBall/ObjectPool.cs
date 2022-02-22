@@ -124,7 +124,7 @@ public class ObjectPool : MonoBehaviour
         }
         else
         {
-            Debug.Log($"[Init] delayed");
+            yield return new WaitForEndOfFrame();
             yield return Init();
         }
 

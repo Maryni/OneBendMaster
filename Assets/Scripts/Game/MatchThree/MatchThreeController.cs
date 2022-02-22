@@ -19,7 +19,7 @@ public class MatchThreeController : MonoBehaviour
    [SerializeField] private Sprite spriteClear;
 
    [SerializeField] private int countConnectedCells;
-
+   [SerializeField] private ElementType elementTypeLastConnections = ElementType.NoElement;
    #endregion Inspector variables
 
    #region private variables
@@ -36,6 +36,7 @@ public class MatchThreeController : MonoBehaviour
 
    public int ColumnCount => columnCount;
    public int LineCount => lineCount;
+   public ElementType ElementTypeLastConnections => elementTypeLastConnections;
 
    #endregion properties
 
@@ -65,7 +66,7 @@ public class MatchThreeController : MonoBehaviour
    }
 
    /// <summary>
-   /// point what we will check with first point
+   /// point what we will check with first point (it's second point)
    /// </summary>
    /// <param name="x"></param>
    /// <param name="y"></param>
@@ -110,6 +111,10 @@ public class MatchThreeController : MonoBehaviour
             countConnectedCells++;
             xSecond = xFirst;
             ySecond = yFirst;
+            if (elementTypeLastConnections != arrayObjectsInCell[xFirst, yFirst].ElementType)
+            {
+               elementTypeLastConnections = arrayObjectsInCell[xFirst, yFirst].ElementType;
+            }
             Debug.Log($"connection YES | countConnectedCells = [{countConnectedCells}] ");
          }
          else

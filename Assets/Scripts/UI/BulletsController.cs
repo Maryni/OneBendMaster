@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using  System.Linq;
+using Unity.Profiling.LowLevel.Unsafe;
 using Debug = UnityEngine.Debug;
 
 public class BulletsController : MonoBehaviour
@@ -24,6 +26,8 @@ public class BulletsController : MonoBehaviour
     #region private variables
 
     private GameObject poolBullets;
+    private int maxBulletCount;
+    private int countAvaliablePlaceForBullet;
 
     #endregion private variables
 
@@ -69,6 +73,42 @@ public class BulletsController : MonoBehaviour
     {
         SetTextByIndex(spriteBulletsList.Count-1, value);
     }
+    
+    public void SetBulletColorForFirstBulletWithoutColor(ElementType typeColor)
+    {
+        Debug.Log($"{countAvaliablePlaceForBullet}");
+        if (countAvaliablePlaceForBullet > 0)
+        {
+            BulletSprite bullet;
+            bullet = spriteBulletsList.FirstOrDefault(x => x.GetComponent<BulletSprite>().ElementType == ElementType.NoElement)?.GetComponent<BulletSprite>();
+            if (typeColor == ElementType.Fire)
+            {
+                bullet.SetImageSprite(colorFireElemental);
+            }
+            if (typeColor == ElementType.Water)
+            {
+                bullet.SetImageSprite(colorWaterElemental);
+            }
+            if (typeColor == ElementType.Energy)
+            {
+                bullet.SetImageSprite(colorEnergyElemental);
+            }
+            if (typeColor == ElementType.Nature)
+            {
+                bullet.SetImageSprite(colorNatureElemental);
+            }
+            if (typeColor == ElementType.Magic)
+            {
+                bullet.SetImageSprite(colorMagicElemental);
+            }
+            bullet.SetElementType(typeColor);
+            countAvaliablePlaceForBullet--;
+        }
+        else
+        {
+            Debug.LogWarning($"CountAvalibleBullets for create new bullets = 0");
+        }
+    }
 
     /// <summary>
     /// for add default bullet dont write #1 parameter in function
@@ -84,13 +124,38 @@ public class BulletsController : MonoBehaviour
         
     }
 
+    public void SetMaxBulletCount(int value)
+    {
+        maxBulletCount = value;
+    }
+    
+    public void SetAvalibleCountBullets()
+    {
+        for (int i = 0; i < poolBullets.transform.childCount; i++)
+        {
+            if (poolBullets.transform.GetChild(i).GetComponent<BulletSprite>().ElementType == ElementType.NoElement)
+            {
+                countAvaliablePlaceForBullet++;
+            }
+        }
+    }
+
+    public bool IsHaveAvalibleBullets()
+    {
+        if (countAvaliablePlaceForBullet > 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
     #endregion public functions
 
     #region private functions
-
+    
     private void AddAllBulletsToList()
     {
-        
         for (int i = 0; i < parentBulletSpritePanel.childCount; i++)
         {
             var tempObject = parentBulletSpritePanel.GetChild(i).gameObject;
@@ -112,6 +177,7 @@ public class BulletsController : MonoBehaviour
             case ElementType.Magic:  spriteBulletsList[index].GetComponent<BulletSprite>().SetImageSprite(colorMagicElemental); break;
             default: spriteBulletsList[index].GetComponent<BulletSprite>().SetImageSprite(colorDefaultElemental); break;
         }
+        spriteBulletsList[index].GetComponent<BulletSprite>().SetElementType(elementType);
     }
 
     private void SetTextByIndex(int index, string value)

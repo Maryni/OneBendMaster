@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     private int currentHp;
     private int currentBulletsCount;
     private UnityAction actionOnShoot;
+    private UnityAction actionAfterShootingWhenBulletsZero;
 
     #endregion private variables
 
@@ -34,7 +35,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        SetCurrentBullets();
+        SetCurrentBulletsFromMaxBulletsCount();
         SetCurrentHp();
     }
 
@@ -51,9 +52,13 @@ public class Player : MonoBehaviour
     {
         currentBulletsCount--;
         actionOnShoot?.Invoke();
+        if (currentBulletsCount == 0)
+        {
+            actionAfterShootingWhenBulletsZero?.Invoke();
+        }
     }
 
-    public void SetActions(params UnityAction[] actions)
+    public void SetActionsOnShoot(params UnityAction[] actions)
     {
         for (int i = 0; i < actions.Length; i++)
         {
@@ -61,7 +66,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void SetCurrentBullets()
+    public void SetCurrentBulletsFromMaxBulletsCount()
     {
         currentBulletsCount = maxBulletCount;
     }

@@ -756,7 +756,7 @@ GameObject:
   - component: {fileID: 298129251}
   - component: {fileID: 298129250}
   m_Layer: 5
-  m_Name: ButtonPanel
+  m_Name: MatchThreeButtonPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1169,6 +1169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectPool: {fileID: 1191301160}
   controller: {fileID: 1249288854}
+  bulletsController: {fileID: 1751670439}
 --- !u!114 &504849359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2848,6 +2849,7 @@ MonoBehaviour:
   spriteMagic: {fileID: 21300000, guid: 7a533be521a3add4fb453277c695497b, type: 3}
   spriteClear: {fileID: 21300000, guid: 97068e8ba25368a40a8bd289c1d09fd3, type: 3}
   countConnectedCells: 0
+  elementTypeLastConnections: 0
 --- !u!1 &1276259254
 GameObject:
   m_ObjectHideFlags: 0
