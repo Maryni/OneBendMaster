@@ -24,19 +24,9 @@ public class SpawnController : MonoBehaviour
 
     #endregion Unity functions
 
-    #region private functions
+    #region public functions
 
-    private void SetVariables()
-    {
-        if (gameController == null)
-        {
-            gameController = GetComponent<GameController>();
-        }
-
-        listCells = gameController.PunBallPoolCells.GetCellsList();
-    }
-
-    private void Spawn()
+    public void Spawn()
     {
         int countEnemiesByFire = gameController.WaveData.GetCountEnemiesByIndex(ElementType.Fire);
         int countEnemiesByWater = gameController.WaveData.GetCountEnemiesByIndex(ElementType.Water);
@@ -50,6 +40,20 @@ public class SpawnController : MonoBehaviour
         SpawnByTypeAndCount(ElementType.Nature,countEnemiesByNature);
         SpawnByTypeAndCount(ElementType.Magic,countEnemiesByMagic);
         
+    }
+
+    #endregion public functions
+    
+    #region private functions
+
+    private void SetVariables()
+    {
+        if (gameController == null)
+        {
+            gameController = GetComponent<GameController>();
+        }
+
+        listCells = gameController.PunBallPoolCells.GetCellsList();
     }
 
     private void SpawnByTypeAndCount(ElementType elementType, int count)
@@ -76,7 +80,7 @@ public class SpawnController : MonoBehaviour
                     tempObject.ChangeOcupiedState();
                 }
                 tempList[i].transform.SetParent(tempObject.gameObject.transform);
-                tempList[i].transform.localPosition = Vector3.zero;
+                tempList[i].transform.localPosition = new Vector3(0,1.5f,0f);
             }
         }
         else

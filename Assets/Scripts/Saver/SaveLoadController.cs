@@ -41,10 +41,16 @@ public class SaveLoadController : MonoBehaviour
         return levelDatas[indexLevel - 1].GetDataWaveByIndex(indexWave);
     }
 
-    public Data GetDefaultData()
+    public Data GetDataFromDefaultData()
     {
         return defaultLevelData.GetDefaultData();
     }
+
+    public DefaultLevelData GetDefaultData()
+    {
+        return defaultLevelData;
+    }
+
 
     #endregion public functions
 
@@ -59,6 +65,5 @@ public class SaveLoadController : MonoBehaviour
     }
 
     #endregion private functions
-    
-    
+
 }

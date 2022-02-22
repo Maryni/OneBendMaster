@@ -65,6 +65,8 @@ public abstract class BaseEnemy : MonoBehaviour
         this.modHp = modHp;
         this.baseDamage = baseDamage;
         this.modDamage = modDamage;
+        
+        CalculateStatsWithMods();
     }
     
     protected void CalculateStatsWithMods()

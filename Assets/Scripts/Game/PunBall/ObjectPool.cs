@@ -31,11 +31,25 @@ public class ObjectPool : MonoBehaviour
 
     #endregion Inspector variables
 
+    #region private variables
+
+    private bool isStatsLoaded = false;
+
+    #endregion private variables
+
+    #region properties
+
+    public List<GameObject> PrefabsBulletList => prefabsBulletList;
+    public List<GameObject> PrefabsEnemyList => prefabsEnemyList;
+    public List<GameObject> PrefabsSpriteList => prefabsSpriteList;
+
+    #endregion properties
+    
     #region Unity functions
 
     private void Start()
     {
-        Init();
+       StartCoroutine(Init());
     }
 
     #endregion Unity functions
@@ -91,15 +105,29 @@ public class ObjectPool : MonoBehaviour
         return new GameObject();
     }
 
+    public void ChangeStatsLoadState()
+    {
+        isStatsLoaded = !isStatsLoaded;
+    }
+
     #endregion public functions
 
     #region private functions
 
-    private void Init()
+    private IEnumerator Init()
     {
-        InitDefault(prefabsBulletList,countBulletsExampleToInit,transformBulletParent,exampleBulletList);
-        InitDefault(prefabsEnemyList,countEnemyExampleToInit,transformEnemyParent, exampleEnemyList);
-        InitDefault(prefabsSpriteList, countSpriteExampleToInit, transformSpriteParent, exampleSpriteList);
+        if (isStatsLoaded)
+        {
+            InitDefault(prefabsBulletList,countBulletsExampleToInit,transformBulletParent,exampleBulletList);
+            InitDefault(prefabsEnemyList,countEnemyExampleToInit,transformEnemyParent, exampleEnemyList);
+            InitDefault(prefabsSpriteList, countSpriteExampleToInit, transformSpriteParent, exampleSpriteList);
+        }
+        else
+        {
+            Debug.Log($"[Init] delayed");
+            yield return Init();
+        }
+
     }
 
     private void InitDefault(List<GameObject> list, int countGameObjectToInit, Transform transformParent, List<GameObject> exampleList)

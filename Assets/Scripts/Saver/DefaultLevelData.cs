@@ -31,6 +31,7 @@ public class DefaultLevelData : ScriptableObject
 
     private void SetDictionary()
     {
+        dictionaryEnemyStats = new Dictionary<ElementType, List<float>>();
         List<float> tempListBaseHpEnemies = data.GetListBaseHpEnemies();
         List<float> tempListBaseModHpEnemies = data.GetListModHpEnemies();
         List<float> tempListBaseDamageEnemies = data.GetListBaseDamageEnemies();
