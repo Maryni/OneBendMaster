@@ -30,6 +30,11 @@ public class LevelData : ScriptableObject
         Debug.Log($"Level {indexLevel} is complete");
     }
 
+    public int GetWaveCount()
+    {
+        return listDatas.Count;
+    }
+
     public Data GetDataWaveByIndex(int index)
     {
         if (index >= 0 && index < listDatas.Count)
@@ -136,47 +141,103 @@ public class Data
        List<float> tempListBaseModHpEnemies = GetListModHpEnemies();
        List<float> tempListBaseDamageEnemies = GetListBaseDamageEnemies();
        List<float> tempListBaseModDamageEnemies = GetListModDamageEnemies();
-       
-       dictionaryEnemyStats.Add(ElementType.Fire,
-           new List<float>()
+
+
+       if (tempListBaseDamageEnemies.Count > 0 && tempListBaseModDamageEnemies.Count > 0 &&
+           tempListBaseHpEnemies.Count > 0 && tempListBaseModHpEnemies.Count > 0)
+       {
+           List<float> tempFireStats = new List<float>()
            {
                tempListBaseHpEnemies[0],
                tempListBaseModHpEnemies[0],
                tempListBaseDamageEnemies[0],
                tempListBaseModDamageEnemies[0]
-           });
-       dictionaryEnemyStats.Add(ElementType.Water,
-           new List<float>()
+           };
+           List<float> tempWaterStats = new List<float>()
            {
                tempListBaseHpEnemies[1],
                tempListBaseModHpEnemies[1],
                tempListBaseDamageEnemies[1],
                tempListBaseModDamageEnemies[1]
-           });
-       dictionaryEnemyStats.Add(ElementType.Energy,
-           new List<float>()
+           };
+           List<float> tempEnergyStats = new List<float>()
            {
                tempListBaseHpEnemies[2],
                tempListBaseModHpEnemies[2],
                tempListBaseDamageEnemies[2],
                tempListBaseModDamageEnemies[2]
-           });
-       dictionaryEnemyStats.Add(ElementType.Nature,
-           new List<float>()
+           };
+           List<float> tempNatureStats = new List<float>()
            {
                tempListBaseHpEnemies[3],
                tempListBaseModHpEnemies[3],
                tempListBaseDamageEnemies[3],
                tempListBaseModDamageEnemies[3]
-           });
-       dictionaryEnemyStats.Add(ElementType.Magic,
-           new List<float>()
+           };
+           List<float> tempMagicStats = new List<float>()
            {
                tempListBaseHpEnemies[4],
                tempListBaseModHpEnemies[4],
                tempListBaseDamageEnemies[4],
                tempListBaseModDamageEnemies[4]
-           });
+           };
+            SetDictionaryValues(ElementType.Fire,tempFireStats);
+            SetDictionaryValues(ElementType.Water,tempWaterStats);
+            SetDictionaryValues(ElementType.Energy,tempEnergyStats);
+            SetDictionaryValues(ElementType.Nature,tempNatureStats);
+            SetDictionaryValues(ElementType.Magic,tempMagicStats);
+       }
+       else
+       {
+           List<float> tempFireStats = new List<float>()
+           {
+                0,
+                0,
+                0,
+                0
+           };
+           List<float> tempWaterStats = new List<float>()
+           {
+               0,
+               0,
+               0,
+               0
+           };
+           List<float> tempEnergyStats = new List<float>()
+           {
+               0,
+               0,
+               0,
+               0
+           };
+           List<float> tempNatureStats = new List<float>()
+           {
+               0,
+               0,
+               0,
+               0
+           };
+           List<float> tempMagicStats = new List<float>()
+           {
+               0,
+               0,
+               0,
+               0
+           };
+           
+           SetDictionaryValues(ElementType.Fire,tempFireStats);
+           SetDictionaryValues(ElementType.Water,tempWaterStats);
+           SetDictionaryValues(ElementType.Energy,tempEnergyStats);
+           SetDictionaryValues(ElementType.Nature,tempNatureStats);
+           SetDictionaryValues(ElementType.Magic,tempMagicStats);
+       }
+       
+
+   }
+
+   private void SetDictionaryValues(ElementType type, List<float> listValues)
+   {
+       dictionaryEnemyStats.Add(type,listValues);
    }
 
    #endregion private functions

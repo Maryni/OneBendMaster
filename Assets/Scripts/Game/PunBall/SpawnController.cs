@@ -12,8 +12,8 @@ public class SpawnController : MonoBehaviour
 
     private GameController gameController;
     private List<PunBallCellsIndex> listCells;
-    private List<GameObject> listAllSpawned;
-    private List<GameObject> listLastWaveSpawned;
+    [SerializeField] private List<GameObject> listAllSpawned = new List<GameObject>();
+    [SerializeField] private List<GameObject> listLastWaveSpawned = new List<GameObject>();
     private UnityAction actionAfterSpawn;
 
     #endregion private variables
@@ -61,6 +61,30 @@ public class SpawnController : MonoBehaviour
         }
     }
 
+    public void MovePreviousEnemyForward()
+    {
+        var fullList = gameController.PunBallPoolCells.GetCellsList(true);
+
+        for (int i = 0; i < listAllSpawned.Count; i++)
+        {
+            var currentCell = fullList.FirstOrDefault(x=>x.IsOcupied);
+            var currentX = currentCell.X;
+            var currentY = currentCell.Y;
+            if (currentY != gameController.PunBallPoolCells.countY - 1)
+            {
+                var tempObjectNew = fullList.FirstOrDefault(x => x.X == currentX && x.Y == currentY + 1);
+                var tempObjectCurrent = fullList.FirstOrDefault(x => x.X == currentX && x.Y == currentY);
+                if (!tempObjectNew.IsOcupied)
+                {
+                    listAllSpawned[i].transform.SetParent(tempObjectNew.gameObject.transform);
+                    listAllSpawned[i].transform.localPosition = new Vector3(0, 1.5f, 0f);
+                    tempObjectNew.ChangeOcupiedState();
+                    tempObjectCurrent.ChangeOcupiedState();
+                }
+            }
+        }
+    }
+
     #endregion public functions
     
     #region private functions
@@ -71,19 +95,13 @@ public class SpawnController : MonoBehaviour
         {
             gameController = GetComponent<GameController>();
         }
-        gameController.SetSpawnController(this);
-        listCells = gameController.PunBallPoolCells.GetCellsList();
+        listCells = gameController.PunBallPoolCells.GetCellsList(false);
     }
 
     private void SpawnByTypeAndCount(ElementType elementType, int count)
     {
         if (count > 0)
         {
-            if (listLastWaveSpawned.Count > 0)
-            {
-                SetObjectFromFirstListToSecond(listLastWaveSpawned,listAllSpawned,true);
-            }
-            
             List<GameObject> tempList = new List<GameObject>();
             for (int i = 0; i < count; i++)
             {
@@ -107,6 +125,10 @@ public class SpawnController : MonoBehaviour
                 tempList[i].transform.localPosition = new Vector3(0,1.5f,0f);
                 listLastWaveSpawned.Add(tempList[i]);
             }
+            if (listLastWaveSpawned.Count >= 0)
+            {
+                SetObjectFromFirstListToSecond(listLastWaveSpawned,listAllSpawned,true);
+            }
         }
         else
         {
@@ -121,6 +143,7 @@ public class SpawnController : MonoBehaviour
 
     private void SetObjectFromFirstListToSecond(List<GameObject> a, List<GameObject> b, bool clearFirstList = false)
     {
+        Debug.Log($"a.count = {a.Count} | b.count = {b.Count}");
         for (int i = 0; i < a.Count; i++)
         {
             b.Add(a[i]);
@@ -129,6 +152,7 @@ public class SpawnController : MonoBehaviour
         {
             a.Clear();
         }
+        Debug.Log($"a.count = {a.Count} | b.count = {b.Count}");
     }
     
     #endregion private functions

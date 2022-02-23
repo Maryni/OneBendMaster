@@ -36,6 +36,11 @@ public class SaveLoadController : MonoBehaviour
         return levelDatas[index];
     }
 
+    public int GetCountWavesOnLevelData(int indexLevel)
+    {
+        return levelDatas[indexLevel].GetWaveCount();
+    }
+
     public Data GetWaveData(int indexWave, int indexLevel)
     {
         return levelDatas[indexLevel - 1].GetDataWaveByIndex(indexWave);

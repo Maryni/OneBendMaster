@@ -27,6 +27,13 @@ public class PunBallPoolCells : MonoBehaviour
 
     #endregion private variables
 
+    #region propterties
+
+    public int countX => countColumn;
+    public int countY => countLine;
+
+    #endregion propterties
+
     #region Unity functions
 
     private void Start()
@@ -42,14 +49,24 @@ public class PunBallPoolCells : MonoBehaviour
 
     #region public functions
 
-    public List<PunBallCellsIndex> GetCellsList()
+    public List<PunBallCellsIndex> GetCellsList(bool needFull = false)
     {
         List<PunBallCellsIndex> temp = new List<PunBallCellsIndex>();
-        for (int i = 0; i < countColumn; i++)
+        if (needFull)
         {
-            temp.Add(cellsList[i].GetComponent<PunBallCellsIndex>());
+            for (int i = 0; i < cellsList.Count; i++)
+            {
+                temp.Add(cellsList[i].GetComponent<PunBallCellsIndex>()); 
+            }
+            
         }
-
+        else
+        {
+            for (int i = 0; i < countColumn; i++)
+            {
+                temp.Add(cellsList[i].GetComponent<PunBallCellsIndex>());
+            } 
+        }
         return temp;
     }
 

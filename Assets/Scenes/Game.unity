@@ -715,7 +715,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waveData:
-    elementType: 
+    elementTypes: 0000000000000000000000000000000000000000
     countEnemies: 
     baseHpEnemies: []
     baseModHpEnemies: []
@@ -848,6 +848,10 @@ PrefabInstance:
     - target: {fileID: 966435801278241574, guid: 46dabb334d1405b4ba3f3b1949749ec0, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 966435801278241576, guid: 46dabb334d1405b4ba3f3b1949749ec0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 966435801278241581, guid: 46dabb334d1405b4ba3f3b1949749ec0, type: 3}
       propertyPath: m_RootOrder

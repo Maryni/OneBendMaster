@@ -60,16 +60,18 @@ public class ObjectPool : MonoBehaviour
     {
         if (objectType == ObjectType.Bullet)
         {
-           var findedObject = exampleBulletList.Where(x => x.GetComponent<BaseBullet>().BulletBase.ElementType == elementType)
+           var findedObject = exampleBulletList.Where(x => x.GetComponent<BaseBullet>().ElementType == elementType)
                .FirstOrDefault(x => !x.activeSelf);
            if (findedObject == null)
            {
                var exampleObject =
-                   exampleBulletList.FirstOrDefault(x => x.GetComponent<BaseBullet>().BulletBase.ElementType == elementType);
+                   exampleBulletList.FirstOrDefault(x => x.GetComponent<BaseBullet>().ElementType == elementType);
                var newObject = Instantiate(exampleObject, transformBulletParent);
                exampleBulletList.Add(newObject);
+               newObject.SetActive(true);
                return newObject;
            }
+           findedObject.SetActive(true);
            return findedObject;
         }
         if (objectType == ObjectType.Enemy)
@@ -82,8 +84,10 @@ public class ObjectPool : MonoBehaviour
                     exampleEnemyList.FirstOrDefault(x => x.GetComponent<BaseEnemy>().ElementType == elementType);
                 var newObject = Instantiate(exampleObject, transformEnemyParent);
                 exampleEnemyList.Add(newObject);
+                newObject.SetActive(true);
                 return newObject;
             }
+            findedObject.SetActive(true);
             return findedObject;
         }
         if (objectType == ObjectType.MatchThreeSprite)
@@ -96,8 +100,10 @@ public class ObjectPool : MonoBehaviour
                     exampleSpriteList.FirstOrDefault(x => x.GetComponentInChildren<BaseMatchThree>().ElementType == elementType);
                 var newObject = Instantiate(exampleObject, transformSpriteParent);
                 exampleSpriteList.Add(newObject);
+                newObject.SetActive(true);
                 return newObject;
             }
+            findedObject.SetActive(true);
             return findedObject;
         }
 

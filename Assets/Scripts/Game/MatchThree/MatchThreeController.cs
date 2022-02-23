@@ -37,6 +37,7 @@ public class MatchThreeController : MonoBehaviour
    public int ColumnCount => columnCount;
    public int LineCount => lineCount;
    public ElementType ElementTypeLastConnections => elementTypeLastConnections;
+   public int CountConnectedCellsLastConnection => countConnectedCells + 1;
 
    #endregion properties
 
@@ -245,11 +246,6 @@ public class MatchThreeController : MonoBehaviour
    {
       CheckPanelAndAddAllToList();
       SetRandomElementsToCells();
-   }
-
-   private void CheckCombinations()
-   {
-      Debug.Log($"xFirst = {xFirst}, yFirst ={yFirst} | xSecond = {xSecond}, ySecond = {ySecond}");
    }
 
    #endregion private functions

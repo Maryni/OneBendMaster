@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
 
     [SerializeField] private int maxBulletCount;
     [SerializeField] private int maxHp;
+    [SerializeField] private float bulletSpeed;
+    [SerializeField] private GameObject activeBullet;
+    [SerializeField] private bool canShoot = false;
 
     #endregion Inspector variables
 
@@ -19,6 +22,7 @@ public class Player : MonoBehaviour
     private int currentBulletsCount;
     private UnityAction actionOnShoot;
     private UnityAction actionAfterShootingWhenBulletsZero;
+    [SerializeField]private Camera cam;
 
     #endregion private variables
 
@@ -37,6 +41,15 @@ public class Player : MonoBehaviour
     {
         SetCurrentBulletsFromMaxBulletsCount();
         SetCurrentHp();
+        cam = Camera.main;
+    }
+
+    private void FixedUpdate()
+    {
+        if (Input.GetMouseButtonUp(0))
+        {
+            Shoot();
+        }
     }
 
     #endregion Unity functions
@@ -50,11 +63,14 @@ public class Player : MonoBehaviour
 
     public void Shoot()
     {
-        currentBulletsCount--;
-        actionOnShoot?.Invoke();
-        if (currentBulletsCount == 0)
+        if (canShoot)
         {
-            actionAfterShootingWhenBulletsZero?.Invoke();
+            currentBulletsCount--;
+            ShootActiveBullet();
+            if (currentBulletsCount == 0)
+            {
+                actionAfterShootingWhenBulletsZero?.Invoke();
+            }
         }
     }
 
@@ -63,6 +79,14 @@ public class Player : MonoBehaviour
         for (int i = 0; i < actions.Length; i++)
         {
             actionOnShoot += actions[i];
+        }
+    }
+    
+    public void SetActionAfterShootingWhenBulletsZero(params UnityAction[] actions)
+    {
+        for (int i = 0; i < actions.Length; i++)
+        {
+            actionAfterShootingWhenBulletsZero += actions[i];
         }
     }
 
@@ -80,6 +104,50 @@ public class Player : MonoBehaviour
     {
         currentHp -= value;
     }
+
+    public void SetActiveBullet(GameObject bullet)
+    {
+        if (bullet.GetComponent<BaseBullet>().ElementType != ElementType.NoElement)
+        {
+            activeBullet = bullet;   
+        }
+        else
+        {
+            Debug.LogError($"ActiveBullet ElementType = NoElement");
+        }
+
+    }
+
+    public void ChangeCanShootState()
+    {
+        canShoot = !canShoot;
+    }
     
     #endregion public functions
+
+    #region private functions
+
+    private void ShootActiveBullet()
+    {
+        if (activeBullet != null)
+        {
+            activeBullet.transform.position = transform.position;
+            Vector3 endPoint = cam.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 direction = endPoint - transform.position;
+            direction.y = 1.5f;
+            activeBullet.transform.LookAt(direction);
+            var rig = activeBullet.GetComponent<Rigidbody>();
+            rig.velocity = (direction * bulletSpeed);
+            activeBullet = null;
+        }
+        else
+        {
+            Debug.LogError($"Active bullet are null");
+            actionOnShoot?.Invoke();
+            Debug.LogWarning($"But bullet was loaded");
+            ShootActiveBullet();
+        }
+    }
+
+    #endregion private functions
 }

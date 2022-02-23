@@ -37,6 +37,11 @@ public class StatsController : MonoBehaviour
       GetAndSetStatsFromWaveData();
    }
 
+   public void SetGameController(GameController gameController)
+   {
+      this.gameController = gameController;
+   }
+
    #endregion public functions
    
    #region private functions
@@ -52,11 +57,6 @@ public class StatsController : MonoBehaviour
       {
          saveLoadController = GetComponent<SaveLoadController>();
       }
-
-      if (gameController == null)
-      {
-         gameController = FindObjectOfType<GameController>();
-      }
    }
 
    private void GetAndSetStatsFromWaveData()
@@ -66,7 +66,19 @@ public class StatsController : MonoBehaviour
       var tempEnergy = gameController.WaveData.GetListStats(ElementType.Energy);
       var tempNature = gameController.WaveData.GetListStats(ElementType.Nature);
       var tempMagic = gameController.WaveData.GetListStats(ElementType.Magic);
-      
+      if (tempFire[0] == tempWater[0] &&
+          tempWater[0] == tempNature[0] &&
+          tempNature[0] == tempEnergy[0] &&
+          tempEnergy[0] == tempMagic[0] &&
+          tempMagic[0] == tempFire[0]
+          && tempFire[0] == 0)
+      {
+          tempFire = saveLoadController.GetDefaultData().GetListStats(ElementType.Fire);
+          tempWater = saveLoadController.GetDefaultData().GetListStats(ElementType.Water);
+          tempEnergy = saveLoadController.GetDefaultData().GetListStats(ElementType.Energy);
+          tempNature = saveLoadController.GetDefaultData().GetListStats(ElementType.Nature);
+          tempMagic = saveLoadController.GetDefaultData().GetListStats(ElementType.Magic);
+      }
       SetStatsToSpawnedEnemy(tempFire,ElementType.Fire);
       SetStatsToSpawnedEnemy(tempWater,ElementType.Water);
       SetStatsToSpawnedEnemy(tempEnergy,ElementType.Energy);

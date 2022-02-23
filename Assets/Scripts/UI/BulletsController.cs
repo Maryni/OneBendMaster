@@ -5,9 +5,10 @@ using System.Diagnostics;
 using UnityEngine;
 using  System.Linq;
 using Unity.Profiling.LowLevel.Unsafe;
+using UnityEngine.Events;
 using Debug = UnityEngine.Debug;
 
-public class BulletsController : MonoBehaviour
+public class  BulletsController : MonoBehaviour
 {
     #region Inspector variables
 
@@ -28,6 +29,7 @@ public class BulletsController : MonoBehaviour
     private GameObject poolBullets;
     private int maxBulletCount;
     private int countAvaliablePlaceForBullet;
+    private UnityAction actionWhenAllBulletsAreColored;
 
     #endregion private variables
 
@@ -54,6 +56,32 @@ public class BulletsController : MonoBehaviour
 
     #region public functions
 
+    public ElementType GetLastBulletElementType()
+    {
+        // for (int i = spriteBulletsList.Count - 1; i >= 0; i--)
+        // {
+        //     if (spriteBulletsList[i].GetComponent<BulletSprite>().ElementType == ElementType.NoElement)
+        //     {
+        //         obj = spriteBulletsList[i];
+        //     }
+        // }
+        var tempObject = spriteBulletsList.Last(x=>x.GetComponent<BulletSprite>().ElementType != ElementType.NoElement).GetComponent<BulletSprite>();
+        var tempType = tempObject.ElementType;
+        tempObject.SetElementType(ElementType.NoElement);
+        tempObject.SetImageSprite(colorDefaultElemental);
+        Debug.Log($"TempType returned, tempType = {tempType}");
+        return tempType;
+    }
+
+    public ElementType GetFirstBulletElementType()
+    {
+        var tempObject = spriteBulletsList[0].GetComponent<BulletSprite>();
+        var tempType = tempObject.ElementType;
+        tempObject.SetElementType(ElementType.NoElement);
+        tempObject.SetImageSprite(colorDefaultElemental);
+        return tempType;
+    }
+    
     public void SetLastBulletColorByType(ElementType elementType)
     {
         SetBulletColorByType(elementType,spriteBulletsList.Count-1);
@@ -73,7 +101,14 @@ public class BulletsController : MonoBehaviour
     {
         SetTextByIndex(spriteBulletsList.Count-1, value);
     }
-    
+
+    public void SetBulletTextForFirstNonElementBullet(string value)
+    {
+        var temp = spriteBulletsList.FirstOrDefault(x =>
+            x.GetComponent<BulletSprite>().ElementType == ElementType.NoElement);
+        temp.GetComponent<BulletSprite>().SetText(value);
+    }
+
     public void SetBulletColorForFirstBulletWithoutColor(ElementType typeColor)
     {
         Debug.Log($"{countAvaliablePlaceForBullet}");
@@ -102,6 +137,10 @@ public class BulletsController : MonoBehaviour
                 bullet.SetImageSprite(colorMagicElemental);
             }
             bullet.SetElementType(typeColor);
+            if (countAvaliablePlaceForBullet - 1 == 0)
+            {
+                actionWhenAllBulletsAreColored?.Invoke();
+            }
             countAvaliablePlaceForBullet--;
         }
         else
@@ -148,6 +187,14 @@ public class BulletsController : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void SetActionWhenAllBulletsColored(params UnityAction[] actions)
+    {
+        for (int i = 0; i < actions.Length; i++)
+        {
+            actionWhenAllBulletsAreColored += actions[i];
+        }
     }
     
     #endregion public functions

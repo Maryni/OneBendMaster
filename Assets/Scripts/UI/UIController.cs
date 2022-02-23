@@ -7,6 +7,7 @@ public class UIController : MonoBehaviour
 {
     #region Inspector variables
 
+    [SerializeField] private GameController gameController;
     [SerializeField] private ObjectPool objectPool;
     [SerializeField] private MatchThreeController controller;
     [SerializeField] private BulletsController bulletsController;
@@ -17,6 +18,10 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
+        if (gameController == null)
+        {
+            gameController = FindObjectOfType<GameController>();
+        }
         StartCoroutine(SetObjectsFromPoolToMatchThreePanel());
     }
 
@@ -41,8 +46,9 @@ public class UIController : MonoBehaviour
             dragDrop.SetActionOnEndDrag(controller.SetFirstsXY);
             dragDrop.SetActionOnEndDragWithoutParams(
                 () => image.raycastTarget = true,
-                () => controller.ClearCountConnected(),
-                () => bulletsController.SetBulletColorForFirstBulletWithoutColor(controller.ElementTypeLastConnections));
+                () => bulletsController.SetBulletTextForFirstNonElementBullet(controller.CountConnectedCellsLastConnection.ToString()),
+                () => bulletsController.SetBulletColorForFirstBulletWithoutColor(controller.ElementTypeLastConnections),
+                () => controller.ClearCountConnected());
             dragDrop.SetActionCheckConnection(()=> controller.CheckSlideConnectionBetweenOnBeginDragAndOnEndDrag());
         }
         controller.SetObjectToPanel(tempArray);

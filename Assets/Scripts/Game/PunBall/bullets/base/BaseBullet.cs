@@ -18,7 +18,6 @@ public abstract class BaseBullet : MonoBehaviour
 {
     #region private variables
 
-    private Bullet bullet;
     protected float baseDamage = 1f;
     protected UnityAction actionOnShoot;
 
@@ -33,9 +32,8 @@ public abstract class BaseBullet : MonoBehaviour
     #endregion Inspector variables
     
     #region properties
-
-    public Bullet BulletBase => bullet;
-
+    public ElementType ElementType => elementType; 
+    
     #endregion properties
 
     #region Unity functions
@@ -51,17 +49,11 @@ public abstract class BaseBullet : MonoBehaviour
         {
             Debug.LogError($"No description on Bullet {this.name}");
         }
-        SetBullet(damage,elementType,description);
     }
 
     #endregion Unity functions
     
     #region public functions
-
-    protected virtual void SetBullet(float damage, ElementType patronElementType, string description = "")
-    {
-        bullet = new Bullet(damage, patronElementType, description);
-    }
 
     protected virtual void Shoot()
     {
@@ -76,34 +68,18 @@ public abstract class BaseBullet : MonoBehaviour
         }
     }
 
+    public void SetDescription(string value)
+    {
+        description = value;
+    }
+
+    public void SetElementType(ElementType elementType)
+    {
+        this.elementType = elementType;
+    }
+
     #endregion public functions
 
 
 }
 
-public struct Bullet
-{
-    #region private variables
-
-    private float damage;
-    private ElementType elementType;
-    private string description;
-
-    #endregion private variables
-    
-    #region properties
-
-    public float Damage => damage;
-    public ElementType ElementType => elementType;
-    public string Description => description;
-
-    #endregion properties
-
-    public Bullet (float damage, ElementType elementType, string description = "")
-    {
-        this.damage = damage;
-        this.elementType = elementType;
-        this.description = description;
-    }
-    
-}

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class GameController : MonoBehaviour
 
     #region properties
 
+    public Player Player => player;
     public SaveLoadController SaveLoadController => saveLoadController;
     public PunBallPoolCells PunBallPoolCells => punBallPoolCells;
     public ObjectPool ObjectPool => objectPool;
@@ -37,9 +39,18 @@ public class GameController : MonoBehaviour
     
     #region Unity functions
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += LoadAfterGameSceneWasLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= LoadAfterGameSceneWasLoaded;
+    }
+
     private void Start()
     {
-        SetVariables();
         SetEnoughtBulletsSprite();
         SetWaveData();
     }
@@ -47,11 +58,6 @@ public class GameController : MonoBehaviour
     #endregion Unity functions
 
     #region public functions
-
-    public void SetSpawnController(SpawnController spawnController)
-    {
-        this.spawnController = spawnController;
-    }
 
     #endregion public functions
     
@@ -87,6 +93,7 @@ public class GameController : MonoBehaviour
         if (statsController == null)
         {
            statsController = saveLoadController.GetComponent<StatsController>();
+           statsController.SetGameController(this);
         }
     }
 
@@ -107,9 +114,24 @@ public class GameController : MonoBehaviour
 
     private void SetWaveData()
     {
+        Debug.Log($"[SetWaveData] waveIndex = {waveIndex}");
         waveData = saveLoadController.GetWaveData(waveIndex,saveLoadController.LastCompleteLevel);
     }
 
+
+    private void LoadAfterGameSceneWasLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log($"Scene [{scene.name}] was loaded]");
+        if (scene.buildIndex == 1)
+        {
+            if (spawnController == null)
+            {
+                spawnController = FindObjectOfType<SpawnController>();
+            }
+            SetVariables();
+            SetActions();
+        }
+    }
     /// <summary>
     /// call only after Game scene was loaded
     /// </summary>
@@ -118,15 +140,31 @@ public class GameController : MonoBehaviour
         spawnController.SetActionAfterSpawn(
             ()=> statsController.SetLastWaveSpawnedList(spawnController.LastWaveSpawnedList)
             );
-        player.SetActionsOnShoot(CompleteWave);
+        player.SetActionsOnShoot(() =>player.SetActiveBullet(
+                ObjectPool.GetObjectByType(
+                ObjectType.Bullet, bulletsController.GetLastBulletElementType()))
+        );
+        bulletsController.SetActionWhenAllBulletsColored(player.ChangeCanShootState);
+        player.SetActionAfterShootingWhenBulletsZero(CompleteWave);
     }
 
     private void CompleteWave()
     {
-        waveIndex++;
+        if (waveIndex < saveLoadController.GetFullLevelData(saveLoadController.LastCompleteLevel).GetWaveCount())
+        {
+            waveIndex++; 
+        }
+        else if (waveIndex == saveLoadController.GetFullLevelData(saveLoadController.LastCompleteLevel).GetWaveCount() -
+                 1)
+        {
+            saveLoadController.GetFullLevelData(saveLoadController.LastCompleteLevel).SetLevelComplete();
+        }
+        
         SetWaveData();
+        spawnController.MovePreviousEnemyForward();
         spawnController.Spawn();
         statsController.SetStatsToSpawnedEnemy();
+        player.ChangeCanShootState();
     }
 
     #endregion private functions
