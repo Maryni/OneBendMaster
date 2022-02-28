@@ -138,6 +138,8 @@ public class MatchThreeController : MonoBehaviour
 
    #region private functions
 
+   
+   
    private bool CheckConnectionBetweenPoints(int x1, int y1, int x2, int y2)
    {
       if (x1 + 1 == x2)
@@ -220,14 +222,25 @@ public class MatchThreeController : MonoBehaviour
       }
    }
 
-   private void SetRandomElementsToCells()
+   private void SetRandomElementsToCells(bool needToChangeAllCells = true)
    {
       for (int i = 0; i < lineCount; i++)
       {
          for (int j = 0; j < columnCount; j++)
          {
-            var tempRandomElementType = (ElementType) Random.Range(1,System.Enum.GetValues(typeof(ElementType)).Length);
-            arrayObjectsInCell[i,j].SetElementType(tempRandomElementType);
+            var tempRandomElementType = GetRandomElementType();
+            if (needToChangeAllCells)
+            {
+               arrayObjectsInCell[i,j].SetElementType(tempRandomElementType);
+            }
+            else
+            {
+               if (arrayObjectsInCell[i, j].ElementType == ElementType.NoElement)
+               {
+                  tempRandomElementType = arrayObjectsInCell[i, j].ElementType;
+                  arrayObjectsInCell[i,j].SetElementType(tempRandomElementType);
+               }
+            }
             switch (tempRandomElementType)
             {
                case ElementType.Fire: arrayObjectsInCell[i,j].SetSprite(spriteFire); break;
@@ -239,7 +252,6 @@ public class MatchThreeController : MonoBehaviour
             }
          }
       }
-
    }
 
    private void CheckIndexesAndSetRandomElement()
@@ -248,6 +260,11 @@ public class MatchThreeController : MonoBehaviour
       SetRandomElementsToCells();
    }
 
+   private ElementType GetRandomElementType()
+   {
+      return (ElementType) Random.Range(1, System.Enum.GetValues(typeof(ElementType)).Length);
+   }
+   
    #endregion private functions
 
 }

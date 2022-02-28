@@ -104,7 +104,7 @@ public class StatsController : MonoBehaviour
       objectPool.ChangeStatsLoadState();
    }
 
-   private void SetStatsToPrefabs(List<float> defaulListStats, ElementType elementType)
+   private void SetStatsToPrefabs(List<float> defaultListStats, ElementType elementType)
    {
       GameObject exampleEnemy = new GameObject();
       exampleEnemy.name = "0";
@@ -134,10 +134,11 @@ public class StatsController : MonoBehaviour
       }
 
       exampleEnemy.GetComponent<BaseEnemy>().SetStats(
-         defaulListStats[0],
-         defaulListStats[1],
-         defaulListStats[2],
-         defaulListStats[3]);
+         
+         defaultListStats[0],
+         defaultListStats[1],
+         defaultListStats[2],
+         defaultListStats[3]);
       exampleEnemy.SetActive(false);
    }
 
