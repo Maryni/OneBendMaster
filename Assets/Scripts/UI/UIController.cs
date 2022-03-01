@@ -28,6 +28,7 @@ public class UIController : MonoBehaviour
     #endregion Unity functions
 
     #region private functions
+    
     //поменять элемент с тем с кем меняемся, и картинку
     private IEnumerator SetObjectsFromPoolToMatchThreePanel()
     {
@@ -48,6 +49,7 @@ public class UIController : MonoBehaviour
                 () => image.raycastTarget = true,
                 () => bulletsController.SetBulletTextForFirstNonElementBullet(controller.CountConnectedCellsLastConnection.ToString()),
                 () => bulletsController.SetBulletColorForFirstBulletWithoutColor(controller.ElementTypeLastConnections),
+                () => controller.MoveCellsDown(),
                 () => controller.ClearCountConnected());
             dragDrop.SetActionCheckConnection(()=> controller.CheckSlideConnectionBetweenOnBeginDragAndOnEndDrag());
         }

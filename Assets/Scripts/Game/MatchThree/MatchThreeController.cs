@@ -139,6 +139,30 @@ public class MatchThreeController : MonoBehaviour
    {
       countConnectedCells = 0;
    }
+   
+   /// <summary>
+   /// Better to write more optimize function
+   /// </summary>
+   public void MoveCellsDown()
+   {
+      int count = 0;
+      for (int i = 0; i < arrayObjectsConnected.Count; i++)
+      {
+         do
+         {
+            var tempCurrentElement =
+               arrayObjectsInCell[arrayObjectsConnected[i].X, arrayObjectsConnected[i].Y + count++];
+            var tempNextElement = arrayObjectsInCell[arrayObjectsConnected[i].X, arrayObjectsConnected[i].Y + count];
+            Debug.Log($"count = {count}");
+            arrayObjectsInCell[tempCurrentElement.X, tempCurrentElement.Y]
+               .SetElementType(arrayObjectsInCell[tempNextElement.X, tempNextElement.Y].ElementType);
+            arrayObjectsInCell[tempCurrentElement.X, tempCurrentElement.Y]
+               .SetSprite(arrayObjectsInCell[tempNextElement.X, tempNextElement.Y].Sprite);
+
+         } while (arrayObjectsConnected[i].Y + count > 0);
+
+      }
+   }
 
    #endregion public functions
 
@@ -150,7 +174,7 @@ public class MatchThreeController : MonoBehaviour
       if (!arrayObjectsConnected.Contains(tempObject))
       {
          arrayObjectsConnected.Add(tempObject);
-         Debug.Log($"[LastElementAdded] arrayObjectsConnected[{arrayObjectsConnected.Count-1}].X = {arrayObjectsConnected[arrayObjectsConnected.Count - 1].X} | arrayObjectsConnected[0].Y = {arrayObjectsConnected[arrayObjectsConnected.Count - 1].Y} ");
+         Debug.Log($"[LastElementAdded] arrayObjectsConnected[{arrayObjectsConnected.Count - 1}].X = {arrayObjectsConnected[arrayObjectsConnected.Count - 1].X} | arrayObjectsConnected[0].Y = {arrayObjectsConnected[arrayObjectsConnected.Count - 1].Y} ");
       }
    }
 
