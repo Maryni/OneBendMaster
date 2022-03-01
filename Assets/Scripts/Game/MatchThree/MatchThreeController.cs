@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -27,6 +28,7 @@ public class MatchThreeController : MonoBehaviour
    private int columnCount = 6;
    private int lineCount = 6;
    private MatchThreeFlexibleElement[,] arrayObjectsInCell;
+   private List<MatchThreeFlexibleElement> arrayObjectsConnected;
    private int xFirst = -1, xSecond = -1;
    private int yFirst = -1, ySecond = -1;
 
@@ -46,6 +48,7 @@ public class MatchThreeController : MonoBehaviour
    private void Awake()
    {
       arrayObjectsInCell = new MatchThreeFlexibleElement[columnCount, lineCount];
+      arrayObjectsConnected = new List<MatchThreeFlexibleElement>();
    }
 
    #endregion Unity functions
@@ -109,6 +112,9 @@ public class MatchThreeController : MonoBehaviour
       {
          if (CheckConnectionBetweenPoints(xSecond, ySecond, xFirst, yFirst))
          {
+            SetElementToLastConnectionList(xSecond, ySecond);
+            SetElementToLastConnectionList(xFirst, yFirst);
+
             countConnectedCells++;
             xSecond = xFirst;
             ySecond = yFirst;
@@ -138,8 +144,16 @@ public class MatchThreeController : MonoBehaviour
 
    #region private functions
 
-   
-   
+   private void SetElementToLastConnectionList(int xValue, int yValue)
+   {
+      var tempObject = arrayObjectsInCell[xValue, yValue];
+      if (!arrayObjectsConnected.Contains(tempObject))
+      {
+         arrayObjectsConnected.Add(tempObject);
+         Debug.Log($"[LastElementAdded] arrayObjectsConnected[{arrayObjectsConnected.Count-1}].X = {arrayObjectsConnected[arrayObjectsConnected.Count - 1].X} | arrayObjectsConnected[0].Y = {arrayObjectsConnected[arrayObjectsConnected.Count - 1].Y} ");
+      }
+   }
+
    private bool CheckConnectionBetweenPoints(int x1, int y1, int x2, int y2)
    {
       if (x1 + 1 == x2)
