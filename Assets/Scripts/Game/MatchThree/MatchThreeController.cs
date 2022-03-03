@@ -145,14 +145,19 @@ public class MatchThreeController : MonoBehaviour
    /// </summary>
    public void MoveCellsDown()
    {
-      int count = 0;
+
       for (int i = 0; i < arrayObjectsConnected.Count; i++)
       {
+            int count = 0;
             do
             {
             var tempCurrentElement =
                arrayObjectsInCell[arrayObjectsConnected[i].X + (count--), arrayObjectsConnected[i].Y];
             var tempNextElement = arrayObjectsInCell[arrayObjectsConnected[i].X + count, arrayObjectsConnected[i].Y];
+            if (tempNextElement.X > 0)
+            {
+               tempNextElement.SetX(tempNextElement.X - 1);
+            }
             Debug.Log($"count = {count}");
             arrayObjectsInCell[tempCurrentElement.X, tempCurrentElement.Y]
                .SetElementType(arrayObjectsInCell[tempNextElement.X, tempNextElement.Y].ElementType);
