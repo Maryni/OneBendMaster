@@ -148,20 +148,21 @@ public class MatchThreeController : MonoBehaviour
       int count = 0;
       for (int i = 0; i < arrayObjectsConnected.Count; i++)
       {
-         do
-         {
+            do
+            {
             var tempCurrentElement =
-               arrayObjectsInCell[arrayObjectsConnected[i].X, arrayObjectsConnected[i].Y + count++];
-            var tempNextElement = arrayObjectsInCell[arrayObjectsConnected[i].X, arrayObjectsConnected[i].Y + count];
+               arrayObjectsInCell[arrayObjectsConnected[i].X + (count--), arrayObjectsConnected[i].Y];
+            var tempNextElement = arrayObjectsInCell[arrayObjectsConnected[i].X + count, arrayObjectsConnected[i].Y];
             Debug.Log($"count = {count}");
             arrayObjectsInCell[tempCurrentElement.X, tempCurrentElement.Y]
                .SetElementType(arrayObjectsInCell[tempNextElement.X, tempNextElement.Y].ElementType);
             arrayObjectsInCell[tempCurrentElement.X, tempCurrentElement.Y]
                .SetSprite(arrayObjectsInCell[tempNextElement.X, tempNextElement.Y].Sprite);
 
-         } while (arrayObjectsConnected[i].Y + count > 0);
+            } while (arrayObjectsConnected[i].X + count - 1 > 0);
 
       }
+      arrayObjectsConnected.Clear();
    }
 
    #endregion public functions
