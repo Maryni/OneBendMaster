@@ -27,7 +27,6 @@ public class  BulletsController : MonoBehaviour
     #region private variables
 
     private GameObject poolBullets;
-    private int maxBulletCount;
     private int countAvaliablePlaceForBullet;
     private UnityAction actionWhenAllBulletsAreColored;
 
@@ -58,13 +57,6 @@ public class  BulletsController : MonoBehaviour
 
     public ElementType GetLastBulletElementType()
     {
-        // for (int i = spriteBulletsList.Count - 1; i >= 0; i--)
-        // {
-        //     if (spriteBulletsList[i].GetComponent<BulletSprite>().ElementType == ElementType.NoElement)
-        //     {
-        //         obj = spriteBulletsList[i];
-        //     }
-        // }
         var tempObject = spriteBulletsList.Last(x=>x.GetComponent<BulletSprite>().ElementType != ElementType.NoElement).GetComponent<BulletSprite>();
         var tempType = tempObject.ElementType;
         tempObject.SetElementType(ElementType.NoElement);
@@ -92,6 +84,40 @@ public class  BulletsController : MonoBehaviour
         SetBulletColorByType(elementType, index);
     }
 
+    public string GetBulletTextWhichFirstUnzero()
+    {
+        string temp = "0";
+        for (int i = 0; i < spriteBulletsList.Count; i++)
+        {
+            var currentElement = spriteBulletsList[i].GetComponent<BulletSprite>();
+            if (currentElement.TextOnBullet != "0")
+            {
+                temp = currentElement.TextOnBullet;
+            }
+        }
+
+        if (temp == "0")
+        {
+            Debug.LogWarning($"There is no bullets without 0 in text");
+        }
+
+        return temp;
+    }
+    
+    public void SetBulletTextLesserByOneForFirstUnzero()
+    {
+        for (int i = 0; i < spriteBulletsList.Count; i++)
+        {
+            var currentElement = spriteBulletsList[i].GetComponent<BulletSprite>();
+            if (currentElement.TextOnBullet != "0")
+            {
+                int currentText = int.Parse(currentElement.TextOnBullet);
+                currentText -= 1;
+                currentElement.SetText(currentText.ToString());
+            }
+        }
+    }
+
     public void SetBulletTextByIndex(int index, string value)
     {
         SetTextByIndex(index, value);
@@ -99,7 +125,7 @@ public class  BulletsController : MonoBehaviour
 
     public void SetBulletTextForLastBullet(string value)
     {
-        SetTextByIndex(spriteBulletsList.Count-1, value);
+        SetTextByIndex(spriteBulletsList.Count - 1, value);
     }
 
     public void SetBulletTextForFirstNonElementBullet(string value)
@@ -163,11 +189,6 @@ public class  BulletsController : MonoBehaviour
         
     }
 
-    public void SetMaxBulletCount(int value)
-    {
-        maxBulletCount = value;
-    }
-    
     public void SetAvalibleCountBullets()
     {
         for (int i = 0; i < poolBullets.transform.childCount; i++)

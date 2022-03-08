@@ -125,5 +125,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029bcac0ccdf758438f45b64077d977b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxBulletCount: 5
+  maxBulletTypeCount: 000000000000000000000000
+  maxBulletTypeElementType: 000000000000000000000000
   maxHp: 100
+  bulletSpeed: 0
+  activeBullet: {fileID: 0}
+  canShoot: 0

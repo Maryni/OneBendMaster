@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,7 +9,8 @@ public class Player : MonoBehaviour
 {
     #region Inspector variables
 
-    [SerializeField] private int maxBulletCount;
+    [SerializeField] private List<int> maxBulletTypeCount;
+    [SerializeField] private List<ElementType> maxBulletTypeElementType;
     [SerializeField] private int maxHp;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private GameObject activeBullet;
@@ -22,13 +24,13 @@ public class Player : MonoBehaviour
     private int currentBulletsCount;
     private UnityAction actionOnShoot;
     private UnityAction actionAfterShootingWhenBulletsZero;
-    [SerializeField]private Camera cam;
+    private Camera cam;
 
     #endregion private variables
 
     #region properties
 
-    public int MaxBulletsCount => maxBulletCount;
+    public List<int> MaxBulletTypeCount => maxBulletTypeCount;
     public int CurrentBulletsCount => currentBulletsCount;
     public int CurrentHp => currentHp;
     public int MaxHp => maxHp;
@@ -39,7 +41,6 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        SetCurrentBulletsFromMaxBulletsCount();
         SetCurrentHp();
         cam = Camera.main;
     }
@@ -56,18 +57,24 @@ public class Player : MonoBehaviour
     
     #region public functions
 
-    public void AddMaxBulletCount()
-    {
-        maxBulletCount++;
-    }
-
     public void Shoot()
     {
         if (canShoot)
         {
             currentBulletsCount--;
             ShootActiveBullet();
-            if (currentBulletsCount == 0)
+            if (currentBulletsCount == 0 && !IsHaveNotAvalibleBullets())
+            {
+                for (int i = 0; i < maxBulletTypeCount.Count; i++)
+                {
+                    if (maxBulletTypeCount[i] != 0)
+                    {
+                        currentBulletsCount = maxBulletTypeCount[i];
+                        break;
+                    }
+                }
+            }
+            else if (IsHaveNotAvalibleBullets())
             {
                 actionAfterShootingWhenBulletsZero?.Invoke();
             }
@@ -89,10 +96,18 @@ public class Player : MonoBehaviour
             actionAfterShootingWhenBulletsZero += actions[i];
         }
     }
-
-    public void SetCurrentBulletsFromMaxBulletsCount()
+    
+    
+    public void SetCurrentBulletsForFirstBullet(string value)
     {
-        currentBulletsCount = maxBulletCount;
+        for (int i = 0; i < maxBulletTypeCount.Count; i++)
+        {
+            if (maxBulletTypeCount[i] == 0)
+            {
+                maxBulletTypeCount[i] = int.Parse(value);
+                break;
+            }
+        }
     }
     
     public void SetCurrentHp()
@@ -115,7 +130,6 @@ public class Player : MonoBehaviour
         {
             Debug.LogError($"ActiveBullet ElementType = NoElement");
         }
-
     }
 
     public void ChangeCanShootState()
@@ -127,6 +141,12 @@ public class Player : MonoBehaviour
 
     #region private functions
 
+    private bool IsHaveNotAvalibleBullets()
+    {
+        var allElementsZero = maxBulletTypeCount.All(x => x == 0);
+        return allElementsZero;
+    }
+    
     private void ShootActiveBullet()
     {
         if (activeBullet != null)

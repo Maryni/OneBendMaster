@@ -22,6 +22,7 @@ public class BulletSprite : MonoBehaviour
     #region properties
 
     public ElementType ElementType => elementType;
+    public string TextOnBullet => textOnBullet.text;
 
     #endregion properties
 

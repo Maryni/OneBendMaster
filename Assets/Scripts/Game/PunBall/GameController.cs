@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     
     [SerializeField] private Data waveData;
     [SerializeField] private int waveIndex = 0;
-    [SerializeField] private float defaultBulletDamage = 5f; //set this variables to ScriptableObject in future
+    [SerializeField] private float defaultBulletText = 5f; //set this variables to ScriptableObject in future
     
     #endregion Inspector variables
 
@@ -23,6 +23,7 @@ public class GameController : MonoBehaviour
     private PunBallPoolCells punBallPoolCells;
     private SpawnController spawnController;
     private StatsController statsController;
+    private UIController uiController;
 
     #endregion private variables
 
@@ -32,6 +33,7 @@ public class GameController : MonoBehaviour
     public SaveLoadController SaveLoadController => saveLoadController;
     public PunBallPoolCells PunBallPoolCells => punBallPoolCells;
     public ObjectPool ObjectPool => objectPool;
+    public UIController UIController => uiController;
     public int WaveIndex => waveIndex;
     public Data WaveData => waveData;
 
@@ -99,15 +101,11 @@ public class GameController : MonoBehaviour
 
     private void SetEnoughtBulletsSprite()
     {
-        bulletsController.SetMaxBulletCount(player.MaxBulletsCount);
-        if (bulletsController.CountCurrentBullet < player.MaxBulletsCount)
+        Debug.Log($"player.MaxBulletTypeCount.Count = {player.MaxBulletTypeCount.Count}");
+        for (int i = 0; i < player.MaxBulletTypeCount.Count; i++)
         {
-            var differentCount = player.MaxBulletsCount - bulletsController.CountCurrentBullet;
-            for (int i = 0; i < differentCount; i++)
-            {
-                bulletsController.AddBulletByType();
-                bulletsController.SetBulletTextForLastBullet(defaultBulletDamage.ToString());
-            }
+            bulletsController.AddBulletByType();
+            bulletsController.SetBulletTextForLastBullet(defaultBulletText.ToString());
         }
         bulletsController.SetAvalibleCountBullets();
     }
@@ -128,6 +126,12 @@ public class GameController : MonoBehaviour
             {
                 spawnController = FindObjectOfType<SpawnController>();
             }
+
+            if (uiController == null)
+            {
+                uiController = FindObjectOfType<UIController>();
+                uiController.SetGameController(this);
+            }
             SetVariables();
             SetActions();
         }
@@ -140,10 +144,13 @@ public class GameController : MonoBehaviour
         spawnController.SetActionAfterSpawn(
             ()=> statsController.SetLastWaveSpawnedList(spawnController.LastWaveSpawnedList)
             );
-        player.SetActionsOnShoot(() =>player.SetActiveBullet(
+        player.SetActionsOnShoot(
+            () =>player.SetActiveBullet(
                 ObjectPool.GetObjectByType(
-                ObjectType.Bullet, bulletsController.GetLastBulletElementType()))
-        );
+                ObjectType.Bullet, bulletsController.GetLastBulletElementType())
+                ),
+            ()=>bulletsController.SetBulletTextLesserByOneForFirstUnzero()
+                );
         bulletsController.SetActionWhenAllBulletsColored(player.ChangeCanShootState);
         player.SetActionAfterShootingWhenBulletsZero(CompleteWave);
     }

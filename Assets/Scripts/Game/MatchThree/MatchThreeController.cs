@@ -40,7 +40,7 @@ public class MatchThreeController : MonoBehaviour
    public int ColumnCount => columnCount;
    public int LineCount => lineCount;
    public ElementType ElementTypeLastConnections => elementTypeLastConnections;
-   public int CountConnectedCellsLastConnection => countConnectedCells + 1;
+   //public int CountConnectedCellsLastConnection => countConnectedCells + 1;
 
    #endregion properties
 
@@ -55,6 +55,21 @@ public class MatchThreeController : MonoBehaviour
    #endregion Unity functions
 
    #region public functions
+
+   public string GetCountConnectedCellsLastConnection()
+   {
+      int count = 0;
+      switch (countConnectedCells)
+      {
+         case 2: count = 1; break;
+         case 3: count = 3; break;
+         case 4: count = 5; break;
+         case 5: count = 7; break;
+         case 6: count = 9; break;
+         default: count = countConnectedCells; break;
+      }
+      return count.ToString();
+   }
 
    public void SetObjectToPanel(params GameObject[] gameObjects)
    {

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
@@ -18,18 +19,30 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        if (gameController == null)
-        {
-            gameController = FindObjectOfType<GameController>();
-        }
-        StartCoroutine(SetObjectsFromPoolToMatchThreePanel());
+        SceneManager.sceneLoaded += SetActionWhenSceneLoaded;
     }
 
     #endregion Unity functions
 
-    #region private functions
+    #region public functions
+
+    public void SetGameController(GameController controller)
+    {
+        gameController = controller;
+    }
+
+    #endregion public function
     
-    //поменять элемент с тем с кем меняемся, и картинку
+    #region private functions
+
+    private void SetActionWhenSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        if (scene.buildIndex == 1)
+        { 
+            StartCoroutine(SetObjectsFromPoolToMatchThreePanel());
+        }
+    }
+    
     private IEnumerator SetObjectsFromPoolToMatchThreePanel()
     {
         yield return new WaitForEndOfFrame();
@@ -47,8 +60,9 @@ public class UIController : MonoBehaviour
             dragDrop.SetActionOnEndDrag(controller.SetFirstsXY);
             dragDrop.SetActionOnEndDragWithoutParams(
                 () => image.raycastTarget = true,
-                () => bulletsController.SetBulletTextForFirstNonElementBullet(controller.CountConnectedCellsLastConnection.ToString()),
+                () => bulletsController.SetBulletTextForFirstNonElementBullet(controller.GetCountConnectedCellsLastConnection()),
                 () => bulletsController.SetBulletColorForFirstBulletWithoutColor(controller.ElementTypeLastConnections),
+                () => gameController.Player.SetCurrentBulletsForFirstBullet(bulletsController.GetBulletTextWhichFirstUnzero()),
                 () => controller.MoveCellsDown(),
                 () => controller.ClearCountConnected());
             dragDrop.SetActionCheckConnection(()=> controller.CheckSlideConnectionBetweenOnBeginDragAndOnEndDrag());
