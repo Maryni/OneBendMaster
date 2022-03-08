@@ -1167,6 +1167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95dff19acebecd24ea7f6e4edddd6727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameController: {fileID: 0}
   objectPool: {fileID: 1191301160}
   controller: {fileID: 1249288854}
   bulletsController: {fileID: 1751670439}
@@ -2840,6 +2841,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cde41a19ab9248040bf5e475c2779cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  valueLocalScaleConnectedElement: 0.85
   gamePanelGameObject: {fileID: 1408358308}
   panelForHideObjects: {fileID: 1969186785}
   spriteFire: {fileID: 21300000, guid: b3c258e17815f7d4db56427b2a4b8dae, type: 3}

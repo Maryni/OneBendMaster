@@ -8,7 +8,8 @@ using Random = UnityEngine.Random;
 public class MatchThreeController : MonoBehaviour
 {
    #region Inspector variables
-   
+
+   [SerializeField] private float valueLocalScaleConnectedElement;
    [SerializeField] private GameObject gamePanelGameObject;
    [SerializeField] private GameObject panelForHideObjects;
 
@@ -107,13 +108,15 @@ public class MatchThreeController : MonoBehaviour
    
    public void CheckSlideConnectionBetweenOnBeginDragAndOnEndDrag()
    {
-      Debug.Log($"xFirst = {xFirst} | yFirst = {yFirst} | xSecond = {xSecond} | ySecond = {ySecond}");
+      //Debug.Log($"xFirst = {xFirst} | yFirst = {yFirst} | xSecond = {xSecond} | ySecond = {ySecond}");
       if (arrayObjectsInCell[xSecond, ySecond].ElementType == arrayObjectsInCell[xFirst, yFirst].ElementType)
       {
          if (CheckConnectionBetweenPoints(xSecond, ySecond, xFirst, yFirst))
          {
             SetElementToLastConnectionList(xSecond, ySecond);
+            SetLastConnectedElementScale(valueLocalScaleConnectedElement);
             SetElementToLastConnectionList(xFirst, yFirst);
+            SetLastConnectedElementScale(valueLocalScaleConnectedElement);
 
             countConnectedCells++;
             xSecond = xFirst;
@@ -145,35 +148,42 @@ public class MatchThreeController : MonoBehaviour
    /// </summary>
    public void MoveCellsDown()
    {
-
       for (int i = 0; i < arrayObjectsConnected.Count; i++)
       {
             int count = 0;
             do
             {
-            var tempCurrentElement =
+               if (arrayObjectsConnected[i].X + count-- < 0)
+               {
+                  continue;
+               }
+               var tempCurrentElement =
                arrayObjectsInCell[arrayObjectsConnected[i].X + (count--), arrayObjectsConnected[i].Y];
-            var tempNextElement = arrayObjectsInCell[arrayObjectsConnected[i].X + count, arrayObjectsConnected[i].Y];
-            if (tempNextElement.X > 0)
-            {
-               tempNextElement.SetX(tempNextElement.X - 1);
-            }
-            Debug.Log($"count = {count}");
-            arrayObjectsInCell[tempCurrentElement.X, tempCurrentElement.Y]
-               .SetElementType(arrayObjectsInCell[tempNextElement.X, tempNextElement.Y].ElementType);
-            arrayObjectsInCell[tempCurrentElement.X, tempCurrentElement.Y]
-               .SetSprite(arrayObjectsInCell[tempNextElement.X, tempNextElement.Y].Sprite);
-
+               var tempNextElement = arrayObjectsInCell[arrayObjectsConnected[i].X + count, arrayObjectsConnected[i].Y];
+               if (tempNextElement.X > 0)
+               {
+                  tempNextElement.SetX(tempNextElement.X - 1);
+               }
+               arrayObjectsConnected[i].gameObject.transform.localScale = Vector3.one;
+               arrayObjectsInCell[tempCurrentElement.X, tempCurrentElement.Y].SetElementType(arrayObjectsInCell[tempNextElement.X, tempNextElement.Y].ElementType);
+               arrayObjectsInCell[tempCurrentElement.X, tempCurrentElement.Y].SetSprite(arrayObjectsInCell[tempNextElement.X, tempNextElement.Y].Sprite);
             } while (arrayObjectsConnected[i].X + count - 1 > 0);
 
       }
       arrayObjectsConnected.Clear();
+      elementTypeLastConnections = ElementType.NoElement;
    }
 
    #endregion public functions
 
    #region private functions
 
+   private void SetLastConnectedElementScale(float value)
+   {
+      arrayObjectsConnected[arrayObjectsConnected.Count - 1].gameObject.transform.localScale =
+         new Vector3(value, value, value);
+   }
+   
    private void SetElementToLastConnectionList(int xValue, int yValue)
    {
       var tempObject = arrayObjectsInCell[xValue, yValue];
