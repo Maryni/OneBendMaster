@@ -59,8 +59,11 @@ public class  BulletsController : MonoBehaviour
     {
         var tempObject = spriteBulletsList.Last(x=>x.GetComponent<BulletSprite>().ElementType != ElementType.NoElement).GetComponent<BulletSprite>();
         var tempType = tempObject.ElementType;
-        tempObject.SetElementType(ElementType.NoElement);
-        tempObject.SetImageSprite(colorDefaultElemental);
+        if (tempObject.TextOnBullet == "0")
+        {
+            tempObject.SetElementType(ElementType.NoElement);
+            tempObject.SetImageSprite(colorDefaultElemental);  
+        }
         Debug.Log($"TempType returned, tempType = {tempType}");
         return tempType;
     }
