@@ -2852,6 +2852,7 @@ MonoBehaviour:
   spriteClear: {fileID: 21300000, guid: 97068e8ba25368a40a8bd289c1d09fd3, type: 3}
   countConnectedCells: 0
   elementTypeLastConnections: 0
+  arrayObjectsConnected: []
 --- !u!1 &1276259254
 GameObject:
   m_ObjectHideFlags: 0

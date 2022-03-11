@@ -55,27 +55,36 @@ public class  BulletsController : MonoBehaviour
 
     #region public functions
 
-    public ElementType GetLastBulletElementType()
-    {
-        var tempObject = spriteBulletsList.Last(x=>x.GetComponent<BulletSprite>().ElementType != ElementType.NoElement).GetComponent<BulletSprite>();
-        var tempType = tempObject.ElementType;
-        if (tempObject.TextOnBullet == "0")
-        {
-            tempObject.SetElementType(ElementType.NoElement);
-            tempObject.SetImageSprite(colorDefaultElemental);  
-        }
-        Debug.Log($"TempType returned, tempType = {tempType}");
-        return tempType;
-    }
-
     public ElementType GetFirstBulletElementType()
     {
-        var tempObject = spriteBulletsList[0].GetComponent<BulletSprite>();
-        var tempType = tempObject.ElementType;
-        tempObject.SetElementType(ElementType.NoElement);
-        tempObject.SetImageSprite(colorDefaultElemental);
-        return tempType;
-    }
+        var tempObject = spriteBulletsList.FirstOrDefault(x=>x.GetComponent<BulletSprite>().ElementType != ElementType.NoElement)?.GetComponent<BulletSprite>();
+        if (tempObject != null)
+        {
+            var tempType = tempObject.ElementType;
+            if (tempObject.TextOnBullet == "0")
+            {
+                tempObject.SetElementType(ElementType.NoElement);
+                tempObject.SetImageSprite(colorDefaultElemental);  
+            }
+            Debug.Log($"TempType returned, tempType = {tempType}");
+            return tempType;
+        }
+        else
+        {
+            Debug.Log($"[GetLastBulletElementType] no sprite in list where element != no element");
+            return ElementType.NoElement;
+        }
+ }
+    
+
+    // public ElementType GetFirstBulletElementType()
+    // {
+    //     var tempObject = spriteBulletsList[0].GetComponent<BulletSprite>();
+    //     var tempType = tempObject.ElementType;
+    //     tempObject.SetElementType(ElementType.NoElement);
+    //     tempObject.SetImageSprite(colorDefaultElemental);
+    //     return tempType;
+    // }
     
     public void SetLastBulletColorByType(ElementType elementType)
     {
@@ -87,15 +96,16 @@ public class  BulletsController : MonoBehaviour
         SetBulletColorByType(elementType, index);
     }
 
-    public string GetBulletTextWhichFirstUnzero()
+    public string GetBulletTextWhichLastUnzero()
     {
         string temp = "0";
-        for (int i = 0; i < spriteBulletsList.Count; i++)
+        for (int i = spriteBulletsList.Count - 1; i >= 0; i--)
         {
             var currentElement = spriteBulletsList[i].GetComponent<BulletSprite>();
             if (currentElement.TextOnBullet != "0")
             {
                 temp = currentElement.TextOnBullet;
+                break;
             }
         }
 
@@ -112,11 +122,12 @@ public class  BulletsController : MonoBehaviour
         for (int i = 0; i < spriteBulletsList.Count; i++)
         {
             var currentElement = spriteBulletsList[i].GetComponent<BulletSprite>();
-            if (currentElement.TextOnBullet != "0")
+            if (currentElement.TextOnBullet != "0" && currentElement.ElementType != ElementType.NoElement)
             {
                 int currentText = int.Parse(currentElement.TextOnBullet);
                 currentText -= 1;
                 currentElement.SetText(currentText.ToString());
+                break;
             }
         }
     }
@@ -149,27 +160,34 @@ public class  BulletsController : MonoBehaviour
             {
                 bullet.SetImageSprite(colorFireElemental);
             }
+            
             if (typeColor == ElementType.Water)
             {
                 bullet.SetImageSprite(colorWaterElemental);
             }
+            
             if (typeColor == ElementType.Energy)
             {
                 bullet.SetImageSprite(colorEnergyElemental);
             }
+            
             if (typeColor == ElementType.Nature)
             {
                 bullet.SetImageSprite(colorNatureElemental);
             }
+            
             if (typeColor == ElementType.Magic)
             {
                 bullet.SetImageSprite(colorMagicElemental);
             }
+            
             bullet.SetElementType(typeColor);
+            
             if (countAvaliablePlaceForBullet - 1 == 0)
             {
                 actionWhenAllBulletsAreColored?.Invoke();
             }
+            
             countAvaliablePlaceForBullet--;
         }
         else
@@ -201,16 +219,6 @@ public class  BulletsController : MonoBehaviour
                 countAvaliablePlaceForBullet++;
             }
         }
-    }
-
-    public bool IsHaveAvalibleBullets()
-    {
-        if (countAvaliablePlaceForBullet > 0)
-        {
-            return true;
-        }
-
-        return false;
     }
 
     public void SetActionWhenAllBulletsColored(params UnityAction[] actions)

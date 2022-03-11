@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     
     [SerializeField] private Data waveData;
     [SerializeField] private int waveIndex = 0;
-    [SerializeField] private float defaultBulletText = 5f; //set this variables to ScriptableObject in future
+    [SerializeField] private float defaultBulletText = 0f; //set this variables to ScriptableObject in future
     
     #endregion Inspector variables
 
@@ -147,7 +147,7 @@ public class GameController : MonoBehaviour
         player.SetActionsOnShoot(
             () =>player.SetActiveBullet(
                 ObjectPool.GetObjectByType(
-                ObjectType.Bullet, bulletsController.GetLastBulletElementType())
+                ObjectType.Bullet, bulletsController.GetFirstBulletElementType())
                 ),
             ()=>bulletsController.SetBulletTextLesserByOneForFirstUnzero()
                 );
@@ -161,8 +161,7 @@ public class GameController : MonoBehaviour
         {
             waveIndex++; 
         }
-        else if (waveIndex == saveLoadController.GetFullLevelData(saveLoadController.LastCompleteLevel).GetWaveCount() -
-                 1)
+        else if (waveIndex == saveLoadController.GetFullLevelData(saveLoadController.LastCompleteLevel).GetWaveCount() - 1)
         {
             saveLoadController.GetFullLevelData(saveLoadController.LastCompleteLevel).SetLevelComplete();
         }

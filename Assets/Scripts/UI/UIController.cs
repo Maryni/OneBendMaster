@@ -62,7 +62,7 @@ public class UIController : MonoBehaviour
                 () => image.raycastTarget = true,
                 () => bulletsController.SetBulletTextForFirstNonElementBullet(controller.GetCountConnectedCellsLastConnection()),
                 () => bulletsController.SetBulletColorForFirstBulletWithoutColor(controller.ElementTypeLastConnections),
-                () => gameController.Player.SetCurrentBulletsForFirstBullet(bulletsController.GetBulletTextWhichFirstUnzero()),
+                () => gameController.Player.SetCurrentBulletsForFirstBullet(bulletsController.GetBulletTextWhichLastUnzero()),
                 () => controller.MoveCellsDown(),
                 () => controller.ClearCountConnected());
             dragDrop.SetActionCheckConnection(()=> controller.CheckSlideConnectionBetweenOnBeginDragAndOnEndDrag());
