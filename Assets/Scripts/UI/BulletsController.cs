@@ -61,11 +61,12 @@ public class  BulletsController : MonoBehaviour
         if (tempObject != null)
         {
             var tempType = tempObject.ElementType;
-            if (tempObject.TextOnBullet == "0")
-            {
-                tempObject.SetElementType(ElementType.NoElement);
-                tempObject.SetImageSprite(colorDefaultElemental);  
-            }
+            // if (tempObject.TextOnBullet == "1")
+            // {
+            //     tempObject.SetElementType(ElementType.NoElement);
+            //     tempObject.SetImageSprite(colorDefaultElemental);  
+            //     tempObject.SetText("0");
+            // }
             Debug.Log($"TempType returned, tempType = {tempType}");
             return tempType;
         }
@@ -127,6 +128,10 @@ public class  BulletsController : MonoBehaviour
                 int currentText = int.Parse(currentElement.TextOnBullet);
                 currentText -= 1;
                 currentElement.SetText(currentText.ToString());
+                if (currentText == 0)
+                {
+                    currentElement.SetElementType(ElementType.NoElement);
+                }
                 break;
             }
         }

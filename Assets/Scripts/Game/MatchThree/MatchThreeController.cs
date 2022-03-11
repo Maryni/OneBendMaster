@@ -173,17 +173,17 @@ public class MatchThreeController : MonoBehaviour
                var currentX = arrayObjectsConnected[i].X + (count--);
                var nextX = arrayObjectsConnected[i].X + count;
                
-               Debug.Log($"[AAA] i = {i} | currentX = {currentX} | nextX = {nextX}");
+               Debug.Log($"[MoveCellsDown] i = {i} | currentX = {currentX} | nextX = {nextX}");
                if (nextX >= 0 && nextX < lineCount)
                {
                   var tempCurrentElement = arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y];
                   var tempNextElement = arrayObjectsInCell[nextX, arrayObjectsConnected[i].Y];
                   
-                  if (tempNextElement.X > 0)
-                  {
-                     tempNextElement.SetX(tempNextElement.X - 1);
-                     continue;
-                  }
+                  // if (tempNextElement.X > 0)
+                  // {
+                  //    tempNextElement.SetX(tempNextElement.X - 1);
+                  //    continue;
+                  // }
 
                   if (tempNextElement.X == 0 && arrayObjectsConnected[i].Y + 1 < lineCount -1)
                   {
@@ -207,8 +207,8 @@ public class MatchThreeController : MonoBehaviour
                   arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y].SetElementType(arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y + 1].ElementType);
                   arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y].SetSprite(arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y + 1].Sprite);
                }
-               
-            } while (arrayObjectsConnected[i].X + count - 1 > 0);
+            } 
+            while (arrayObjectsConnected[i].X + count - 1 > 0);
 
       }
       arrayObjectsConnected.Clear();
