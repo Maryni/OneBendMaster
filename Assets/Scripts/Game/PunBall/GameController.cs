@@ -153,6 +153,7 @@ public class GameController : MonoBehaviour
                 );
         bulletsController.SetActionWhenAllBulletsColored(player.ChangeCanShootState);
         player.SetActionAfterShootingWhenBulletsZero(CompleteWave);
+        player.SetActionAfterShootAllBullets(bulletsController.CheckBulletsForZero);
     }
 
     private void CompleteWave()
@@ -170,6 +171,7 @@ public class GameController : MonoBehaviour
         spawnController.MovePreviousEnemyForward();
         spawnController.Spawn();
         statsController.SetStatsToSpawnedEnemy();
+        bulletsController.SetAvalibleCountBullets();
         player.ChangeCanShootState();
     }
 

@@ -178,12 +178,6 @@ public class MatchThreeController : MonoBehaviour
                {
                   var tempCurrentElement = arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y];
                   var tempNextElement = arrayObjectsInCell[nextX, arrayObjectsConnected[i].Y];
-                  
-                  // if (tempNextElement.X > 0)
-                  // {
-                  //    tempNextElement.SetX(tempNextElement.X - 1);
-                  //    continue;
-                  // }
 
                   if (tempNextElement.X == 0 && arrayObjectsConnected[i].Y + 1 < lineCount -1)
                   {

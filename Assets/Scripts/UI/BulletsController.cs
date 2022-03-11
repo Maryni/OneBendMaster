@@ -27,7 +27,7 @@ public class  BulletsController : MonoBehaviour
     #region private variables
 
     private GameObject poolBullets;
-    private int countAvaliablePlaceForBullet;
+    [SerializeField] private int countAvaliablePlaceForBullet;
     private UnityAction actionWhenAllBulletsAreColored;
 
     #endregion private variables
@@ -61,12 +61,6 @@ public class  BulletsController : MonoBehaviour
         if (tempObject != null)
         {
             var tempType = tempObject.ElementType;
-            // if (tempObject.TextOnBullet == "1")
-            // {
-            //     tempObject.SetElementType(ElementType.NoElement);
-            //     tempObject.SetImageSprite(colorDefaultElemental);  
-            //     tempObject.SetText("0");
-            // }
             Debug.Log($"TempType returned, tempType = {tempType}");
             return tempType;
         }
@@ -76,17 +70,7 @@ public class  BulletsController : MonoBehaviour
             return ElementType.NoElement;
         }
  }
-    
 
-    // public ElementType GetFirstBulletElementType()
-    // {
-    //     var tempObject = spriteBulletsList[0].GetComponent<BulletSprite>();
-    //     var tempType = tempObject.ElementType;
-    //     tempObject.SetElementType(ElementType.NoElement);
-    //     tempObject.SetImageSprite(colorDefaultElemental);
-    //     return tempType;
-    // }
-    
     public void SetLastBulletColorByType(ElementType elementType)
     {
         SetBulletColorByType(elementType,spriteBulletsList.Count-1);
@@ -137,6 +121,19 @@ public class  BulletsController : MonoBehaviour
         }
     }
 
+    public void CheckBulletsForZero()
+    {
+        for (int i = 0; i < spriteBulletsList.Count; i++)
+        {
+            var currentElement = spriteBulletsList[i].GetComponent<BulletSprite>();
+            if (currentElement.TextOnBullet == "0")
+            {
+                currentElement.SetElementType(ElementType.NoElement);
+                currentElement.SetImageSprite(colorDefaultElemental);
+            }
+        }
+    }
+    
     public void SetBulletTextByIndex(int index, string value)
     {
         SetTextByIndex(index, value);
@@ -156,7 +153,7 @@ public class  BulletsController : MonoBehaviour
 
     public void SetBulletColorForFirstBulletWithoutColor(ElementType typeColor)
     {
-        Debug.Log($"{countAvaliablePlaceForBullet}");
+        Debug.Log($"countAvaliablePlaceForBullet = {countAvaliablePlaceForBullet}");
         if (countAvaliablePlaceForBullet > 0)
         {
             BulletSprite bullet;

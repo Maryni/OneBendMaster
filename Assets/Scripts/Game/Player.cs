@@ -21,9 +21,10 @@ public class Player : MonoBehaviour
     #region private variables
 
     private int currentHp;
-    [SerializeField] private int currentBulletsCount;
+    private int currentBulletsCount;
     private UnityAction actionOnShoot;
     private UnityAction actionAfterShootingWhenBulletsZero;
+    private UnityAction actionAfterShootAllBullets;
     private Camera cam;
 
     #endregion private variables
@@ -57,44 +58,6 @@ public class Player : MonoBehaviour
     
     #region public functions
 
-    public void Shoot()
-    {
-        SetCountCurrentBullets();
-        if (canShoot && currentBulletsCount > 0)
-        {
-            if (currentBulletsCount >= 1)
-            {
-                for (int i = 0; i < maxBulletTypeCount.Count; i++)
-                {
-                    if (maxBulletTypeCount[i] > 0)
-                    {
-                        maxBulletTypeCount[i]--;
-                        break;
-                    }
-                } 
-            }
-            
-            currentBulletsCount--;
-            ShootActiveBullet();
-            
-            if (currentBulletsCount == 0 && !IsHaveNotAvalibleBullets())
-            {
-                for (int i = 0; i < maxBulletTypeCount.Count; i++)
-                {
-                    if (maxBulletTypeCount[i] != 0)
-                    {
-                        currentBulletsCount =maxBulletTypeCount[i];
-                        break;
-                    }
-                }
-            }
-            else if (IsHaveNotAvalibleBullets())
-            {
-                actionAfterShootingWhenBulletsZero?.Invoke();
-            }
-        }
-    }
-
     public void SetActionsOnShoot(params UnityAction[] actions)
     {
         for (int i = 0; i < actions.Length; i++)
@@ -110,7 +73,11 @@ public class Player : MonoBehaviour
             actionAfterShootingWhenBulletsZero += actions[i];
         }
     }
-    
+
+    public void SetActionAfterShootAllBullets(UnityAction action)
+    {
+        actionAfterShootAllBullets += action;
+    }
     
     public void SetCurrentBulletsForFirstBullet(string value)
     {
@@ -160,6 +127,47 @@ public class Player : MonoBehaviour
 
     #region private functions
 
+    private void Shoot()
+    {
+        SetCountCurrentBullets();
+        if (canShoot && currentBulletsCount > 0)
+        {
+            if (currentBulletsCount >= 1)
+            {
+                for (int i = 0; i < maxBulletTypeCount.Count; i++)
+                {
+                    if (maxBulletTypeCount[i] > 0)
+                    {
+                        maxBulletTypeCount[i] = 0;
+                        break;
+                    }
+                } 
+            }
+
+            for (int i = 0; i < currentBulletsCount; i++)
+            {
+                ShootActiveBullet();
+            }
+            
+            if (!IsHaveNotAvalibleBullets())
+            {
+                for (int i = 0; i < maxBulletTypeCount.Count; i++)
+                {
+                    if (maxBulletTypeCount[i] > 0)
+                    {
+                        currentBulletsCount = maxBulletTypeCount[i];
+                        break;
+                    }
+                }
+            }
+            else if (IsHaveNotAvalibleBullets())
+            {
+                actionAfterShootingWhenBulletsZero?.Invoke();
+            }
+            actionAfterShootAllBullets?.Invoke();
+        }
+    }
+    
     private bool IsHaveNotAvalibleBullets()
     {
         var allElementsZero = maxBulletTypeCount.All(x => x == 0);
