@@ -179,13 +179,23 @@ public class Player : MonoBehaviour
         if (activeBullet != null)
         {
             activeBullet.transform.position = transform.position;
-            Vector3 endPoint = cam.ScreenToWorldPoint(Input.mousePosition);
-            Vector3 direction = endPoint - transform.position;
-            direction.y = 1.5f;
-            activeBullet.transform.LookAt(direction);
-            var rig = activeBullet.GetComponent<Rigidbody>();
-            rig.velocity = (direction * bulletSpeed);
-            activeBullet = null;
+            activeBullet.transform.position = new Vector3( activeBullet.transform.position.x, activeBullet.transform.position.y,activeBullet.transform.position.z + 2f);
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 100))
+            {
+                Vector3 endPoint = hit.point;
+                Vector3 direction = endPoint - transform.position;
+                activeBullet.transform.LookAt(direction);
+                var rig = activeBullet.GetComponent<Rigidbody>();
+                rig.velocity = (direction * bulletSpeed);
+                activeBullet = null;
+                Debug.Log($"EndPoint = {endPoint}");  
+            }
+            else
+            {
+                Debug.LogWarning($"No hit point");
+            }
         }
         else
         {

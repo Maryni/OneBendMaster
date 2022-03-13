@@ -128,6 +128,6 @@ MonoBehaviour:
   maxBulletTypeCount: 000000000000000000000000
   maxBulletTypeElementType: 000000000000000000000000
   maxHp: 100
-  bulletSpeed: 0
+  bulletSpeed: 2
   activeBullet: {fileID: 0}
   canShoot: 0
