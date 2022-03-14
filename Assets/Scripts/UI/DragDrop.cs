@@ -15,8 +15,11 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     private UnityAction actionOnEndDragWithoutParams;
     private UnityAction<int,int> actionOnDragWithParams;
     private UnityAction actionCheckConnection;
+    private UnityAction<int,int> actionOnDragRemoveConnection;
     private int lastX = -1;
     private int lastY = -1;
+    private int firstX = -1;
+    private int firstY = -1;
     
     #endregion private variables
 
@@ -29,6 +32,11 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         {
             int x = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().X;
             int y = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().Y;
+            actionOnDragRemoveConnection?.Invoke(x,y);
+            if (x == firstX && y == firstY)
+            {
+                actionOnDragRemoveConnection?.Invoke(x,y); 
+            }
             //actionOnEndDrag?.Invoke(x,y); //second point
             //actionOnDragWithParams(x,y); // first point
             if (x != lastX || y != lastY)
@@ -52,6 +60,8 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         {
             int x = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().X;
             int y = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().Y;
+            firstX = x;
+            firstY = y;
             actionOnBeginDrag?.Invoke();
             if (lastX == -1 && lastY == -1)
             {
@@ -82,6 +92,11 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
             lastY = y;
             
         }
+        else
+        {
+            actionOnEndDragWithoutParams?.Invoke();
+        }
+        
         Debug.Log($"[OnEndDrag] lastX ={lastX} | lastY = {lastY}" );
     }
 
@@ -124,6 +139,14 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         }
     }
 
+    public void SetActionOnDragRemoveConenction(params UnityAction<int,int>[] actions)
+    {
+        for (int i = 0; i < actions.Length; i++)
+        {
+            actionOnDragRemoveConnection += actions[i];
+        }
+    }
+    
     #endregion public functions
 
     #region private functions

@@ -54,7 +54,7 @@ public class UIController : MonoBehaviour
             tempArray[i].SetActive(true);
             var dragDrop = tempArray[i].GetComponentInChildren<DragDrop>();
             var image = dragDrop.gameObject.GetComponent<MatchThreeFlexibleElement>().Image;
-            
+            dragDrop.SetActionOnDragRemoveConenction(controller.CheckAndRemoveLastElementInConnectedList);
             dragDrop.SetActionOnBeginDrag(() => image.raycastTarget = false);
             dragDrop.SetActionOnDragWithParams(controller.SetValuesFromBeginDragPoint);
             dragDrop.SetActionOnEndDrag(controller.SetFirstsXY);
@@ -63,9 +63,9 @@ public class UIController : MonoBehaviour
                 () => bulletsController.SetBulletTextForFirstNonElementBullet(controller.GetCountConnectedCellsLastConnection()),
                 () => bulletsController.SetBulletColorForFirstBulletWithoutColor(controller.ElementTypeLastConnections),
                 () => gameController.Player.SetCurrentBulletsForFirstBullet(bulletsController.GetBulletTextWhichLastUnzero()),
-                () => controller.MoveCellsDown(),
+                () => controller.SetConnectedCellsToOtherRandomElement(),
                 () => controller.ClearCountConnected());
-            dragDrop.SetActionCheckConnection(()=> controller.CheckSlideConnectionBetweenOnBeginDragAndOnEndDrag());
+            dragDrop.SetActionCheckConnection(() => controller.CheckSlideConnectionBetweenOnBeginDragAndOnEndDrag());
         }
         controller.SetObjectToPanel(tempArray);
         controller.HidePanel();

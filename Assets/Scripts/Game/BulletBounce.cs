@@ -27,10 +27,13 @@ public class BulletBounce : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        var speed = lastVelocity.magnitude;
-        var direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
+        if (!collision.gameObject.GetComponent<BaseBullet>())
+        {
+            var speed = lastVelocity.magnitude;
+            var direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
 
-        rig.velocity = direction * Mathf.Max(speed, 0f);
+            rig.velocity = direction * Mathf.Max(speed, 0f);
+        }
     }
 
     #endregion Unity functions

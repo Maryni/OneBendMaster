@@ -22,6 +22,7 @@ public class MatchThreeController : MonoBehaviour
 
    [SerializeField] private int countConnectedCells;
    [SerializeField] private ElementType elementTypeLastConnections = ElementType.NoElement;
+   
    #endregion Inspector variables
 
    #region private variables
@@ -161,52 +162,32 @@ public class MatchThreeController : MonoBehaviour
    /// <summary>
    /// Better to write more optimize function
    /// </summary>
-   public void MoveCellsDown()
+   public void SetConnectedCellsToOtherRandomElement()
    {
       for (int i = 0; i < arrayObjectsConnected.Count; i++)
       {
-            int count = 0;
-            
-            do
-            {
-               arrayObjectsConnected[i].gameObject.transform.localScale = Vector3.one;
-               var currentX = arrayObjectsConnected[i].X + (count--);
-               var nextX = arrayObjectsConnected[i].X + count;
-               
-               Debug.Log($"[MoveCellsDown] i = {i} | currentX = {currentX} | nextX = {nextX}");
-               if (nextX >= 0 && nextX < lineCount)
-               {
-                  var tempCurrentElement = arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y];
-                  var tempNextElement = arrayObjectsInCell[nextX, arrayObjectsConnected[i].Y];
-
-                  if (tempNextElement.X == 0 && arrayObjectsConnected[i].Y + 1 < lineCount -1)
-                  {
-                     arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y].SetElementType(arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y + 1].ElementType);
-                     arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y].SetSprite(arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y + 1].Sprite);
-                     continue;
-                  }
-                  else if (tempNextElement.X == 0 && arrayObjectsConnected[i].Y + 1 > lineCount - 1)
-                  {
-                     arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y].SetElementType(arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y - 1].ElementType);
-                     arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y].SetSprite(arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y - 1].Sprite);
-                     continue;
-                  }
-                  arrayObjectsInCell[tempCurrentElement.X, tempCurrentElement.Y].SetElementType(arrayObjectsInCell[tempNextElement.X, tempNextElement.Y].ElementType);
-                  arrayObjectsInCell[tempCurrentElement.X, tempCurrentElement.Y].SetSprite(arrayObjectsInCell[tempNextElement.X, tempNextElement.Y].Sprite);
-               }
-               
-               //better to remove and set new info in cell
-               if (nextX < 0 && (arrayObjectsConnected[i].Y >=0  && arrayObjectsConnected[i].Y < lineCount - 2))
-               {
-                  arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y].SetElementType(arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y + 1].ElementType);
-                  arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y].SetSprite(arrayObjectsInCell[currentX, arrayObjectsConnected[i].Y + 1].Sprite);
-               }
-            } 
-            while (arrayObjectsConnected[i].X + count - 1 > 0);
-
+         arrayObjectsConnected[i].gameObject.transform.localScale = Vector3.one;
+         ElementType tempType = GetRandomElementType();
+         arrayObjectsConnected[i].SetElementType(tempType);
       }
+      SetSpriteForElementType();
       arrayObjectsConnected.Clear();
       elementTypeLastConnections = ElementType.NoElement;
+   }
+   
+   public void CheckAndRemoveLastElementInConnectedList(int x, int y)
+   {
+      if(arrayObjectsConnected.Count > 1)
+      {
+         if (x == arrayObjectsConnected[arrayObjectsConnected.Count - 2].X &&
+             y == arrayObjectsConnected[arrayObjectsConnected.Count - 2].Y)
+         {
+            var temp = arrayObjectsConnected[arrayObjectsConnected.Count - 1];
+            temp.gameObject.transform.localScale = Vector3.one;
+            arrayObjectsConnected.Remove(temp);
+            countConnectedCells -= 1;
+         }
+      }
    }
 
    #endregion public functions
@@ -357,7 +338,26 @@ public class MatchThreeController : MonoBehaviour
    {
       return (ElementType) Random.Range(1, System.Enum.GetValues(typeof(ElementType)).Length);
    }
-   
+
+   private void SetSpriteForElementType()
+   {
+      for (int i = 0; i < lineCount; i++)
+      {
+         for (int j = 0; j < columnCount; j++)
+         {
+            switch (arrayObjectsInCell[i,j].ElementType)
+            {
+               case ElementType.Fire: arrayObjectsInCell[i,j].SetSprite(spriteFire); break;
+               case ElementType.Water: arrayObjectsInCell[i,j].SetSprite(spriteWater); break;
+               case ElementType.Nature: arrayObjectsInCell[i,j].SetSprite(spriteNature); break;
+               case ElementType.Energy: arrayObjectsInCell[i,j].SetSprite(spriteEnergy); break;
+               case ElementType.Magic: arrayObjectsInCell[i,j].SetSprite(spriteMagic); break;
+               default: arrayObjectsInCell[i,j].SetSprite(spriteClear); break;
+            }
+         }
+      }
+   }
+
    #endregion private functions
 
 }

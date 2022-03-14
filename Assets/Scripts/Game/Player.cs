@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
 {
     #region Inspector variables
 
+    [SerializeField] private float shootRate;
     [SerializeField] private List<int> maxBulletTypeCount;
     [SerializeField] private List<ElementType> maxBulletTypeElementType;
     [SerializeField] private int maxHp;
@@ -26,7 +27,8 @@ public class Player : MonoBehaviour
     private UnityAction actionAfterShootingWhenBulletsZero;
     private UnityAction actionAfterShootAllBullets;
     private Camera cam;
-
+    private Coroutine shootCoroutine;
+    
     #endregion private variables
 
     #region properties
@@ -144,10 +146,9 @@ public class Player : MonoBehaviour
                 } 
             }
 
-            for (int i = 0; i < currentBulletsCount; i++)
-            {
-                ShootActiveBullet();
-            }
+            Debug.Log("[Shoot]");
+            ShootActiveBullet(currentBulletsCount);
+            
             
             if (!IsHaveNotAvalibleBullets())
             {
@@ -164,7 +165,6 @@ public class Player : MonoBehaviour
             {
                 actionAfterShootingWhenBulletsZero?.Invoke();
             }
-            actionAfterShootAllBullets?.Invoke();
         }
     }
     
@@ -173,11 +173,27 @@ public class Player : MonoBehaviour
         var allElementsZero = maxBulletTypeCount.All(x => x == 0);
         return allElementsZero;
     }
-    
-    private void ShootActiveBullet()
+
+    private void ShootActiveBullet(int countBullet)
     {
-        if (activeBullet != null)
+        shootCoroutine = StartCoroutine(ShootActiveBulletCoroutine(countBullet));
+    }
+    
+    private IEnumerator ShootActiveBulletCoroutine(int countCycles)
+    {
+        Debug.Log($"[ShootActiveBulletCoroutine] countCycles = {countCycles}");
+
+        for(int i=0; i< countCycles; i++)
         {
+            if (activeBullet == null)
+            {
+                actionOnShoot?.Invoke();
+            }
+            Debug.Log($"IN CYCLE");
+
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForSeconds(shootRate);
+                
             activeBullet.transform.position = transform.position;
             activeBullet.transform.position = new Vector3( activeBullet.transform.position.x, activeBullet.transform.position.y,activeBullet.transform.position.z + 2f);
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -190,20 +206,18 @@ public class Player : MonoBehaviour
                 var rig = activeBullet.GetComponent<Rigidbody>();
                 rig.velocity = (direction * bulletSpeed);
                 activeBullet = null;
-                Debug.Log($"EndPoint = {endPoint}");  
+                //Debug.Log($"EndPoint = {endPoint}");  
             }
             else
             {
                 Debug.LogWarning($"No hit point");
             }
         }
-        else
-        {
-            Debug.LogError($"Active bullet are null");
-            actionOnShoot?.Invoke();
-            Debug.LogWarning($"But bullet was loaded");
-            ShootActiveBullet();
-        }
+        Debug.Log($"COROUTINE FINISHED");
+                    
+        StopCoroutine(ShootActiveBulletCoroutine(countCycles));
+        shootCoroutine = null;
+        actionAfterShootAllBullets?.Invoke();
     }
 
     #endregion private functions
