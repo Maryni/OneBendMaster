@@ -61,7 +61,7 @@ public class  BulletsController : MonoBehaviour
         if (tempObject != null)
         {
             var tempType = tempObject.ElementType;
-            Debug.Log($"TempType returned, tempType = {tempType}");
+            //Debug.Log($"TempType returned, tempType = {tempType}");
             return tempType;
         }
         else
