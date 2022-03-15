@@ -20,6 +20,7 @@ public abstract class BaseBullet : MonoBehaviour
 
     protected float baseDamage = 1f;
     protected UnityAction actionOnShoot;
+    protected bool triggeredByWall = false;
 
     #endregion private variables
 
@@ -32,7 +33,8 @@ public abstract class BaseBullet : MonoBehaviour
     #endregion Inspector variables
     
     #region properties
-    public ElementType ElementType => elementType; 
+    public ElementType ElementType => elementType;
+    public bool TriggeredByWall => triggeredByWall;
     
     #endregion properties
 
@@ -76,6 +78,11 @@ public abstract class BaseBullet : MonoBehaviour
     public void SetElementType(ElementType elementType)
     {
         this.elementType = elementType;
+    }
+
+    public void ChangeTriggerByWallState()
+    {
+        triggeredByWall = !triggeredByWall;
     }
 
     #endregion public functions

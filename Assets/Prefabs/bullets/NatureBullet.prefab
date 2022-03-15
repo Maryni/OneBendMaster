@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3866696586001511317}
   - component: {fileID: -5830503898632679034}
   - component: {fileID: 852807906889499321}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NatureBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

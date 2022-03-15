@@ -143,7 +143,7 @@ public class SpawnController : MonoBehaviour
 
     private void SetObjectFromFirstListToSecond(List<GameObject> a, List<GameObject> b, bool clearFirstList = false)
     {
-        Debug.Log($"a.count = {a.Count} | b.count = {b.Count}");
+        //Debug.Log($"a.count = {a.Count} | b.count = {b.Count}");
         for (int i = 0; i < a.Count; i++)
         {
             b.Add(a[i]);
@@ -152,7 +152,7 @@ public class SpawnController : MonoBehaviour
         {
             a.Clear();
         }
-        Debug.Log($"a.count = {a.Count} | b.count = {b.Count}");
+        //Debug.Log($"a.count = {a.Count} | b.count = {b.Count}");
     }
     
     #endregion private functions

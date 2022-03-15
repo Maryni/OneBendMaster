@@ -181,16 +181,12 @@ public class Player : MonoBehaviour
     
     private IEnumerator ShootActiveBulletCoroutine(int countCycles)
     {
-        Debug.Log($"[ShootActiveBulletCoroutine] countCycles = {countCycles}");
-
         for(int i=0; i< countCycles; i++)
         {
             if (activeBullet == null)
             {
                 actionOnShoot?.Invoke();
             }
-            Debug.Log($"IN CYCLE");
-
             yield return new WaitForEndOfFrame();
             yield return new WaitForSeconds(shootRate);
                 
@@ -206,15 +202,12 @@ public class Player : MonoBehaviour
                 var rig = activeBullet.GetComponent<Rigidbody>();
                 rig.velocity = (direction * bulletSpeed);
                 activeBullet = null;
-                //Debug.Log($"EndPoint = {endPoint}");  
             }
             else
             {
                 Debug.LogWarning($"No hit point");
             }
         }
-        Debug.Log($"COROUTINE FINISHED");
-                    
         StopCoroutine(ShootActiveBulletCoroutine(countCycles));
         shootCoroutine = null;
         actionAfterShootAllBullets?.Invoke();

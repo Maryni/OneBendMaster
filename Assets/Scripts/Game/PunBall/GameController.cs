@@ -101,7 +101,7 @@ public class GameController : MonoBehaviour
 
     private void SetEnoughtBulletsSprite()
     {
-        Debug.Log($"player.MaxBulletTypeCount.Count = {player.MaxBulletTypeCount.Count}");
+        //Debug.Log($"player.MaxBulletTypeCount.Count = {player.MaxBulletTypeCount.Count}");
         for (int i = 0; i < player.MaxBulletTypeCount.Count; i++)
         {
             bulletsController.AddBulletByType();
@@ -119,7 +119,7 @@ public class GameController : MonoBehaviour
 
     private void LoadAfterGameSceneWasLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log($"Scene [{scene.name}] was loaded]");
+        Debug.Log($"Scene [{scene.name}] was loaded");
         if (scene.buildIndex == 1)
         {
             if (spawnController == null)

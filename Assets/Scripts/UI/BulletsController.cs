@@ -153,7 +153,7 @@ public class  BulletsController : MonoBehaviour
 
     public void SetBulletColorForFirstBulletWithoutColor(ElementType typeColor)
     {
-        Debug.Log($"countAvaliablePlaceForBullet = {countAvaliablePlaceForBullet}");
+        //Debug.Log($"countAvaliablePlaceForBullet = {countAvaliablePlaceForBullet}");
         if (countAvaliablePlaceForBullet > 0)
         {
             BulletSprite bullet;
@@ -189,8 +189,11 @@ public class  BulletsController : MonoBehaviour
             {
                 actionWhenAllBulletsAreColored?.Invoke();
             }
-            
-            countAvaliablePlaceForBullet--;
+
+            if (typeColor != ElementType.NoElement)
+            {
+                countAvaliablePlaceForBullet--;  
+            }
         }
         else
         {

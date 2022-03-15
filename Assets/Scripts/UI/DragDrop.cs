@@ -9,8 +9,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 {
 
     #region private variables
-
-    private UnityAction actionOnBeginDrag;
+    
     private UnityAction<int,int> actionOnEndDrag;
     private UnityAction actionOnEndDragWithoutParams;
     private UnityAction<int,int> actionOnDragWithParams;
@@ -33,10 +32,6 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
             int x = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().X;
             int y = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().Y;
             actionOnDragRemoveConnection?.Invoke(x,y);
-            if (x == firstX && y == firstY)
-            {
-                actionOnDragRemoveConnection?.Invoke(x,y); 
-            }
             //actionOnEndDrag?.Invoke(x,y); //second point
             //actionOnDragWithParams(x,y); // first point
             if (x != lastX || y != lastY)
@@ -50,8 +45,6 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
             }
             Debug.Log($"[OnDrag] X ={x} | Y = {y}" );
         }
-        //OnDragFunction(eventData);
-        
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -62,7 +55,6 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
             int y = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().Y;
             firstX = x;
             firstY = y;
-            actionOnBeginDrag?.Invoke();
             if (lastX == -1 && lastY == -1)
             {
                 actionOnDragWithParams(x,y);
@@ -100,14 +92,6 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         Debug.Log($"[OnEndDrag] lastX ={lastX} | lastY = {lastY}" );
     }
 
-    public void SetActionOnBeginDrag(params UnityAction[] actions)
-    {
-        for (int i = 0; i < actions.Length; i++)
-        {
-            actionOnBeginDrag += actions[i];
-        }
-    }
-    
     public void SetActionOnEndDrag(params UnityAction<int,int>[] actions)
     {
         for (int i = 0; i < actions.Length; i++)

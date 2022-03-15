@@ -53,13 +53,11 @@ public class UIController : MonoBehaviour
             tempArray[i] = objectPool.GetObjectByType(ObjectType.MatchThreeSprite, ElementType.NoElement);
             tempArray[i].SetActive(true);
             var dragDrop = tempArray[i].GetComponentInChildren<DragDrop>();
-            var image = dragDrop.gameObject.GetComponent<MatchThreeFlexibleElement>().Image;
             dragDrop.SetActionOnDragRemoveConenction(controller.CheckAndRemoveLastElementInConnectedList);
-            dragDrop.SetActionOnBeginDrag(() => image.raycastTarget = false);
             dragDrop.SetActionOnDragWithParams(controller.SetValuesFromBeginDragPoint);
             dragDrop.SetActionOnEndDrag(controller.SetFirstsXY);
             dragDrop.SetActionOnEndDragWithoutParams(
-                () => image.raycastTarget = true,
+                () => controller.CheckElementsIfWasRemoved(),
                 () => bulletsController.SetBulletTextForFirstNonElementBullet(controller.GetCountConnectedCellsLastConnection()),
                 () => bulletsController.SetBulletColorForFirstBulletWithoutColor(controller.ElementTypeLastConnections),
                 () => gameController.Player.SetCurrentBulletsForFirstBullet(bulletsController.GetBulletTextWhichLastUnzero()),

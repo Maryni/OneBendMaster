@@ -57,6 +57,16 @@ public class MatchThreeController : MonoBehaviour
 
    #region public functions
 
+   public void CheckElementsIfWasRemoved()
+   {
+      if (arrayObjectsConnected.Count == 1)
+      {
+         elementTypeLastConnections = ElementType.NoElement;
+         arrayObjectsConnected[0].transform.localScale = Vector3.one;
+         arrayObjectsConnected.Clear();
+      }
+   }
+   
    public string GetCountConnectedCellsLastConnection()
    {
       int count = 0;
@@ -206,7 +216,7 @@ public class MatchThreeController : MonoBehaviour
       if (!arrayObjectsConnected.Contains(tempObject))
       {
          arrayObjectsConnected.Add(tempObject);
-         Debug.Log($"[LastElementAdded] arrayObjectsConnected[{arrayObjectsConnected.Count - 1}].X = {arrayObjectsConnected[arrayObjectsConnected.Count - 1].X} | arrayObjectsConnected[0].Y = {arrayObjectsConnected[arrayObjectsConnected.Count - 1].Y} ");
+         //Debug.Log($"[LastElementAdded] arrayObjectsConnected[{arrayObjectsConnected.Count - 1}].X = {arrayObjectsConnected[arrayObjectsConnected.Count - 1].X} | arrayObjectsConnected[0].Y = {arrayObjectsConnected[arrayObjectsConnected.Count - 1].Y} ");
       }
       else
       {
