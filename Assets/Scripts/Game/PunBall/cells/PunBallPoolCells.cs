@@ -145,6 +145,4 @@ public class PunBallPoolCells : MonoBehaviour
     }
     
     #endregion private functions
-    
-    
 }

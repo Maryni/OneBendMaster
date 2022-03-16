@@ -362,7 +362,7 @@ MonoBehaviour:
   countLine: 8
   offsetX: 1
   offsetZ: 0
-  offsetXCell: 0.08
+  offsetXCell: 0.02
   offsetZCell: 1
   leftUpperAngle: -0.42
 --- !u!1 &919838139
@@ -392,7 +392,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919838139}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -5.21, y: -9.845451, z: 9.784202}
+  m_LocalPosition: {x: -5.21, y: -9.845451, z: 9.44}
   m_LocalScale: {x: 20, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 1387428010}
@@ -487,7 +487,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1053838468}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 5.94, y: -9.845451, z: 9.784202}
+  m_LocalPosition: {x: 5.94, y: -9.845451, z: 9.44}
   m_LocalScale: {x: 20, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 1387428010}
@@ -582,7 +582,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1298029475}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.31, y: -9.845451, z: 19.284203}
+  m_LocalPosition: {x: 0.31, y: -9.845451, z: 18.94}
   m_LocalScale: {x: 12, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 1387428010}

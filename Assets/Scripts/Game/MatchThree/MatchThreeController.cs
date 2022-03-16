@@ -167,6 +167,7 @@ public class MatchThreeController : MonoBehaviour
    public void ClearCountConnected()
    {
       countConnectedCells = 0;
+      arrayObjectsConnected.Clear();
    }
    
    /// <summary>
@@ -181,7 +182,6 @@ public class MatchThreeController : MonoBehaviour
          arrayObjectsConnected[i].SetElementType(tempType);
       }
       SetSpriteForElementType();
-      arrayObjectsConnected.Clear();
       elementTypeLastConnections = ElementType.NoElement;
    }
    

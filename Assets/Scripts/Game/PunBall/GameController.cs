@@ -171,8 +171,8 @@ public class GameController : MonoBehaviour
         spawnController.MovePreviousEnemyForward();
         spawnController.Spawn();
         statsController.SetStatsToSpawnedEnemy();
-        bulletsController.SetAvalibleCountBullets();
         player.ChangeCanShootState();
+        bulletsController.SetAvalibleCountBullets();
     }
 
     #endregion private functions

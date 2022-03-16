@@ -9,6 +9,7 @@ public class PunBallCellsIndex : MonoBehaviour
     [SerializeField] private int x;
     [SerializeField] private int y;
     [SerializeField] private bool isOcupied;
+    [SerializeField] private bool movedInThisWave;
 
     #endregion Inspector variables
 
@@ -17,6 +18,7 @@ public class PunBallCellsIndex : MonoBehaviour
     public int X => x;
     public int Y => y;
     public bool IsOcupied => isOcupied;
+    public bool MovedInThisWave => movedInThisWave;
 
     #endregion properties
 
@@ -39,8 +41,12 @@ public class PunBallCellsIndex : MonoBehaviour
     {
         isOcupied = !isOcupied;
     }
-    
-    
+
+    public void ChangeMovedState()
+    {
+        movedInThisWave = !movedInThisWave;
+    }
+
     #endregion public functions
 
 }

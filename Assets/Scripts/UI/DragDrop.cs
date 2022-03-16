@@ -78,17 +78,12 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
             int x = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().X;
             int y = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().Y;
             actionOnEndDrag?.Invoke(x,y);
-
-            actionOnEndDragWithoutParams?.Invoke();
             lastX = x;
             lastY = y;
             
         }
-        else
-        {
-            actionOnEndDragWithoutParams?.Invoke();
-        }
-        
+
+        actionOnEndDragWithoutParams?.Invoke();
         Debug.Log($"[OnEndDrag] lastX ={lastX} | lastY = {lastY}" );
     }
 

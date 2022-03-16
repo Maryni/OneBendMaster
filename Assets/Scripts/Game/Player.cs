@@ -161,10 +161,7 @@ public class Player : MonoBehaviour
                     }
                 }
             }
-            else if (IsHaveNotAvalibleBullets())
-            {
-                actionAfterShootingWhenBulletsZero?.Invoke();
-            }
+            
         }
     }
     
@@ -181,6 +178,9 @@ public class Player : MonoBehaviour
     
     private IEnumerator ShootActiveBulletCoroutine(int countCycles)
     {
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        var currentHitPointRay = ray; 
         for(int i=0; i< countCycles; i++)
         {
             if (activeBullet == null)
@@ -191,9 +191,7 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(shootRate);
                 
             activeBullet.transform.position = transform.position;
-            activeBullet.transform.position = new Vector3( activeBullet.transform.position.x, activeBullet.transform.position.y,activeBullet.transform.position.z + 2f);
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+            activeBullet.transform.position = new Vector3( activeBullet.transform.position.x, activeBullet.transform.position.y - 0.5f,activeBullet.transform.position.z + 2f);
             if (Physics.Raycast(ray, out hit, 100))
             {
                 Vector3 endPoint = hit.point;
@@ -211,6 +209,10 @@ public class Player : MonoBehaviour
         StopCoroutine(ShootActiveBulletCoroutine(countCycles));
         shootCoroutine = null;
         actionAfterShootAllBullets?.Invoke();
+        if (IsHaveNotAvalibleBullets())
+        {
+            actionAfterShootingWhenBulletsZero?.Invoke();
+        }
     }
 
     #endregion private functions

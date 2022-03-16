@@ -13,6 +13,7 @@ public class WallBulletsChecker : MonoBehaviour
         if (other.gameObject.GetComponent<BaseBullet>() && other.gameObject.GetComponent<BaseBullet>().TriggeredByWall)
         {
             other.gameObject.GetComponent<BaseBullet>().ChangeTriggerByWallState();
+            other.gameObject.GetComponent<BulletBounce>().StopVelocity();
             other.gameObject.SetActive(false);
         }
     }

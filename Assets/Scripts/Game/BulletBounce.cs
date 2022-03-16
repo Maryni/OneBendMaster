@@ -32,9 +32,18 @@ public class BulletBounce : MonoBehaviour
             var speed = lastVelocity.magnitude;
             var direction = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
 
-            rig.velocity = direction * Mathf.Max(speed, 0f);
+            rig.velocity = direction * speed;
         }
     }
 
     #endregion Unity functions
+
+    #region public functions
+
+    public void StopVelocity()
+    {
+        rig.velocity = Vector3.zero;
+    }
+
+    #endregion public functions
 }

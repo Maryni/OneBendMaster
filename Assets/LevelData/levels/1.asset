@@ -39,7 +39,7 @@ MonoBehaviour:
     baseDamageBoss: 0
     baseModDamageBoss: 0
   - elementTypes: 0100000002000000030000000400000005000000
-    countEnemies: 0000000000000000000000000200000001000000
+    countEnemies: 0000000000000000000000000100000001000000
     baseHpEnemies: []
     baseModHpEnemies: []
     baseDamageEnemies: []

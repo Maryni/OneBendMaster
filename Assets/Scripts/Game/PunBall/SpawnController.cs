@@ -67,22 +67,32 @@ public class SpawnController : MonoBehaviour
 
         for (int i = 0; i < listAllSpawned.Count; i++)
         {
-            var currentCell = fullList.FirstOrDefault(x=>x.IsOcupied);
+            var currentCell = fullList.LastOrDefault(x=>x.IsOcupied && !x.MovedInThisWave);
             var currentX = currentCell.X;
             var currentY = currentCell.Y;
+            Debug.Log($"currentX = {currentX} | currentY = {currentY}");
             if (currentY != gameController.PunBallPoolCells.countY - 1)
             {
-                var tempObjectNew = fullList.FirstOrDefault(x => x.X == currentX && x.Y == currentY + 1);
+                var tempObjectNew = fullList.FirstOrDefault(x => x.X == currentX && x.Y == currentY + 1  && !x.MovedInThisWave);
                 var tempObjectCurrent = fullList.FirstOrDefault(x => x.X == currentX && x.Y == currentY);
-                if (!tempObjectNew.IsOcupied)
-                {
-                    listAllSpawned[i].transform.SetParent(tempObjectNew.gameObject.transform);
-                    listAllSpawned[i].transform.localPosition = new Vector3(0, 1.5f, 0f);
-                    tempObjectNew.ChangeOcupiedState();
-                    tempObjectCurrent.ChangeOcupiedState();
-                }
+
+                listAllSpawned[i].transform.SetParent(tempObjectNew.gameObject.transform);
+                listAllSpawned[i].transform.localPosition = new Vector3(0, 1.5f, 0f);
+                tempObjectCurrent.ChangeOcupiedState();
+                tempObjectNew.ChangeOcupiedState();
+                tempObjectNew.ChangeMovedState();
+                Debug.Log($"newObject X = {tempObjectNew.X} | newObject Y = {tempObjectNew.Y} ");
             }
         }
+        
+        for (int i = 0; i < fullList.Count; i++)
+        {
+            if (fullList[i].GetComponent<PunBallCellsIndex>().MovedInThisWave)
+            {
+                fullList[i].GetComponent<PunBallCellsIndex>().ChangeMovedState();  
+            }
+        }
+        
     }
 
     #endregion public functions
