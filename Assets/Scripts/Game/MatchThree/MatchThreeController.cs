@@ -41,6 +41,7 @@ public class MatchThreeController : MonoBehaviour
    public int ColumnCount => columnCount;
    public int LineCount => lineCount;
    public ElementType ElementTypeLastConnections => elementTypeLastConnections;
+   public GameObject GamePanel => gamePanelGameObject;
    //public int CountConnectedCellsLastConnection => countConnectedCells + 1;
 
    #endregion properties
@@ -103,8 +104,20 @@ public class MatchThreeController : MonoBehaviour
    /// <param name="y"></param>
    public void SetFirstsXY(int x, int y)
    {
-      xFirst = x;
-      yFirst = y;
+      bool haveThisXY = false;
+      for (int i = 0; i < arrayObjectsConnected.Count; i++)
+      {
+         if (arrayObjectsConnected[i].X == x && arrayObjectsConnected[i].Y == y)
+         {
+            haveThisXY = true;
+         }
+      }
+
+      if (!haveThisXY)
+      {
+         xFirst = x;
+         yFirst = y; 
+      }
    }
 
    /// <summary>
@@ -114,7 +127,7 @@ public class MatchThreeController : MonoBehaviour
    /// <param name="y"></param>
    public void SetValuesFromBeginDragPoint(int x, int y)
    {
-      //x,ySecond = point OnDrag
+      //xSecond,ySecond = point OnBeginDrag
       xSecond = x;
       ySecond = y;
    }
@@ -139,14 +152,22 @@ public class MatchThreeController : MonoBehaviour
       {
          if (CheckConnectionBetweenPoints(xSecond, ySecond, xFirst, yFirst))
          {
-            SetElementToLastConnectionList(xSecond, ySecond);
-            SetLastConnectedElementScale(valueLocalScaleConnectedElement);
-            SetElementToLastConnectionList(xFirst, yFirst);
-            SetLastConnectedElementScale(valueLocalScaleConnectedElement);
-
-            countConnectedCells++;
-            xSecond = xFirst;
-            ySecond = yFirst;
+            if (!arrayObjectsConnected.Contains(arrayObjectsInCell[xSecond, ySecond]))
+            {
+               SetElementToLastConnectionList(xSecond, ySecond);
+               SetLastConnectedElementScale(valueLocalScaleConnectedElement);
+            }
+            
+            if (!arrayObjectsConnected.Contains(arrayObjectsInCell[xFirst, yFirst]))
+            {
+               SetElementToLastConnectionList(xFirst, yFirst);
+               SetLastConnectedElementScale(valueLocalScaleConnectedElement);
+               
+               countConnectedCells++;
+               xSecond = xFirst;
+               ySecond = yFirst;
+            }
+            
             if (elementTypeLastConnections != arrayObjectsInCell[xFirst, yFirst].ElementType)
             {
                elementTypeLastConnections = arrayObjectsInCell[xFirst, yFirst].ElementType;
@@ -156,11 +177,13 @@ public class MatchThreeController : MonoBehaviour
          else
          {
             Debug.Log($"connection NO | countConnectedCells = [{countConnectedCells}] ");
+            //Debug.LogWarning($"xFirst = {xFirst} | yFirst = {yFirst} | xSecond = {xSecond} | ySecond = {ySecond}");
          }
       }
       else
       {
          Debug.Log("ElementType not the same");
+         Debug.LogWarning($"arrayObjectsInCell[{xSecond}, {ySecond}].ElementType = {arrayObjectsInCell[xSecond, ySecond].ElementType} | arrayObjectsInCell[{xFirst}, {yFirst}].ElementType = {arrayObjectsInCell[xFirst, yFirst].ElementType} ");
       }
    }
 
@@ -168,11 +191,9 @@ public class MatchThreeController : MonoBehaviour
    {
       countConnectedCells = 0;
       arrayObjectsConnected.Clear();
+      xFirst = yFirst = xSecond = ySecond = -1;
    }
    
-   /// <summary>
-   /// Better to write more optimize function
-   /// </summary>
    public void SetConnectedCellsToOtherRandomElement()
    {
       for (int i = 0; i < arrayObjectsConnected.Count; i++)
@@ -180,6 +201,7 @@ public class MatchThreeController : MonoBehaviour
          arrayObjectsConnected[i].gameObject.transform.localScale = Vector3.one;
          ElementType tempType = GetRandomElementType();
          arrayObjectsConnected[i].SetElementType(tempType);
+         arrayObjectsInCell[arrayObjectsConnected[i].X,arrayObjectsConnected[i].Y].SetElementType(tempType);
       }
       SetSpriteForElementType();
       elementTypeLastConnections = ElementType.NoElement;
@@ -196,6 +218,8 @@ public class MatchThreeController : MonoBehaviour
             temp.gameObject.transform.localScale = Vector3.one;
             arrayObjectsConnected.Remove(temp);
             countConnectedCells -= 1;
+            xSecond = arrayObjectsConnected[arrayObjectsConnected.Count - 1].X;
+            ySecond = arrayObjectsConnected[arrayObjectsConnected.Count - 1].Y;
          }
       }
    }

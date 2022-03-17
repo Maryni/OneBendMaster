@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float bulletSpeed;
     [SerializeField] private GameObject activeBullet;
     [SerializeField] private bool canShoot = false;
+    [SerializeField] private LayerMask layerMaskForShoot;
 
     #endregion Inspector variables
 
@@ -28,6 +29,7 @@ public class Player : MonoBehaviour
     private UnityAction actionAfterShootAllBullets;
     private Camera cam;
     private Coroutine shootCoroutine;
+    [SerializeField]private bool panelClosed;
     
     #endregion private variables
 
@@ -83,13 +85,16 @@ public class Player : MonoBehaviour
     
     public void SetCurrentBulletsForFirstBullet(string value)
     {
-        for (int i = 0; i < maxBulletTypeCount.Count; i++)
+        if (value != "0")
         {
-            if (maxBulletTypeCount[i] == 0)
+            for (int i = 0; i < maxBulletTypeCount.Count; i++)
             {
-                maxBulletTypeCount[i] = int.Parse(value);
-                break;
-            }
+                if (maxBulletTypeCount[i] == 0)
+                {
+                    maxBulletTypeCount[i] = int.Parse(value);
+                    break;
+                }
+            } 
         }
     }
     
@@ -124,6 +129,11 @@ public class Player : MonoBehaviour
     {
         canShoot = !canShoot;
     }
+
+    public void ChangePanelClosedState()
+    {
+        panelClosed = !panelClosed;
+    }
     
     #endregion public functions
 
@@ -131,37 +141,39 @@ public class Player : MonoBehaviour
 
     private void Shoot()
     {
-        SetCountCurrentBullets();
-        if (canShoot && currentBulletsCount > 0)
+        if (panelClosed)
         {
-            if (currentBulletsCount >= 1)
+            SetCountCurrentBullets();
+            if (canShoot && currentBulletsCount > 0)
             {
-                for (int i = 0; i < maxBulletTypeCount.Count; i++)
+                if (currentBulletsCount >= 1)
                 {
-                    if (maxBulletTypeCount[i] > 0)
+                    for (int i = 0; i < maxBulletTypeCount.Count; i++)
                     {
-                        maxBulletTypeCount[i] = 0;
-                        break;
-                    }
-                } 
-            }
+                        if (maxBulletTypeCount[i] > 0)
+                        {
+                            maxBulletTypeCount[i] = 0;
+                            break;
+                        }
+                    } 
+                }
 
-            Debug.Log("[Shoot]");
-            ShootActiveBullet(currentBulletsCount);
+                Debug.Log("[Shoot]");
+                ShootActiveBullet(currentBulletsCount);
             
             
-            if (!IsHaveNotAvalibleBullets())
-            {
-                for (int i = 0; i < maxBulletTypeCount.Count; i++)
+                if (!IsHaveNotAvalibleBullets())
                 {
-                    if (maxBulletTypeCount[i] > 0)
+                    for (int i = 0; i < maxBulletTypeCount.Count; i++)
                     {
-                        currentBulletsCount = maxBulletTypeCount[i];
-                        break;
+                        if (maxBulletTypeCount[i] > 0)
+                        {
+                            currentBulletsCount = maxBulletTypeCount[i];
+                            break;
+                        }
                     }
                 }
             }
-            
         }
     }
     
@@ -192,7 +204,7 @@ public class Player : MonoBehaviour
                 
             activeBullet.transform.position = transform.position;
             activeBullet.transform.position = new Vector3( activeBullet.transform.position.x, activeBullet.transform.position.y - 0.5f,activeBullet.transform.position.z + 2f);
-            if (Physics.Raycast(ray, out hit, 100))
+            if (Physics.Raycast(ray, out hit, 100, layerMaskForShoot))
             {
                 Vector3 endPoint = hit.point;
                 Vector3 direction = endPoint - transform.position;

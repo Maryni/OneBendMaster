@@ -17,18 +17,16 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     private UnityAction<int,int> actionOnDragRemoveConnection;
     private int lastX = -1;
     private int lastY = -1;
-    private int firstX = -1;
-    private int firstY = -1;
-    
+
     #endregion private variables
 
     #region public functions
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log($"[OnDrag] call, GO = {eventData.pointerCurrentRaycast.gameObject.name}" );
         if (eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>())
         {
+            Debug.Log($"[OnDrag] call, GO = {eventData.pointerCurrentRaycast.gameObject.name} | ElemType = {eventData.pointerCurrentRaycast.gameObject.GetComponent<BaseMatchThree>().ElementType}" );
             int x = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().X;
             int y = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().Y;
             actionOnDragRemoveConnection?.Invoke(x,y);
@@ -49,12 +47,11 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        Debug.Log($"lastX = {lastX} | lastY = {lastY}");
         if (eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>())
         {
             int x = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().X;
             int y = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().Y;
-            firstX = x;
-            firstY = y;
             if (lastX == -1 && lastY == -1)
             {
                 actionOnDragWithParams(x,y);
@@ -62,6 +59,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
                 lastY = y;
                 Debug.Log($"[OnBeginDrag] complete");
             }
+            
             Debug.Log($"[OnBeginDrag] first point X = {lastX} | Y = {lastY}");
         }
         else
@@ -78,8 +76,8 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
             int x = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().X;
             int y = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().Y;
             actionOnEndDrag?.Invoke(x,y);
-            lastX = x;
-            lastY = y;
+            lastX = -1; //x
+            lastY = -1;
             
         }
 

@@ -755,6 +755,7 @@ GameObject:
   - component: {fileID: 298129249}
   - component: {fileID: 298129251}
   - component: {fileID: 298129250}
+  - component: {fileID: 298129252}
   m_Layer: 5
   m_Name: MatchThreeButtonPanel
   m_TagString: Untagged
@@ -821,6 +822,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 298129248}
   m_CullTransparentMesh: 1
+--- !u!114 &298129252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298129248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c971907f54aef446ad87ba5dad3cf3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonOpenPanel: {fileID: 1232557030}
+  buttonClosePanel: {fileID: 294588803}
 --- !u!1 &419391064
 GameObject:
   m_ObjectHideFlags: 0
@@ -3683,6 +3698,7 @@ MonoBehaviour:
   colorNatureElemental: {fileID: 21300000, guid: f13d44101b0de79488f390d273e9edc2, type: 3}
   colorMagicElemental: {fileID: 21300000, guid: 7a533be521a3add4fb453277c695497b, type: 3}
   colorDefaultElemental: {fileID: 21300000, guid: 97068e8ba25368a40a8bd289c1d09fd3, type: 3}
+  countAvaliablePlaceForBullet: 0
 --- !u!1 &1969186785
 GameObject:
   m_ObjectHideFlags: 0

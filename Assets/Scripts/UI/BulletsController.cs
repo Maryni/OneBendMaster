@@ -146,9 +146,12 @@ public class  BulletsController : MonoBehaviour
 
     public void SetBulletTextForFirstNonElementBullet(string value)
     {
-        var temp = spriteBulletsList.FirstOrDefault(x =>
-            x.GetComponent<BulletSprite>().ElementType == ElementType.NoElement);
-        temp.GetComponent<BulletSprite>().SetText(value);
+        if (countAvaliablePlaceForBullet > 0)
+        {
+            var temp = spriteBulletsList.FirstOrDefault(x =>
+                x.GetComponent<BulletSprite>().ElementType == ElementType.NoElement);
+            temp.GetComponent<BulletSprite>().SetText(value);
+        }
     }
 
     public void SetBulletColorForFirstBulletWithoutColor(ElementType typeColor)

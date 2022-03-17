@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class GameController : MonoBehaviour
     private SpawnController spawnController;
     private StatsController statsController;
     private UIController uiController;
+    private MatchThreeButtons matchThreeButtons;
 
     #endregion private variables
 
@@ -132,6 +134,11 @@ public class GameController : MonoBehaviour
                 uiController = FindObjectOfType<UIController>();
                 uiController.SetGameController(this);
             }
+
+            if (matchThreeButtons == null)
+            {
+                matchThreeButtons = FindObjectOfType<MatchThreeButtons>();
+            }
             SetVariables();
             SetActions();
         }
@@ -154,6 +161,8 @@ public class GameController : MonoBehaviour
         bulletsController.SetActionWhenAllBulletsColored(player.ChangeCanShootState);
         player.SetActionAfterShootingWhenBulletsZero(CompleteWave);
         player.SetActionAfterShootAllBullets(bulletsController.CheckBulletsForZero);
+        matchThreeButtons.ButtonClosePanel.GetComponent<Button>().onClick.AddListener(player.ChangePanelClosedState);
+        matchThreeButtons.ButtonOpenPanel.GetComponent<Button>().onClick.AddListener(player.ChangePanelClosedState);
     }
 
     private void CompleteWave()
