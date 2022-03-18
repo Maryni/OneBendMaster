@@ -134,5 +134,5 @@ MonoBehaviour:
   canShoot: 0
   layerMaskForShoot:
     serializedVersion: 2
-    m_Bits: 19
+    m_Bits: 1
   panelClosed: 1

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
@@ -146,6 +147,8 @@ public class Player : MonoBehaviour
             SetCountCurrentBullets();
             if (canShoot && currentBulletsCount > 0)
             {
+                if (EventSystem.current.IsPointerOverGameObject())
+                    return;
                 if (currentBulletsCount >= 1)
                 {
                     for (int i = 0; i < maxBulletTypeCount.Count; i++)
@@ -206,6 +209,8 @@ public class Player : MonoBehaviour
             activeBullet.transform.position = new Vector3( activeBullet.transform.position.x, activeBullet.transform.position.y - 0.5f,activeBullet.transform.position.z + 2f);
             if (Physics.Raycast(ray, out hit, 100, layerMaskForShoot))
             {
+                
+                
                 Vector3 endPoint = hit.point;
                 Vector3 direction = endPoint - transform.position;
                 activeBullet.transform.LookAt(direction);

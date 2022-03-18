@@ -24,24 +24,27 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>())
+        if (eventData.pointerCurrentRaycast.gameObject)
         {
-            Debug.Log($"[OnDrag] call, GO = {eventData.pointerCurrentRaycast.gameObject.name} | ElemType = {eventData.pointerCurrentRaycast.gameObject.GetComponent<BaseMatchThree>().ElementType}" );
-            int x = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().X;
-            int y = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().Y;
-            actionOnDragRemoveConnection?.Invoke(x,y);
-            //actionOnEndDrag?.Invoke(x,y); //second point
-            //actionOnDragWithParams(x,y); // first point
-            if (x != lastX || y != lastY)
+            if (eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>())
             {
-                actionOnEndDrag?.Invoke(x,y);
-                actionCheckConnection?.Invoke();
-                lastX = x;
-                lastY = y;
-                Debug.Log($"[OnDrag] second point X = {lastX} | Y = {lastY}");
-                Debug.Log($"[OnDrag] CheckConnection Invoked");
+                Debug.Log($"[OnDrag] call, GO = {eventData.pointerCurrentRaycast.gameObject.name} | ElemType = {eventData.pointerCurrentRaycast.gameObject.GetComponent<BaseMatchThree>().ElementType}" );
+                int x = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().X;
+                int y = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().Y;
+                actionOnDragRemoveConnection?.Invoke(x,y);
+                //actionOnEndDrag?.Invoke(x,y); //second point
+                //actionOnDragWithParams(x,y); // first point
+                if (x != lastX || y != lastY)
+                {
+                    actionOnEndDrag?.Invoke(x,y);
+                    actionCheckConnection?.Invoke();
+                    lastX = x;
+                    lastY = y;
+                    Debug.Log($"[OnDrag] second point X = {lastX} | Y = {lastY}");
+                    Debug.Log($"[OnDrag] CheckConnection Invoked");
+                }
+                Debug.Log($"[OnDrag] X ={x} | Y = {y}" );
             }
-            Debug.Log($"[OnDrag] X ={x} | Y = {y}" );
         }
     }
 
@@ -71,16 +74,18 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>())
+        if (eventData.pointerCurrentRaycast.gameObject)
         {
-            int x = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().X;
-            int y = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().Y;
-            actionOnEndDrag?.Invoke(x,y);
-            lastX = -1; //x
-            lastY = -1;
+            if (eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>())
+            {
+                int x = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().X;
+                int y = eventData.pointerCurrentRaycast.gameObject.GetComponent<MatchThreeFlexibleElement>().Y;
+                actionOnEndDrag?.Invoke(x,y);
+                lastX = -1; //x
+                lastY = -1;
             
+            }
         }
-
         actionOnEndDragWithoutParams?.Invoke();
         Debug.Log($"[OnEndDrag] lastX ={lastX} | lastY = {lastY}" );
     }

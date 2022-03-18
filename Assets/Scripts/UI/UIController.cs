@@ -59,8 +59,8 @@ public class UIController : MonoBehaviour
             dragDrop.SetActionOnEndDragWithoutParams(
                 () => controller.CheckElementsIfWasRemoved(),
                 () => bulletsController.SetBulletTextForFirstNonElementBullet(controller.GetCountConnectedCellsLastConnection()),
-                () => bulletsController.SetBulletColorForFirstBulletWithoutColor(controller.ElementTypeLastConnections),
                 () => gameController.Player.SetCurrentBulletsForFirstBullet(bulletsController.GetBulletTextWhichLastUnzero()),
+                () => bulletsController.SetBulletColorForFirstBulletWithoutColor(controller.ElementTypeLastConnections),
                 () => controller.SetConnectedCellsToOtherRandomElement(),
                 () => controller.ClearCountConnected());
             dragDrop.SetActionCheckConnection(() => controller.CheckSlideConnectionBetweenOnBeginDragAndOnEndDrag());

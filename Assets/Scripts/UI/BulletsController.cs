@@ -84,19 +84,22 @@ public class  BulletsController : MonoBehaviour
     public string GetBulletTextWhichLastUnzero()
     {
         string temp = "0";
-        for (int i = spriteBulletsList.Count - 1; i >= 0; i--)
+        if(countAvaliablePlaceForBullet > 0)
         {
-            var currentElement = spriteBulletsList[i].GetComponent<BulletSprite>();
-            if (currentElement.TextOnBullet != "0")
+            for (int i = spriteBulletsList.Count - 1; i >= 0; i--)
             {
-                temp = currentElement.TextOnBullet;
-                break;
+                var currentElement = spriteBulletsList[i].GetComponent<BulletSprite>();
+                if (currentElement.TextOnBullet != "0")
+                {
+                    temp = currentElement.TextOnBullet;
+                    break;
+                }
             }
-        }
 
-        if (temp == "0")
-        {
-            Debug.LogWarning($"There is no bullets without 0 in text");
+            if (temp == "0")
+            {
+                Debug.LogWarning($"There is no bullets without 0 in text");
+            }
         }
 
         return temp;
