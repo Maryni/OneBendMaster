@@ -69,15 +69,17 @@ public class GameController : MonoBehaviour
 
     private void SetVariables()
     {
+        if (bulletsController == null)
+        {
+            bulletsController = FindObjectOfType<BulletsController>();
+        }
+        
         if (player == null)
         {
             player = FindObjectOfType<Player>();
         }
 
-        if (bulletsController == null)
-        {
-            bulletsController = FindObjectOfType<BulletsController>();
-        }
+
 
         if (punBallPoolCells == null)
         {

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class MatchThreeController : MonoBehaviour
@@ -22,6 +23,8 @@ public class MatchThreeController : MonoBehaviour
 
    [SerializeField] private int countConnectedCells;
    [SerializeField] private ElementType elementTypeLastConnections = ElementType.NoElement;
+   
+   [SerializeField] private GridLayoutGroup group;
    
    #endregion Inspector variables
 
@@ -57,7 +60,7 @@ public class MatchThreeController : MonoBehaviour
    #endregion Unity functions
 
    #region public functions
-
+   
    public void CheckElementsIfWasRemoved()
    {
       if (arrayObjectsConnected.Count == 1)
@@ -227,7 +230,7 @@ public class MatchThreeController : MonoBehaviour
    #endregion public functions
 
    #region private functions
-
+   
    private void SetLastConnectedElementScale(float value)
    {
       arrayObjectsConnected[arrayObjectsConnected.Count - 1].gameObject.transform.localScale =
