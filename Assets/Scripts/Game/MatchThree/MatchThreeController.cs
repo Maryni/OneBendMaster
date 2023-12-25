@@ -133,6 +133,7 @@ public class MatchThreeController : MonoBehaviour
       //xSecond,ySecond = point OnBeginDrag
       xSecond = x;
       ySecond = y;
+      Debug.Log("test");
    }
 
    /// <summary>
