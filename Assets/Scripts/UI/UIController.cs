@@ -10,7 +10,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private GameController gameController;
     [SerializeField] private ObjectPool objectPool;
-    [SerializeField] private MatchThreeController controller;
+    [SerializeField] private MatchThreeController_v2 controller;
     [SerializeField] private BulletsController bulletsController;
 
     #endregion Inspector variables
@@ -53,16 +53,14 @@ public class UIController : MonoBehaviour
             tempArray[i] = objectPool.GetObjectByType(ObjectType.MatchThreeSprite, ElementType.NoElement);
             tempArray[i].SetActive(true);
             var dragDrop = tempArray[i].GetComponentInChildren<DragDrop>();
-            dragDrop.SetActionOnDragRemoveConenction(controller.CheckAndRemoveLastElementInConnectedList);
+            //dragDrop.SetActionOnDragRemoveConenction(controller.CheckAndRemoveLastElementInConnectedList);
             dragDrop.SetActionOnDragWithParams(controller.SetValuesFromBeginDragPoint);
             dragDrop.SetActionOnEndDrag(controller.SetFirstsXY);
             dragDrop.SetActionOnEndDragWithoutParams(
-                () => controller.CheckElementsIfWasRemoved(),
-                () => bulletsController.SetBulletTextForFirstNonElementBullet(controller.GetCountConnectedCellsLastConnection()),
+                //() => controller.CheckElementsIfWasRemoved(),
+                //() => bulletsController.SetBulletTextForFirstNonElementBullet(controller.GetCountConnectedCellsLastConnection()),
                 () => gameController.Player.SetCurrentBulletsForFirstBullet(bulletsController.GetBulletTextWhichLastUnzero()),
-                () => bulletsController.SetBulletColorForFirstBulletWithoutColor(controller.ElementTypeLastConnections),
-                () => controller.SetConnectedCellsToOtherRandomElement(),
-                () => controller.ClearCountConnected());
+                () => bulletsController.SetBulletColorForFirstBulletWithoutColor(controller.ElementTypeLastConnections));
             dragDrop.SetActionCheckConnection(() => controller.CheckSlideConnectionBetweenOnBeginDragAndOnEndDrag());
         }
         controller.SetObjectToPanel(tempArray);
