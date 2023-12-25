@@ -77,7 +77,6 @@ public class Data
 
    #endregion private variables
    
-   
    #region properties
 
    public ElementType[] ElementTypes => elementTypes;
@@ -96,31 +95,6 @@ public class Data
        return dictionaryEnemyStats[type];
    }
    
-   public int GetCountEnemiesByIndex(ElementType elementType)
-   {
-       return countEnemies[(int)elementType - 1];
-   }
-
-   public List<float> GetListBaseHpEnemies()
-   {
-       return baseHpEnemies;
-   }
-   
-   public List<float> GetListModHpEnemies()
-   {
-       return baseModHpEnemies;
-   }
-   
-   public List<float> GetListBaseDamageEnemies()
-   {
-       return baseDamageEnemies;
-   }
-   
-   public List<float> GetListModDamageEnemies()
-   {
-       return baseModDamageEnemies;
-   }
-
    public bool IsHpAreZeroByIndex(int index)
    {
        if (baseHpEnemies.Count == 0)
@@ -129,6 +103,16 @@ public class Data
        }
        return baseHpEnemies[index] == 0;
    }
+   
+   public List<float> GetListBaseHpEnemies() => baseHpEnemies;
+   
+   public List<float> GetListModHpEnemies() => baseModHpEnemies;
+   
+   public List<float> GetListBaseDamageEnemies() =>baseDamageEnemies;
+   
+   public List<float> GetListModDamageEnemies() => baseModDamageEnemies;
+   
+   public int GetCountEnemiesByIndex(ElementType elementType) => countEnemies[(int)elementType - 1];
 
    #endregion public functions
 
@@ -181,6 +165,7 @@ public class Data
                tempListBaseDamageEnemies[4],
                tempListBaseModDamageEnemies[4]
            };
+           
             SetDictionaryValues(ElementType.Fire,tempFireStats);
             SetDictionaryValues(ElementType.Water,tempWaterStats);
             SetDictionaryValues(ElementType.Energy,tempEnergyStats);
@@ -191,38 +176,23 @@ public class Data
        {
            List<float> tempFireStats = new List<float>()
            {
-                0,
-                0,
-                0,
-                0
+                0, 0, 0, 0
            };
            List<float> tempWaterStats = new List<float>()
            {
-               0,
-               0,
-               0,
-               0
+               0, 0, 0, 0
            };
            List<float> tempEnergyStats = new List<float>()
            {
-               0,
-               0,
-               0,
-               0
+               0, 0, 0, 0
            };
            List<float> tempNatureStats = new List<float>()
            {
-               0,
-               0,
-               0,
-               0
+               0, 0, 0, 0
            };
            List<float> tempMagicStats = new List<float>()
            {
-               0,
-               0,
-               0,
-               0
+               0, 0, 0, 0
            };
            
            SetDictionaryValues(ElementType.Fire,tempFireStats);
@@ -231,7 +201,6 @@ public class Data
            SetDictionaryValues(ElementType.Nature,tempNatureStats);
            SetDictionaryValues(ElementType.Magic,tempMagicStats);
        }
-       
 
    }
 

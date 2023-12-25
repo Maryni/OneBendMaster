@@ -55,7 +55,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        SetEnoughtBulletsSprite();
+        SetEnoughBulletsSprite();
         SetWaveData();
     }
 
@@ -101,7 +101,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void SetEnoughtBulletsSprite()
+    private void SetEnoughBulletsSprite()
     {
         //Debug.Log($"player.MaxBulletTypeCount.Count = {player.MaxBulletTypeCount.Count}");
         for (int i = 0; i < player.MaxBulletTypeCount.Count; i++)
